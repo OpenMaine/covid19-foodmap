@@ -1,6 +1,9 @@
 # covid-foodmap
 Mapping when/where food pickups are available during covid-19 crisis
+
 (README started with the initial project idea, and will need to be edited as we go along...)
+
+Initial map is Portland Schools, and online here: http://openmaine.org/covid19/food.html
 
 # What problem are you trying to solve?
 [A lot of pantries and food distribution centers are changing their hours and practices rapidly. It's hard to keep up, and info is siloed by county or town]
