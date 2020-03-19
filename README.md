@@ -19,7 +19,8 @@ Initial map is Portland Schools, and online here: http://openmaine.org/covid19/f
 
 # What area of Civic Engagement would you put this under? [1 or more]
 Disaster and Humanitiarian Relief
-What other resources/tools are currently serving the same need?
+
+# What other resources/tools are currently serving the same need?
 [https://www.gsfb.org/get-help/food-map/]
 
 # Is there any data, research or code available for your current idea?
