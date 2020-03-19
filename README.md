@@ -1,4 +1,4 @@
-# covid-foodmap
+# covid19-foodmap
 Mapping when/where food pickups are available during covid-19 crisis
 
 (README started with the initial project idea, and will need to be edited as we go along...)
