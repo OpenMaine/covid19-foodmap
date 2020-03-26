@@ -1,4 +1,4 @@
-# covid19-foodmap
+# Food Map
 Mapping when/where food pickups are available during covid-19 crisis
 
 Please join our Slack channel, #p-covid19. (Please go to openmaine.org to find a link
@@ -23,7 +23,6 @@ Disaster and Humanitiarian Relief
 # What other resources/tools are currently serving the same need?
 https://www.gsfb.org/get-help/food-map/ (but hours/pickup locations aren't updated)
 
-# Is there any data, research or code available for your current idea?
 # Are there any Drawbacks to choosing this path?
 It would be better if we could help good shephard update theirs
 
