@@ -8,8 +8,12 @@ to join our Slack, plus more information about OpenMaine.)
 
 Initial map is Portland Schools, and online here: http://openmaine.org/covid19/food.html
 
-# What problem are you trying to solve?
+# The Problem
 A lot of pantries and food distribution centers are changing their hours and practices rapidly. It's hard to keep up, and info is siloed by county or town
+
+# Community Partners
+
+We've been asked by the Mutual Aid group Mainers Together to put together a map for their organizers to use when assisting need requests. This map would have updated hours and pick up/drop off locations. We will coordinate with Mainers Together to conduct outreach and data validation.
 
 # In less than 140 characters explain your idea?
 Create a map with crowdsourced data to collect info statewide for people needing food.
