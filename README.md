@@ -10,6 +10,6 @@ Initial map is Portland Schools, and online here: http://openmaine.org/covid19/f
 
 # Community Partners
 
-We've been asked by the Mutual Aid group Mainers Together to put together a map for their organizers to use when assisting need requests. This map would have updated hours and pick up/drop off locations. We will coordinate with Mainers Together to conduct outreach and data validation.
+We've been asked by the Mutual Aid group Mainers Together (mainerstogether.com) to put together a map for their organizers to use when assisting need requests. This map would have updated hours and pick up/drop off locations. We will coordinate with Mainers Together to conduct outreach and data validation.
 
 
