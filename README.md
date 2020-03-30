@@ -1,7 +1,7 @@
 # Food Map
 Mapping when/where food pickups are available during covid-19 crisis
 
-Please see the Wiki page for this project for ways to get involved. 
+Please see the Wiki page: https://github.com/OpenMaine/covid19-foodmap/wiki for this project for ways to get involved. 
 
 # Community Partners
 
