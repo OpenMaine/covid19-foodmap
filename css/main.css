@@ -1,0 +1,271 @@
+body {
+  width: 100%;
+  height: 100%;
+  font-size: 16px;
+  overflow-x: hidden;
+}
+
+#sidebar-wrapper {
+  width: 35vw;
+  height: 100vh;
+  margin-left: -35vw;
+  -webkit-transition: margin .25s ease-out;
+  -moz-transition: margin .25s ease-out;
+  -o-transition: margin .25s ease-out;
+  transition: margin .25s ease-out;
+  z-index: 2;
+  background-color: #FDFDFD;
+  z-index: 1000;
+}
+
+#sidebar-wrapper .list-group {
+  width: 100%;
+}
+
+
+#wrapper.toggled #sidebar-wrapper {
+  margin-left: 0;
+}
+
+#page-content-wrapper {
+  min-width: 100vw;
+}
+
+.filter-card {
+  padding-bottom: 0;
+}
+
+.header-dark {
+  color: rgba(50, 50, 50, 0.82);
+  margin-bottom: 16px;
+  font-size: 2em;
+  font-weight: 400;
+}
+
+.navbar-custom {
+  background-color: #323272!important;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.nav-link, .nav-item {
+  transition: .2s ease-in-out;
+}
+.nav-item:hover {
+  line-height: inherit !important;
+  font-size: inherit !important;
+  letter-spacing: 0.5px;
+}
+
+.main-content {
+  padding: 24px;
+}
+
+.navbar-header  {
+  font-size: 1.75rem;
+  font-weight: 400;
+  margin-left: 1rem;
+}
+
+.no-results-container {
+  margin-top: 3rem;
+  width: 100%;
+  text-align: center;
+  color: rgba(50, 50, 50, 0.82);
+}
+.no-results-message {
+  font-size: 1.75rem;
+}
+.no-result-icon {
+  font-size: 84px !important;
+}
+
+.select-default {
+  padding: 0 24px 0 12px;
+  border-radius: 4px;
+  background-position-x: 94%;
+}
+
+#menu-toggle {
+  margin-bottom: 0;
+}
+.toggle-icon {
+  font-size: 32px !important;
+  color: orange;
+}
+.toggle-label {
+  display: block; 
+  margin-top: -8px; 
+  color: burlywood;
+  font-size: 8px;
+  font-weight: bold;
+}
+
+
+/*  */
+.top-label {
+  justify-content: start;
+}
+@media (min-width: 576px) {
+  .form-inline label { 
+    justify-content: start;
+  }
+}
+/*  */
+
+@media (max-width: 768px) {
+  .result-card-body {
+    margin-left: 12px;
+  }
+  .navbar-header {
+    font-size: 1.1rem;
+  }
+
+  .hidden-lg {
+    display: none!important;
+  }
+  
+  .header-dark {
+    font-size: 1.25em;
+    margin-bottom: 0;
+  }
+  .main-content {
+    padding: 0;
+  }
+
+  #main-map { 
+    min-height: 80vh;
+    height: 100%;
+    width: 100%;
+    margin: 0 auto;
+    margin-top: 16px;
+    margin-bottom: 16px;
+  }
+
+  #sidebar-wrapper {
+    position: fixed;
+    max-width: 65vw;
+    min-width: 65vw;
+    margin-left: 0;
+    z-index: 1000;
+  }
+
+  #wrapper.toggled #sidebar-wrapper {
+    margin-left: -65vw;
+  }
+
+}
+
+@media (min-width: 768px) {
+  .hidden-sm {
+    display: none!important;
+  }
+  #filters-toggle, #filters-mobile {
+    display: none;
+  }
+
+  #sidebar-wrapper {
+    margin-left: 0;
+  }
+
+  #page-content-wrapper {
+    min-width: 0;
+    max-width: 100vw;
+    width: 100%;
+  }
+
+  #wrapper.toggled #sidebar-wrapper {
+    margin-left: -35vw;
+  }
+
+  #main-map { 
+    min-height: 70vh;
+    height: 100%;
+    width: 95%;
+    margin: 0 auto;
+    margin-top: 16px;
+    margin-bottom: 16px;
+  }
+}
+
+#map-results-list {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  max-height: 100%;
+  max-width: 100%;
+}
+#map-results-list .result-row {
+  margin: 0 auto;
+  max-height: 100%;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+#map-results-list .result-card {
+  padding-left: 6px;
+  padding-right: 6px;
+  width: 100%;
+}
+#map-results-list .result-divider {
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+.result-row-icon {
+  padding-left: 24px;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+  border-radius: 8px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+
+/* navbar */
+#nav-mobile {
+  position: fixed;
+  z-index: 999;
+  bottom: 0;
+  width: 100%;
+}
+
+
+/* filters */
+
+#filters-toggle {
+  margin-bottom: 0;
+}
+
+#filters-mobile {
+  position: fixed;
+  background-color: white;
+  width: 100%;
+  padding: 8px;
+  bottom: 54px;
+  z-index: 999;
+  transition: .3s ease-in-out;
+}
+
+#filters-mobile.toggled {
+  bottom: -150px;
+}
+
+.leaflet-bottom {
+  z-index: 998 !important;
+}
