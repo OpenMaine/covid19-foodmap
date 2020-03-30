@@ -8,33 +8,8 @@ to join our Slack, plus more information about OpenMaine.)
 
 Initial map is Portland Schools, and online here: http://openmaine.org/covid19/food.html
 
-# The Problem
-A lot of pantries and food distribution centers are changing their hours and practices rapidly. It's hard to keep up, and info is siloed by county or town
-
 # Community Partners
 
 We've been asked by the Mutual Aid group Mainers Together to put together a map for their organizers to use when assisting need requests. This map would have updated hours and pick up/drop off locations. We will coordinate with Mainers Together to conduct outreach and data validation.
 
-# In less than 140 characters explain your idea?
-Create a map with crowdsourced data to collect info statewide for people needing food.
 
-# Who will benefit from your project? Can you tell their story?
-Anyone who is looking for food and can't get it either because they can't afford it or because it has run out. Organizers working with the mutual aid group MainersTogether.com who get requests and need to be able to source them quickly.
-
-# What area of Civic Engagement would you put this under? [1 or more]
-Disaster and Humanitiarian Relief
-
-# What other resources/tools are currently serving the same need?
-https://www.gsfb.org/get-help/food-map/ (but hours/pickup locations aren't updated)
-
-# Are there any Drawbacks to choosing this path?
-It would be better if we could help good shephard update theirs
-
-# What would success look like?
-Getting it shared and used by many people. Getting buy-in and support from agencies who need help getting food to people.
-
-# What help do you need now?
-Mapping, data aggregation, research
-
-# What are the next steps (validation, research, coding, design)?
-Getting answers from cumberland county food security council on statewide coordination efforts. Then research + data.
