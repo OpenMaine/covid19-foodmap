@@ -15,4 +15,9 @@ class DefaultMap {
     setPosition(centerX, centerY, zoom) {
         map.setView([centerX, centerY], zoom);
     }
+
+    clearMarkers() {
+        this.layerGroup.clearLayers();
+        this.markers = {};
+    }
 }

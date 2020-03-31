@@ -3,11 +3,13 @@ class PantryMapper {
         this.apiEndpoint = apiEndpoint;
         this.map = map;
         this.refreshInterval = null;
-        this.intervalDelay = 600000; //Refresh data every x ms
+        this.intervalDelay = 1200000; //Refresh data every x ms
         this.data = [];
         this.filteredData = [];
+        this.sideBarData =  []; //Sidebar shows only a portion of results, updated on scroll
         this._getData = this._getData.bind(this);
         this.setCategoryFilter = this.setCategoryFilter.bind(this);
+        this._setSidebarScrollListener();
         
         this.categoryFilter = "";
         this.townFilter = "";
@@ -35,10 +37,19 @@ class PantryMapper {
     }
 
     _refreshMapAndSideBar() {
-        this.map.layerGroup.clearLayers();
-        this.map.markers = {};
+        this.map.clearMarkers();
         this._buildMapMarkers(this.filteredData);
-        this._buildSidebarListing(this.filteredData);
+        this.sideBarData = this.filteredData.slice(0, 11);
+        this._buildSidebarListing(this.sideBarData);
+    }
+
+    _setSidebarScrollListener() {
+        document.getElementById('map-results-list').onscroll = (e) =>  {;
+            const minPassed =  parseInt(e.target.scrollTop/70);
+            let end = Math.min(this.filteredData.length, minPassed + 10);
+            this.sideBarData = this.filteredData.slice(0, end);
+            this._buildSidebarListing(this.sideBarData);
+        };
     }
 
     _setFilter(filter, prop) {

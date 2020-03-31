@@ -101,7 +101,6 @@ body {
   font-weight: bold;
 }
 
-
 /*  */
 .top-label {
   justify-content: start;
@@ -117,6 +116,7 @@ body {
   .result-card-body {
     margin-left: 12px;
   }
+
   .navbar-header {
     font-size: 1.1rem;
   }
@@ -144,14 +144,14 @@ body {
 
   #sidebar-wrapper {
     position: fixed;
-    max-width: 65vw;
-    min-width: 65vw;
+    max-width: 70vw;
+    min-width: 70vw;
     margin-left: 0;
     z-index: 1000;
   }
 
   #wrapper.toggled #sidebar-wrapper {
-    margin-left: -65vw;
+    margin-left: -70vw;
   }
 
 }
