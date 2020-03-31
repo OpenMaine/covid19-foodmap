@@ -39,14 +39,14 @@ class PantryMapper {
     _refreshMapAndSideBar() {
         this.map.clearMarkers();
         this._buildMapMarkers(this.filteredData);
-        this.sideBarData = this.filteredData.slice(0, 11);
+        this.sideBarData = this.filteredData.slice(0, 20);
         this._buildSidebarListing(this.sideBarData);
     }
 
     _setSidebarScrollListener() {
         document.getElementById('map-results-list').onscroll = (e) =>  {;
-            const minPassed =  parseInt(e.target.scrollTop/70);
-            let end = Math.min(this.filteredData.length, minPassed + 10);
+            const minPassed =  parseInt(e.target.scrollTop/90);
+            let end = Math.min(this.filteredData.length, minPassed + 20);
             this.sideBarData = this.filteredData.slice(0, end);
             this._buildSidebarListing(this.sideBarData);
         };
