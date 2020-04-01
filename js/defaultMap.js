@@ -12,8 +12,18 @@ class DefaultMap {
         }).addTo(this.map);
     }
 
-    setPosition(centerX, centerY, zoom) {
-        map.setView([centerX, centerY], zoom);
+    setPosition(geoPoint, zoom) {
+        map.setView([geoPoint.latitude, geoPoint.longitude], zoom);
+    }
+
+    addMarker(geoPoint, key, icon = null) {
+        let iconOption = icon ? {icon: icon} : {};
+        let marker = L.marker([geoPoint.latitude, geoPoint.longitude], iconOption).addTo(this.layerGroup);
+        this.markers[key] = marker;
+    }
+
+    addMarkerPopup(key, html) {
+        this.markers[key].bindPopup(html);
     }
 
     clearMarkers() {

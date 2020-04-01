@@ -20,14 +20,26 @@ class PantryMapper {
         $.get(this.apiEndpoint).done((response, status) => {
             const markerInfoData = JSON.parse(response);
             for (let markerInfo of markerInfoData) {
-                if (markerInfo.Category == "Meal Sites")
+                if (markerInfo.Category == "Meal Sites")  {
                     markerInfo.Icon = "fastfood";
-                else if (markerInfo.Category == "Food Pantry")
+                    markerInfo.MarkerIcon = MarkerIcon.Restaurant;
+                }
+                else if (markerInfo.Category == "Food Pantry") {
                     markerInfo.Icon = "store";
-                else if (markerInfo.Category == "Shelter")
+                    markerInfo.MarkerIcon = MarkerIcon.Farm;
+                }
+                else if (markerInfo.Category == "Shelter") {
                     markerInfo.Icon = "home";
-                else 
+                    markerInfo.MarkerIcon = MarkerIcon.Home;
+                }
+                else if (markerInfo.Category == "Youth Programs") {
+                    markerInfo.Icon = "child_care";
+                    markerInfo.MarkerIcon = MarkerIcon.DayCare;
+                }
+                else {
                     markerInfo.Icon = "category";
+                    markerInfo.MarkerIcon = MarkerIcon.Star;
+                }
             }      
 
             this.data = markerInfoData;
@@ -83,15 +95,26 @@ class PantryMapper {
         for (let entry of pantryInfoArray) {
             if (entry.Latitude && entry.Longitude) {
                 if (this.map.markers[entry.Address]) {
-                    this.map.markers[entry.Address].bindPopup(this._getMarkerPopupHtml(entry));
+                    this.map.addMarkerPopup(entry.Address, this._getMarkerPopupHtml(entry));
                 } else {
-                    let marker = L.marker([entry.Latitude, entry.Longitude], {}).addTo(this.map.layerGroup);
-                    marker.bindPopup(this._getMarkerPopupHtml(entry));
-                    this.map.markers[entry.Address] = marker;
+                    this.map.addMarker(new GeoPoint(entry.Latitude, entry.Longitude), entry.Address, this._getIcon(entry));
+                    this.map.addMarkerPopup(entry.Address, this._getMarkerPopupHtml(entry));
                 }
-                //TODO: Remove any markers whose IDs not present.
             }
         }
+    }
+
+    _getIcon(pantryInfo) {
+        if (pantryInfo.MarkerIcon) {
+            return L.icon({
+                iconUrl: MarkerIcon.getPath(pantryInfo.MarkerIcon),
+                iconSize:     [32, 37], // size of the icon
+                iconAnchor:   [22, 36], // point of the icon which will correspond to marker's location
+                popupAnchor:  [-3, -36] // point from which the popup should open relative to the iconAnchor
+            });
+        }
+
+        return null;
     }
 
     _buildSidebarListing(pantryInfoArray) {
