@@ -144,19 +144,22 @@ body {
 
   #sidebar-wrapper {
     position: fixed;
-    max-width: 70vw;
-    min-width: 70vw;
+    max-width: 75vw;
+    min-width: 75vw;
     margin-left: 0;
     z-index: 1000;
   }
 
   #wrapper.toggled #sidebar-wrapper {
-    margin-left: -70vw;
+    margin-left: -75vw;
   }
 
 }
 
 @media (min-width: 768px) {
+  .filter-card {
+    padding-left: 2.25rem;
+  }
   .hidden-sm {
     display: none!important;
   }
