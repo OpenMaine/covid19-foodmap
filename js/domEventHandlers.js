@@ -4,9 +4,9 @@ class DomEventHandlers {
     }
 
     init() {
+        this._prevWidth = window.innerHeight;
         this._setNavbar();
         this._setFilters();
-        this._prevWidth = window.innerHeight;
         this._setResizeHandler();
     }
 
@@ -50,7 +50,6 @@ class DomEventHandlers {
                 $("#wrapper").toggleClass("toggled");
             }
         });
-
 
         $("#filters-toggle").click(function(e) {
             e.preventDefault();

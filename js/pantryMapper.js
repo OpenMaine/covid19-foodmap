@@ -65,7 +65,7 @@ class PantryMapper {
     }
 
     _setFilter(filter, prop) {
-        if (filter !== null && filter !== undefined && filter.length > 0) {
+        if (!this.isNullOrWhitespace(filter)) {
             this[prop] = filter;
         } else {
             this[prop] = "";
@@ -128,8 +128,9 @@ class PantryMapper {
     _getMarkerPopupHtml(pantryInfo) {
         return `<span style="font-size:1.1rem">${pantryInfo.Name}</span><br>
         <hr style="margin-top: 0; margin-bottom: 4px;">
+        <small><b>Category: </b>${pantryInfo.Category}</small><br>
         <small><b>Phone: </b>${pantryInfo.Phone}</small><br>
-        <small><b>Website: </b><a href='${pantryInfo.Category}' target='_blank'>${pantryInfo.WebLink}</a></small><br>
+        <small><b>Website: </b><a href='${pantryInfo.WebLink}' target='_blank'>${pantryInfo.WebLink}</a></small><br>
         <small><b>Address: </b>${pantryInfo.Address}</small><br>
         <small><b>Hours: </b>${pantryInfo.HoursOfOperation}</small>`;
     }
@@ -142,5 +143,9 @@ class PantryMapper {
     stop() {
         if (this.refreshInterval !== null)
             clearInterval(this.refreshInterval);
+    }
+
+    isNullOrWhitespace(str) {
+        return str === null || str === undefined || str.trim().length === 0;
     }
 }
