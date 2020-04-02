@@ -31,4 +31,9 @@ class DefaultMap {
         this.layerGroup.clearLayers();
         this.markers = {};
     }
+
+    fitMarkerBounds() {
+        const group = new L.featureGroup(Object.values(this.markers));
+        this.map.fitBounds(group.getBounds());
+    }
 }
