@@ -2,8 +2,9 @@ class DefaultMap {
     constructor(mapId, center, zoom=8) {
         this.center = center
         this.markers = {};
-        
-        this.map = L.map(mapId).setView([center[0], center[1]], zoom);
+		this.startCenter = center;
+		this.startZoom = zoom;
+        this.map = L.map(mapId).setView([center.latitude, center.longitude], zoom);
         this.map.zoomControl.setPosition('topright');
         this.layerGroup = L.layerGroup().addTo(this.map);
 
@@ -13,7 +14,7 @@ class DefaultMap {
     }
 
     setPosition(geoPoint, zoom) {
-        map.setView([geoPoint.latitude, geoPoint.longitude], zoom);
+        this.map.setView([geoPoint.latitude, geoPoint.longitude], zoom);
     }
 
     addMarker(geoPoint, key, icon = null) {

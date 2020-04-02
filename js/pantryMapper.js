@@ -80,6 +80,20 @@ class PantryMapper {
 
     setCountyFilter(filter) {
         this._setFilter(filter, "countyFilter");
+		if (filter !== null && filter !== undefined && filter !== "") {
+			filter = filter.toLowerCase().trim();
+			for (let county in CountyCoordinates) {
+				if (county.toLowerCase().trim() == filter) {
+					this.map.setPosition(CountyCoordinates[county], 9);
+					break;
+				}
+			}
+        } 
+        
+		if (filter == "" && this.townFilter == "") {
+			this.map.setPosition(this.map.startCenter, this.map.startZoom);
+		}
+		
     }
 
     setTownFilter(filter) {

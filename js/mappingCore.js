@@ -38,3 +38,24 @@ const MarkerIcon = {
     FastFood: 'fastfood.png',
     Farm: 'farm-2.png'
 };
+
+
+
+const CountyCoordinates = {
+	'Androscoggin': new GeoPoint(44.1966666,-70.5196205),
+	'Aroostook': new GeoPoint(46.5106902,-69.0078266),
+	'Cumberland': new GeoPoint(43.8186688,-70.9221653),
+	'Franklin': new GeoPoint(45.062014,-70.9420492),
+	'Hancock': new GeoPoint(44.6405031,-68.9518927),
+	'Kennebec': new GeoPoint(44.4126864,-70.3130643),
+	'Knox': new GeoPoint(44.0471118,-69.5270931),
+	'Lincoln': new GeoPoint(44.0209911,-69.8034423),
+	'Oxford': new GeoPoint(44.5647857,-71.2219684),
+	'Penobscot': new GeoPoint(45.5143842,-69.7684287),
+	'Piscataquis': new GeoPoint(45.786881,-70.425639),
+	'Sagadahoc': new GeoPoint(43.9005136,-70.139785),
+	'Somerset': new GeoPoint(45.5702489,-71.0307851),
+	'Waldo': new GeoPoint(44.4783521,-69.4297386),
+	'Washington': new GeoPoint(45.0015986,-68.0559589),
+	'York': new GeoPoint(43.3642898,-71.1647918)
+};

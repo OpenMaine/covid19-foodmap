@@ -151,7 +151,7 @@
 
       const serviceUri = `${baseUri}?sheetId=${sheetId}&sheetName=${sheetName}&sheetRange=${sheetRange}`;
 
-      const map = new DefaultMap('main-map', [45.1690993, -69.2568189], 7);
+      const map = new DefaultMap('main-map', new GeoPoint(45.1690993, -69.2568189), 7);
       const pantryMapper = new PantryMapper(serviceUri, map);
       const domEventHandlers = new DomEventHandlers(pantryMapper);
       domEventHandlers.init();
