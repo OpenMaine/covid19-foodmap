@@ -36,7 +36,8 @@ const MarkerIcon = {
     Star: 'star-3.png',
     DayCare: 'daycare.png',
     FastFood: 'fastfood.png',
-    Farm: 'farm-2.png'
+    Farm: 'farm-2.png',
+    Grocery: 'grocery.png'
 };
 
 

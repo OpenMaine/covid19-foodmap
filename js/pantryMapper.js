@@ -26,7 +26,7 @@ class PantryMapper {
                 }
                 else if (markerInfo.Category == "Food Pantry") {
                     markerInfo.Icon = "store";
-                    markerInfo.MarkerIcon = MarkerIcon.Farm;
+                    markerInfo.MarkerIcon = MarkerIcon.Grocery;
                 }
                 else if (markerInfo.Category == "Shelter") {
                     markerInfo.Icon = "home";
