@@ -1,5 +1,8 @@
 class DomEventHandlers {
     constructor(pantryMapper) {
+        this._categorySelectId = "category-select";
+        this._countySelectId = "county-select";
+        this._townSelectId = "town-select";
         this.pantryMapper = pantryMapper;
     }
 
@@ -67,9 +70,9 @@ class DomEventHandlers {
         target.innerHTML = template();
 
         //filter callbacks
-        $("#category-select").change((e) => this.pantryMapper.setCategoryFilter(e.target.value) );
-        $("#town-select").change((e) => this.pantryMapper.setTownFilter(e.target.value) );
-        $("#county-select").change((e) => {
+        $(`#${this._categorySelectId}`).change((e) => this.pantryMapper.setCategoryFilter(e.target.value) );
+        $(`#${this._townSelectId}`).change((e) => this.pantryMapper.setTownFilter(e.target.value) );
+        $(`#${this._countySelectId}`).change((e) => {
             const selectedCounty = e.target.value;
             let townOptions = [];
             if (selectedCounty.length > 0) {
@@ -80,21 +83,32 @@ class DomEventHandlers {
             } else {
                 townOptions = [...new Set(this.pantryMapper.data.map(d => d.Town))].sort();
             }
-        
-            this.setSelectOptions("town-select", townOptions);
+            
+            this.setSelectOptions(this._townSelectId, townOptions);
             this.pantryMapper.setCountyFilter(selectedCounty);
+            this.resetSelected();
         });
 
-        this.setFilterOptions();
         $(`#${clearId}`).empty();       
+        this.setFilterOptions();
     }
 
     setFilterOptions() {
         const townOptions = [...new Set(this.pantryMapper.data.map(d => d.Town))].sort();
         const countyOptions = [...new Set(this.pantryMapper.data.map(d => d.County))].sort();
         const categoryOptions = [...new Set(this.pantryMapper.data.map(d => d.Category))].sort();
-        this.setSelectOptions("town-select", townOptions);
-        this.setSelectOptions("county-select", countyOptions);
-        this.setSelectOptions("category-select", categoryOptions);
+        this.setSelectOptions(this._townSelectId, townOptions);
+        this.setSelectOptions(this._countySelectId, countyOptions);
+        this.setSelectOptions(this._categorySelectId, categoryOptions);
+        this.resetSelected();
+    }
+
+    resetSelected() {
+        $(`#${this._categorySelectId} option`).removeAttr("selected");
+        $(`#${this._townSelectId} option`).removeAttr("selected");
+        $(`#${this._countySelectId} option`).removeAttr("selected");
+        $(`#${this._categorySelectId} option[value='${this.pantryMapper.categoryFilter}']`).attr("selected","selected");
+        $(`#${this._townSelectId} option[value='${this.pantryMapper.townFilter}']`).attr("selected","selected");
+        $(`#${this._countySelectId} option[value='${this.pantryMapper.countyFilter}']`).attr("selected","selected");
     }
 }
