@@ -3,7 +3,22 @@ class GeoPoint {
         this.latitude = latitude;
         this.longitude = longitude;
     }
+
+    // Calculate the distance between 2 GeoPoints in kilometers
+    // using the Haversine formula
+    distanceTo(other) {
+        const toRad = (n) => n*Math.PI/180.0;
+         var R = 6371; // approx. radius of Earth in km 
+         var dLat = toRad(other.latitude-this.latitude);
+         var dLon = toRad(other.longitude-this.longitude);  
+         var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(toRad(this.latitude)) * Math.cos(toRad(other.latitude)) * Math.sin(dLon/2) * Math.sin(dLon/2);  
+         var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+         return R * c; 
+    }
 }
+
+
+
 
 const MarkerIcon = {
     getPath: (markerIcon) => `map-markers/${markerIcon}`,
