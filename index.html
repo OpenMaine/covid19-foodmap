@@ -150,9 +150,9 @@
       const sheetRange = "A:L";
       //
       let defaultLocation = await getDefaultLocation();
+      const zoomLevel = defaultLocation ? 12 : 7;
       const serviceUri = `${baseUri}?sheetId=${sheetId}&sheetName=${sheetName}&sheetRange=${sheetRange}`;
-
-      const map = new DefaultMap('main-map', defaultLocation ? new GeoPoint(defaultLocation.latitude, defaultLocation.longitude) : new GeoPoint(45.1690993, -69.2568189), 7);
+      const map = new DefaultMap('main-map', defaultLocation ? new GeoPoint(defaultLocation.latitude, defaultLocation.longitude) : new GeoPoint(45.1690993, -69.2568189), zoomLevel);
       const pantryMapper = new PantryMapper(serviceUri, map);
       const domEventHandlers = new DomEventHandlers(pantryMapper);
       domEventHandlers.init();
