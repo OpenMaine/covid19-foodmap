@@ -138,9 +138,10 @@
   <script src="js/defaultMap.js"></script>
   <script src="js/handlebarsHelpers.js"></script>
   <script src="js/domEventHandlers.js"></script>
+  <script src="js/defaultLocation.js"></script>
 
   <script>
-    $(document).ready(function() {
+    $(document).ready(async function() {
       // Required app settings //
       //const baseUri = "http://localhost:80/google-sheets-api/Sheets.php";
       const baseUri = "https://sheetsapi.azurewebsites.net/Sheets.php";
@@ -148,10 +149,10 @@
       const sheetName = "Pantries";
       const sheetRange = "A:L";
       //
-
+      let defaultLocation = await getDefaultLocation();
       const serviceUri = `${baseUri}?sheetId=${sheetId}&sheetName=${sheetName}&sheetRange=${sheetRange}`;
 
-      const map = new DefaultMap('main-map', new GeoPoint(45.1690993, -69.2568189), 7);
+      const map = new DefaultMap('main-map', defaultLocation ? new GeoPoint(defaultLocation.latitude, defaultLocation.longitude) : new GeoPoint(45.1690993, -69.2568189), 7);
       const pantryMapper = new PantryMapper(serviceUri, map);
       const domEventHandlers = new DomEventHandlers(pantryMapper);
       domEventHandlers.init();
