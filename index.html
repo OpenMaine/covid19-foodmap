@@ -143,18 +143,29 @@
   <script>
     $(document).ready(async function() {
       // Required app settings //
-      //const baseUri = "http://localhost:80/google-sheets-api/Sheets.php";
       const baseUri = "https://sheetsapi.azurewebsites.net/Sheets.php";
       const sheetId = "1besYmYvgpk6ZWrhw8k3ys8OlkDj4s3A1_Y3oromVQBE";
       const sheetName = "Pantries";
       const sheetRange = "A:L";
       //
+
       let defaultLocation = await getDefaultLocation();
       const zoomLevel = defaultLocation ? 12 : 7;
       const serviceUri = `${baseUri}?sheetId=${sheetId}&sheetName=${sheetName}&sheetRange=${sheetRange}`;
+
       const map = new DefaultMap('main-map', defaultLocation ? new GeoPoint(defaultLocation.latitude, defaultLocation.longitude) : new GeoPoint(45.1690993, -69.2568189), zoomLevel);
       const pantryMapper = new PantryMapper(serviceUri, map);
       const domEventHandlers = new DomEventHandlers(pantryMapper);
+      
+      if (defaultLocation) {
+        map.reverseGeocode(new GeoPoint(defaultLocation.latitude, defaultLocation.longitude))
+          .then((cityCounty) => {
+              console.log(cityCounty);
+              pantryMapper.setTownFilter(cityCounty[0]);
+              pantryMapper.setCountyFilter(cityCounty[1]);
+          });  
+      }
+      
       domEventHandlers.init();
       pantryMapper.start(() => domEventHandlers.setFilterOptions());
     });

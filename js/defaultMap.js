@@ -1,6 +1,7 @@
 class DefaultMap {
     constructor(mapId, center, zoom=8) {
-        this._geocodingService = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?f=pjson&SingleLine=";
+        this._geocodingService = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer";
+        
         this.center = center
         this.markers = {};
         this.map = L.map(mapId).setView([center.latitude, center.longitude], zoom);
@@ -39,21 +40,40 @@ class DefaultMap {
         this.map.fitBounds(group.getBounds());
     }
 
-
     getZipcodeGeopoint(zipCode) {
-        const zipCodeRegex = /^([0-9]{5})(-[0-9]{4})?$/;
-        const match = zipCode.toString().trim().match(zipCodeRegex);
-        if (match){
-            const zipCode = match[1];
-            $.get(this._geocodingService+zipCode).done((response, status) => {
-                if (response.candidates && response.candidates.length > 0) {
-                    return new GeoPoint(response.candidates[0].location.y, response.candidates[0].location.x);
-                }
+        const deferred = $.Deferred();
 
-                return null;
+        const match = zipCode.toString().trim().match(/^([0-9]{5})(-[0-9]{4})?$/);
+        if (match){
+            const requestUri = `${this._geocodingService}/findAddressCandidates?f=json&SingleLine=${match[1]}`;
+            $.get(requestUri).done((response, status) => {
+                if (response.candidates && response.candidates.length > 0)
+                    deferred.resolve(new GeoPoint(response.candidates[0].location.y, response.candidates[0].location.x));
+                else
+                    deferred.reject();
             });
         } else {
-            return null;
+            deferred.reject();
         }
+
+        return deferred.promise();
+    }
+
+    reverseGeocode(geoPoint) {
+        const deferred = $.Deferred();
+
+        if (geoPoint.latitude && geoPoint.longitude) {
+            const requestUri = `${this._geocodingService}/reverseGeocode?location=${geoPoint.longitude},${geoPoint.latitude}&forStorage=false&f=json&featureTypes=PointAddress`;
+            $.get((requestUri)).done((response, status) => {
+                if (response.address && response.address.City && response.address.Subregion)
+                    deferred.resolve([response.address.City, response.address.Subregion.split(" ")[0]]);
+                else 
+                    deferred.reject();
+            });
+        } else {
+            deferred.reject();
+        }
+
+        return deferred.promise();
     }
 }
