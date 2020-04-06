@@ -16,6 +16,31 @@ class PantryMapper {
         this.countyFilter = "";
     }
 
+    start(loadCallback) {
+        this._getData(loadCallback);
+        this.refreshInterval = setInterval(() => this._getData(loadCallback), this.intervalDelay); 
+    }
+
+    stop() {
+        if (this.refreshInterval !== null)
+            clearInterval(this.refreshInterval);
+    }
+
+    setCategoryFilter(filter) {
+        this._setFilter(filter, "categoryFilter");
+    }
+
+    setCountyFilter(filter) {
+        this._setFilter(filter, "countyFilter");
+    }
+
+    setTownFilter(filter) {
+        this._setFilter(filter, "townFilter");
+    }
+
+
+    //Begin private methods
+
     _getData(successCallback) {
         $.get(this.apiEndpoint).done((response, status) => {
             const markerInfoData = JSON.parse(response);
@@ -64,33 +89,24 @@ class PantryMapper {
         };
     }
 
+    _applyFilters() {
+        this.filteredData = this.data.filter(d => d.Category.indexOf(this.categoryFilter) >= 0 &&
+                                                  d.Town.indexOf(this.townFilter) >= 0  &&
+                                                  d.County.indexOf(this.countyFilter) >= 0);
+        this._refreshMapAndSideBar();
+    }
+
     _setFilter(filter, prop) {
         if (!this.isNullOrWhitespace(filter)) {
             this[prop] = filter;
         } else {
             this[prop] = "";
         }
-        
+
         this._applyFilters();
         this.map.fitMarkerBounds();
     }
-
-    setCategoryFilter(filter) {
-        this._setFilter(filter, "categoryFilter");
-    }
-
-    setCountyFilter(filter) {
-        this._setFilter(filter, "countyFilter");
-    }
-
-    setTownFilter(filter) {
-        this._setFilter(filter, "townFilter");
-    }
     
-    _applyFilters() {
-        this.filteredData = this.data.filter(d => d.Category.indexOf(this.categoryFilter) >= 0 && d.Town.indexOf(this.townFilter) >= 0 && d.County.indexOf(this.countyFilter) >= 0);
-        this._refreshMapAndSideBar();
-    }
 
     _buildMapMarkers(pantryInfoArray) {
         for (let entry of pantryInfoArray) {
@@ -133,16 +149,6 @@ class PantryMapper {
         <small><b>Website: </b><a href='${pantryInfo.WebLink}' target='_blank'>${pantryInfo.WebLink}</a></small><br>
         <small><b>Address: </b>${pantryInfo.Address}</small><br>
         <small><b>Hours: </b>${pantryInfo.HoursOfOperation}</small>`;
-    }
-    
-    start(loadCallback) {
-        this._getData(loadCallback);
-        this.refreshInterval = setInterval(() => this._getData(loadCallback), this.intervalDelay); 
-    }
-
-    stop() {
-        if (this.refreshInterval !== null)
-            clearInterval(this.refreshInterval);
     }
 
     isNullOrWhitespace(str) {

@@ -157,17 +157,21 @@
       const pantryMapper = new PantryMapper(serviceUri, map);
       const domEventHandlers = new DomEventHandlers(pantryMapper);
       
-      if (defaultLocation) {
-        map.reverseGeocode(new GeoPoint(defaultLocation.latitude, defaultLocation.longitude))
-          .then((cityCounty) => {
-              console.log(cityCounty);
-              pantryMapper.setTownFilter(cityCounty[0]);
-              pantryMapper.setCountyFilter(cityCounty[1]);
-          });  
-      }
-      
       domEventHandlers.init();
-      pantryMapper.start(() => domEventHandlers.setFilterOptions());
+      pantryMapper.start(() => {
+        if (defaultLocation) {
+          map.reverseGeocode(new GeoPoint(defaultLocation.latitude, defaultLocation.longitude))
+          .then((cityCounty) => {
+            pantryMapper.setCountyFilter(cityCounty[1]);
+            pantryMapper.setTownFilter(cityCounty[0]); 
+            domEventHandlers.setFilterOptions()
+          });
+        } else {
+          domEventHandlers.setFilterOptions();
+        }
+      });
+      
+
     });
   </script>
 </body>
