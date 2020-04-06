@@ -9,6 +9,6 @@ COPY map-markers ./app/map-markers/
 COPY gulpfile.js ./app/gulpfile.js
 
 WORKDIR /app
-RUN npm install 
+RUN npm install --production
 RUN npx gulp
 CMD node app.js

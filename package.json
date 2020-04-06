@@ -10,14 +10,16 @@
         "url": "https://github.com/jonjanelle/maine-pantry-ui.git"
     },
     "dependencies": {
-        "bootstrap": "4.3.1",
+        "gulp": "4.0.2",
+        "del": "^4.1.1",
+        "browser-sync": "2.26.7",
+        "merge-stream": "2.0.0",
+        "@popperjs/core": "^2.2.1",
+        "bootstrap-material-design": "^4.1.2",
         "express": "^4.17.1",
         "jquery": "3.4.1"
     },
     "devDependencies": {
-        "browser-sync": "2.26.7",
-        "del": "^4.1.1",
-        "gulp": "4.0.2",
-        "merge-stream": "2.0.0"
+        "cypress": "^4.3.0"
     }
 }
