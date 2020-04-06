@@ -159,16 +159,17 @@
       
       domEventHandlers.init();
       pantryMapper.start(() => {
-        if (defaultLocation) {
-          map.reverseGeocode(new GeoPoint(defaultLocation.latitude, defaultLocation.longitude))
-          .then((cityCounty) => {
-            pantryMapper.setCountyFilter(cityCounty[1]);
-            pantryMapper.setTownFilter(cityCounty[0]); 
-            domEventHandlers.setFilterOptions()
-          });
-        } else {
-          domEventHandlers.setFilterOptions();
-        }
+        domEventHandlers.setFilterOptions();
+        // if (defaultLocation) {
+        //   map.reverseGeocode(new GeoPoint(defaultLocation.latitude, defaultLocation.longitude))
+        //   .then((cityCounty) => {
+        //     pantryMapper.setCountyFilter(cityCounty[1]);
+        //     pantryMapper.setTownFilter(cityCounty[0]); 
+        //     domEventHandlers.setFilterOptions()
+        //   });
+        // } else {
+        //   domEventHandlers.setFilterOptions();
+        // }
       });
       
 
