@@ -60,7 +60,12 @@
     
                 <div class="col-6">
                   <label for="zipcode">Search radius</label>
-                  <input type="text" class="form-control" id="zipcode" aria-describedby="milesHelp" placeholder="Number of miles">
+                  <select class="custom-select form-control select-default my-1 mr-sm-2" id="radius-select" aria-describedby="milesHelp">
+                    <option value=5>5</option>
+                    <option value=10>10</option>
+                    <option value=25>25</option>
+                    <option value=50>50</option>
+                  </select>
                   <small id="milesHelp" class="form-text text-muted">Number of miles from zip code to search </small>
                 </div>
               </div>

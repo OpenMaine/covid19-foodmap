@@ -175,18 +175,22 @@
       const pantryMapper = new PantryMapper(serviceUri, map);
       const domEventHandlers = new DomEventHandlers(pantryMapper);
       
-      $("#home-button").click((e) => {
-        console.log(e);
-        e.preventDefault();
-        prompt("Return to homepage?");
-      })
+
 
       domEventHandlers.init();
       pantryMapper.start(() => {
         domEventHandlers.setFilterOptions();
-        $('#county-select').select2({placeholder: "Select county", allowClear: true});
-        $('#town-select').select2({placeholder: "Select town", allowClear: true});
-        $('#category-select').select2({placeholder: "Select categories"});
+        $('#county-select').select2({placeholder: "Filter county", allowClear: true, minimumResultsForSearch: -1});
+        $('#town-select').select2({placeholder: "Filter town", allowClear: true});
+        $('#category-select').select2({placeholder: "Filter categories", minimumResultsForSearch: -1});
+        $("#home-button").click((e) => {
+        console.log(e);
+        e.preventDefault();
+        let userChoice = confirm("Return to homepage?");
+        if (userChoice)
+          window.location.href='index.html'
+
+      });
         // if (defaultLocation) {
         //   map.reverseGeocode(new GeoPoint(defaultLocation.latitude, defaultLocation.longitude))
         //   .then((cityCounty) => {

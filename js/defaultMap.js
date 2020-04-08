@@ -15,10 +15,12 @@ class DefaultMap {
         this._baseMaps = {
             "OpenStreetMap": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', 
                         {attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}),
+            "Dark": L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token='+this._mapboxToken, 
+                        {id: 'mapbox/dark-v10', attribution: "&copy; Mapbox dark", tileSize: 512, zoomOffset: -1}),
             "Light": L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token='+this._mapboxToken, 
-                        {id: 'mapbox/light-v9', attribution: "&copy; Mapbox light-v9", tileSize: 512, zoomOffset: -1}),
+                        {id: 'mapbox/light-v10', attribution: "&copy; Mapbox light", tileSize: 512, zoomOffset: -1}),
             "Default": L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token='+this._mapboxToken, 
-                        {id: 'mapbox/streets-v11', attribution: "&copy; Mapbox light-v9", tileSize: 512, zoomOffset: -1})
+                        {id: 'mapbox/streets-v11', attribution: "&copy; Mapbox streets", tileSize: 512, zoomOffset: -1})
         };
 
         return Object.values(this._baseMaps);
