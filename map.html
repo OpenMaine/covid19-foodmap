@@ -180,11 +180,21 @@
       domEventHandlers.init();
       pantryMapper.start(() => {
         domEventHandlers.setFilterOptions();
-        $('#county-select').select2({placeholder: "Filter county", allowClear: true, minimumResultsForSearch: -1});
-        $('#town-select').select2({placeholder: "Filter town", allowClear: true});
+        if (window.innerWidth < 768) {
+          $('#county-select').select2({placeholder: "Filter county", allowClear: true, minimumResultsForSearch: -1});
+          $('#town-select').select2({placeholder: "Filter town", allowClear: true, minimumResultsForSearch: -1});
+        } else {
+          $('#county-select').select2({placeholder: "Filter county", allowClear: true});
+          $('#town-select').select2({placeholder: "Filter town", allowClear: true});
+        }
+        
         $('#category-select').select2({placeholder: "Filter categories", minimumResultsForSearch: -1});
+        $('#category-select').on('select2:opening select2:closing', function( event ) {
+          var $searchfield = $( '#'+event.target.id ).parent().find('.select2-search__field');
+          $searchfield.prop('disabled', true);
+        });
+        
         $("#home-button").click((e) => {
-        console.log(e);
         e.preventDefault();
         let userChoice = confirm("Return to homepage?");
         if (userChoice)
