@@ -1,3 +1,4 @@
+//mappingCore must be imported before this class.
 class PantryMapper {
     constructor(apiEndpoint, map) {
         this.apiEndpoint = apiEndpoint;
@@ -8,12 +9,11 @@ class PantryMapper {
         this.filteredData = [];
         this.sideBarData =  []; //Sidebar shows only a portion of results, updated on scroll
         this._getData = this._getData.bind(this);
-        this.setCategoryFilter = this.setCategoryFilter.bind(this);
+        //this.setCategoryFilter = this.setCategoryFilter.bind(this);
         this._setSidebarScrollListener();
         
-        this.categoryFilter = "";
-        this.townFilter = "";
-        this.countyFilter = "";
+        // Filters are type mappingCore.Filter
+        this.filters = [];
     }
 
     start(loadCallback) {
@@ -26,21 +26,48 @@ class PantryMapper {
             clearInterval(this.refreshInterval);
     }
 
-    setCategoryFilter(filter) {
-        this._setFilter(filter, "categoryFilter");
+
+    setCategoryFilter(filterArray) {
+        this._setFilter(new Filter("Category", filterArray, FilterType.multi));
+    }
+    getTownFilter() {
+        const filter = this.filters.find(f => f.field === "Category");
+        return filter ? filter.value : [];
+    }
+    clearCountyFilter(){
+        this.filters = this.filters.filter(f => f.field !== "Category")
     }
 
-    setCountyFilter(filter) {
-        this._setFilter(filter, "countyFilter");
+    setCountyFilter(filterString) {
+        this._setFilter(new Filter("County", filterString, FilterType.single));
+    }
+    getCountyFilter() {
+        const filter = this.filters.find(f => f.field === "County");
+        return filter ? filter.value : "";
+    }
+    clearCountyFilter(){
+        this.filters = this.filters.filter(f => f.field !== "County")
     }
 
-    setTownFilter(filter) {
-        this._setFilter(filter, "townFilter");
+    setTownFilter(filterString) {
+        this._setFilter(new Filter("Town", filterString, FilterType.single));
     }
-
+    getTownFilter() {
+        const filter = this.filters.find(f => f.field === "Town");
+        return filter ? filter.value : "";
+    }
+    clearTownFilter(){
+        this.filters = this.filters.filter(f => f.field !== "Town")
+    }
 
     //Begin private methods
 
+    /*
+        Get all food pantry data from spreadsheet
+        - Sets this.data to an array of objects with fields:
+            Category, Name, County, Town, Address, Phone, HoursOfOperation, OperationalNotes, 
+            WebLink, AdditionalWebLink, Latitude, Longitude
+    */
     _getData(successCallback) {
         $.get(this.apiEndpoint).done((response, status) => {
             const markerInfoData = JSON.parse(response);
@@ -90,21 +117,31 @@ class PantryMapper {
     }
 
     _applyFilters() {
-        this.filteredData = this.data.filter(d => d.Category.indexOf(this.categoryFilter) >= 0 &&
-                                                  d.Town.indexOf(this.townFilter) >= 0  &&
-                                                  d.County.indexOf(this.countyFilter) >= 0);
+        this.filteredData = this.data;
+        this.filters.filter(f => !this.isNullOrEmpty(f.value)).forEach(f => {
+            if (f.filterType == FilterType.single) {
+                this.filteredData = this.filteredData.filter(d => d[f.field].indexOf(f.value) >= 0);
+            } else if (f.filterType == FilterType.multi) {
+                this.filteredData = this.filteredData.filter(d => f.value.indexOf(d[f.field]) >= 0);
+            } else {
+                console.error("Invalid filter: ", f);
+            }
+        });
+
         this._refreshMapAndSideBar();
     }
 
-    _setFilter(filter, prop) {
-        if (!this.isNullOrWhitespace(filter)) {
-            this[prop] = filter;
-        } else {
-            this[prop] = "";
+    /*
+        Set filter value(s) for a field. Removes any existing filters for the field first.
+        @param filter: Oject of type mappingCore.Filter
+    */ 
+    _setFilter(filter) {
+        if (!this.isNullOrEmpty(filter)) {
+            this.filters = this.filters.filter(f => f.field !== filter.field);
+            this.filters.push(filter);
+            this._applyFilters();
+            this.map.fitMarkerBounds();
         }
-
-        this._applyFilters();
-        this.map.fitMarkerBounds();
     }
     
 
@@ -151,7 +188,13 @@ class PantryMapper {
         <small><b>Hours: </b>${pantryInfo.HoursOfOperation}</small>`;
     }
 
-    isNullOrWhitespace(str) {
-        return str === null || str === undefined || str.trim().length === 0;
+    isNullOrEmpty(value) {
+        if (value === null || value === undefined)
+            return true;
+        if (value.constructor.name === "String")
+            return value.trim().length === 0;
+        if (value.constructor.name === "Array")
+            return value.length === 0;
+        return false;
     }
 }

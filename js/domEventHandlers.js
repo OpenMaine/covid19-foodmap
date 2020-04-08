@@ -15,14 +15,16 @@ class DomEventHandlers {
 
     setSelectOptions(domId, optionSet) {
         $(`#${domId}`).empty();
-        const blankOption = "<option selected value=''>All</option>";
+        const blankOption = "<option selected value=''></option>";
         $(`#${domId}`).append(blankOption);
         optionSet.forEach(o => $(`#${domId}`).append(`<option value="${o}">${o}</option>`));
     }
 
+    //Reset filters after switch to/from mobile 
     _setResizeHandler() {
         window.onresize = () =>  {
-            if (Math.abs(window.innerWidth - this._prevWidth) > 20) {
+            if ((window.innerWidth < 768 && this._prevWidth >= 768) || 
+                (window.innerWidth >= 768 && this._prevWidth < 768)) {
                 this._setNavbar(); 
                 this._setFilters();
             }
@@ -62,6 +64,7 @@ class DomEventHandlers {
     }
 
     _setFilters() {
+        //build filters html from handlebars template
         const targetId = window.innerWidth < 768 ? 'filters-mobile' : 'filters-desktop';
         const clearId = targetId === 'filters-mobile' ? 'filters-desktop' : 'filters-mobile';
         const src = document.getElementById('filters-template').innerHTML;
@@ -69,16 +72,23 @@ class DomEventHandlers {
         const target = document.getElementById(targetId);
         target.innerHTML = template();
 
-        //filter callbacks
-        $(`#${this._categorySelectId}`).change((e) => this.pantryMapper.setCategoryFilter(e.target.value) );
-        $(`#${this._townSelectId}`).change((e) => this.pantryMapper.setTownFilter(e.target.value) );
+        //set filter callbacks
+        $(`#${this._categorySelectId}`).change((e) => {
+            // Use .val() to get the values of a multiselect field.
+            this.pantryMapper.setCategoryFilter($(`#${this._categorySelectId}`).val());
+        });
+
+        $(`#${this._townSelectId}`).change((e) => {
+            this.pantryMapper.setTownFilter(e.target.value) 
+        });
+
         $(`#${this._countySelectId}`).change((e) => {
             const selectedCounty = e.target.value;
             let townOptions = [];
             if (selectedCounty.length > 0) {
                 townOptions = [...new Set(this.pantryMapper.data.filter(d => d.County === selectedCounty).map(d => d.Town))].sort();
                 if (townOptions.indexOf(this.pantryMapper.townFilter) < 0) {
-                    this.pantryMapper.townFilter = "";
+                    this.pantryMapper.clearTownFilter();
                 }
             } else {
                 townOptions = [...new Set(this.pantryMapper.data.map(d => d.Town))].sort();
@@ -86,7 +96,7 @@ class DomEventHandlers {
             
             this.setSelectOptions(this._townSelectId, townOptions);
             this.pantryMapper.setCountyFilter(selectedCounty);
-            this.resetSelected();
+            this._resetSelected();
         });
 
         $(`#${clearId}`).empty();       
@@ -100,15 +110,16 @@ class DomEventHandlers {
         this.setSelectOptions(this._townSelectId, townOptions);
         this.setSelectOptions(this._countySelectId, countyOptions);
         this.setSelectOptions(this._categorySelectId, categoryOptions);
-        this.resetSelected();
+        this._resetSelected();
+        
     }
 
-    resetSelected() {
+    _resetSelected() {
         $(`#${this._categorySelectId} option`).removeAttr("selected");
         $(`#${this._townSelectId} option`).removeAttr("selected");
         $(`#${this._countySelectId} option`).removeAttr("selected");
         $(`#${this._categorySelectId} option[value='${this.pantryMapper.categoryFilter}']`).attr("selected","selected");
-        $(`#${this._townSelectId} option[value='${this.pantryMapper.townFilter}']`).attr("selected","selected");
+        $(`#${this._townSelectId} option[value='${this.pantryMapper.getTownFilter()}']`).attr("selected","selected");
         $(`#${this._countySelectId} option[value='${this.pantryMapper.countyFilter}']`).attr("selected","selected");
     }
 }

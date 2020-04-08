@@ -1,19 +1,27 @@
 class DefaultMap {
     constructor(mapId, center, zoom=8) {
         this._geocodingService = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer";
-        
+        this._mapboxToken = 'pk.eyJ1Ijoiam9uamFuZWxsZSIsImEiOiJjazhxbXg0YmswNW5kM2RvNGNjb2hiN2poIn0.LiFKVlPQe_vqyqjjIw0DIw';
         this.center = center
         this.markers = {};
-        this.map = L.map(mapId).setView([center.latitude, center.longitude], zoom);
-        this.map.zoomControl.setPosition('topright');
+        this.map = L.map(mapId, {center: [center.latitude, center.longitude], zoom: zoom, layers: this._getBasemaps()}); //.setView([center.latitude, center.longitude], zoom);
+        this.map.zoomControl.setPosition('topleft');
         this.layerGroup = L.layerGroup().addTo(this.map);
-        this._setMapAttribution();
+
+        L.control.layers(this._baseMaps,{}).addTo(this.map);
     }
     
-    _setMapAttribution() {
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(this.map);
+    _getBasemaps() {
+        this._baseMaps = {
+            "OpenStreetMap": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', 
+                        {attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}),
+            "Light": L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token='+this._mapboxToken, 
+                        {id: 'mapbox/light-v9', attribution: "&copy; Mapbox light-v9", tileSize: 512, zoomOffset: -1}),
+            "Default": L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token='+this._mapboxToken, 
+                        {id: 'mapbox/streets-v11', attribution: "&copy; Mapbox light-v9", tileSize: 512, zoomOffset: -1})
+        };
+
+        return Object.values(this._baseMaps);
     }
 
     setPosition(geoPoint, zoom) {
@@ -36,8 +44,14 @@ class DefaultMap {
     }
 
     fitMarkerBounds() {
-        const group = new L.featureGroup(Object.values(this.markers));
-        this.map.fitBounds(group.getBounds());
+        const nMarkers = Object.keys(this.markers).length;
+        if (nMarkers > 1) {
+            const group = new L.featureGroup(Object.values(this.markers));
+            this.map.fitBounds(group.getBounds());
+        } else if (nMarkers === 1) {
+            var markerBounds = L.latLngBounds([Object.values(this.markers)[0].getLatLng()]);
+            this.map.fitBounds(markerBounds);
+        }
     }
 
     getZipcodeGeopoint(zipCode) {

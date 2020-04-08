@@ -1,179 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="description" content="Food pantries, shelters, ">
-  <meta name="author" content="Jon">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
 
-  <title>Maine Food Support</title>
-  
-  <!-- <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"> -->
-  <link href="vendor/bootstrap-material/css/bootstrap-material-design.min.css" rel="stylesheet">
-  <link href="css/main.css" rel="stylesheet">
+  <title>Maine Food Map</title>
+
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/home.css" rel="stylesheet">
+  <link href="css/shared.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-  <!-- Leaflet and plugins -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
-    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
-    crossorigin=""/>
-  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
-    integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
-    crossorigin=""></script>
 </head>
 
 <body>
-  <div class="d-flex toggled" id="wrapper">
-    <!-- Sidebar -->
-    <div class="border-right shadow-lg" id="sidebar-wrapper">
-      <div class="sidebar-heading"></div>
-      <div id="map-results-list"></div>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-custom navbar-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand navbar-header" href="#">Maine Food Map</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="map.html">Food Map</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#about">Contact</a>
+          </li>
+        </ul>
+      </div>
     </div>
+  </nav>
 
-    <!-- Page Content -->
-    <div id="page-content-wrapper">
-      <!-- Navbar filled by handlebars template in DomEventHandlers -->
-      <span id="nav-desktop"></span>
-
-      <div class="main-content">
-        <div class="card main-card">
-          <div class="card-body filter-card">
-            <div class="row">
-              <div class="col-12">
-                <h1 class="header-dark map-header">Find food support services in Maine</h1>
+  <div id="page-content">
+    <!-- Header -->
+    <header class="bg-primary py-5 mb-5" id="home">
+      <div class="container h-100">
+        <div class="row h-100 align-items-center">
+          <div class="col-lg-12">
+            <h1 class="display-4 text-white mt-5 mb-2">Find food support in Maine</h1>
+            <p class="lead mb-5 text-white-50">Veggies es bonus vobis, proinde vos postulo essum magis kohlrabi welsh onion daikon amaranth tatsoi tomatillo melon azuki bean garlic.</p>
+          </div>
+        </div>
+        <div class="row ml-1 mr-1" id="filter-container">
+          <div class="col-md-2 col-sm-1"></div>
+          <div class="col-md-8 col-sm-10">
+            <h4 class="mb-4">Search for resources</h4>
+            <form>
+              <div class="row mb-5">
+                <div class="col-6">
+                  <label for="zipcode">Zip Code</label>
+                  <input type="text" class="form-control" id="zipcode" aria-describedby="zipcodeHelp" placeholder="Enter zip code">
+                  <small id="zipcodeHelp" class="form-text text-muted">Search for food resources by US zip code</small>
+                </div>
+    
+                <div class="col-6">
+                  <label for="zipcode">Search radius</label>
+                  <input type="text" class="form-control" id="zipcode" aria-describedby="milesHelp" placeholder="Number of miles">
+                  <small id="milesHelp" class="form-text text-muted">Number of miles from zip code to search </small>
+                </div>
               </div>
-              <span class="col-12" id="filters-desktop"></span>
+              <button type="submit" class="btn btn-primary btn-block">Search</button>
+            </form>
+          </div>
+          <div class="col-2 col-sm-1"></div>
+        </div>
+      </div>
+    </header>
+    
+    <!-- About and contact -->
+    <div class="container" id="about">
+      <div class="row mb-5 mt-5">
+        <div class="col-12">
+          <h2 class="text-dark">We believe in food security for all</h2>
+          <hr>
+          <p>Gumbo beet greens corn soko endive gumbo gourd. Parsley shallot courgette tatsoi pea sprouts fava bean collard greens dandelion okra wakame tomato. Dandelion cucumber earthnut pea peanut soko zucchini</p>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis optio neque consectetur consequatur magni in nisi, natus beatae quidem quam odit commodi ducimus totam eum, alias, adipisci nesciunt voluptate. Voluptatum.</p>
+        </div>
+      </div>
+      <div class="row mb-5">
+        <div class="col-12">
+          <h2 class="text-dark">Get in touch</h2>
+          <hr>
+          <div class="row">
+            <div class="col">
+              <div class="h5">Address</div>
+              <div>123 4th St.</div>
+              <div>Portland, ME</div>
+            </div>
+            <div class="col">
+              <div>
+                <span class="h5">Phone:</span>
+                (123) 456-7890
+              </div>
+              <div class="mt-2">
+                <span class="h5">Email:</span c>
+                <a href="mailto:#">test@email.com</a>
+              </div>
             </div>
           </div>
-          <div id="main-map"></div>
         </div>
       </div>
-      <!-- filled by handlebars template in DomEventHandlers if on mobile -->
-      <span id="filters-mobile"></span>
-      <span id="nav-mobile" ></span>
+      <!-- feedback -->
+      <div class="row ml-2 mr-2">
+        <div class="col-12 mt-5 mb-5 bg-light emphasis-box text-center">
+          <h4 class="text-dark">Help make this resource better for everyone!</h4>
+          <hr>
+          <div class="row">
+            <div class="col-12">
+              <p>Are we missing resources or publishing inaccurate data?</p>
+              <p>Use <a href="#">our feedback form</a> to let us know!</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <!-- /#page-content-wrapper -->
+    <!-- /.about container -->
   </div>
-  <!-- /#wrapper -->
 
-  <!-- Begin handlebars templates -->
-  <script id="pin-list-template" type="text/x-handlebars-template">    
-    <div class="row result-row">
-      {{#arr_empty this}}
-      <div class="no-results-container">
-        <i class="material-icons no-result-icon" title="No results found">cloud_off</i>
-        <div class="no-results-message p-2">
-          No results found
-        </div>
-      </div>
-      {{/arr_empty}}
-      {{#each this}}
-      <div class="result-card row col-12 pt-2 pb-2 pl-1">
-        <div class="col-2 result-row-icon">
-          <i class="material-icons" title="Toggle menu">{{Icon}}</i>
-        </div>
-        <div class="col-md-10 col-sm-12 col-xs-12 result-card-body">
-          {{#if WebLink}}
-            <a href="{{WebLink}}" title="{{WebLink}}" target="_blank" rel="noopener">{{Name}}</a>
-          {{else}}
-            <div>{{Name}}</div>
-          {{/if}}
-          <div class="small">
-            {{Category}} 
-            <span class="text-muted small ml-1">{{Phone}}</span>
-          </div>
-          <div>
-            <small class="text-muted">{{Address}}</small>
-          </div>
-        </div>
-      </div>
-      <hr class="result-divider col-12">
-      {{/each}}                
-    </div>            
-  </script>    
 
-  <script id="navbar-template" type="text/x-handlebars-template">
-    <nav class="navbar navbar-expand-lg navbar-custom navbar-dark">
-      <div class="navbar-header text-light hidden-sm">Maine Food Support</div>
-      <div>
-        <button class="btn btn-primary" id="filters-toggle" aria-label="View filters">
-            <i class="material-icons toggle-icon" title="Toggle filters">tune</i><br>
-            <div class="toggle-label">filter</div>
-        </button>
-        <button class="btn btn-primary" id="menu-toggle" aria-label="Toggle list view">
-          <i class="material-icons toggle-icon" title="Toggle list view">compare_arrows</i>
-          <div class="toggle-label">list</div>
-        </button>
-      </div>
-      <div class="navbar-header text-light hidden-lg">Maine Food Support</div>
-    </nav>
-  </script>
-
-  <script id="filters-template" type="text/x-handlebars-template">
-    <form class="form-inline row">
-      <div class="col-md-4 col-sm-12 col-xs-12">
-        <label class="top-label" for="category-select">Category</label>
-        <select class="custom-select select-default my-1 mr-sm-2" id="category-select">
-        </select>
-      </div>
-      <div class="col">
-        <label class="top-label" for="county-select">County</label>
-        <select class="custom-select select-default my-1 mr-sm-2" id="county-select">
-        </select>
-      </div>
-      <div class="col">
-        <label class="top-label" for="town-select">Town</label>
-        <select class="custom-select select-default my-1 mr-sm-2" id="town-select">
-        </select>
-      </div>
-    </form>
-  </script>
-  <!-- End handlebars templates -->
+  <!-- Footer -->
+  <footer class="py-5 bg-dark">
+    <div class="container">
+      <p class="m-0 text-center text-white">Copyright © OpenMaine 2020</p>
+    </div>
+    <!-- /.footer container -->
+  </footer>
 
   <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor//bootstrap-material/js/bootstrap-material-design.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
-  <script src="js/pantryMapper.js"></script>
-  <script src="js/mappingCore.js"></script>
-  <script src="js/defaultMap.js"></script>
-  <script src="js/handlebarsHelpers.js"></script>
-  <script src="js/domEventHandlers.js"></script>
-  <script src="js/defaultLocation.js"></script>
-
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script>
-    $(document).ready(async function() {
-      // Required app settings //
-      const baseUri = "https://sheetsapi.azurewebsites.net/Sheets.php";
-      const sheetId = "1besYmYvgpk6ZWrhw8k3ys8OlkDj4s3A1_Y3oromVQBE";
-      const sheetName = "Pantries";
-      const sheetRange = "A:L";
-      //
-
-      let defaultLocation = await getDefaultLocation();
-      const zoomLevel = defaultLocation ? 12 : 7;
-      const serviceUri = `${baseUri}?sheetId=${sheetId}&sheetName=${sheetName}&sheetRange=${sheetRange}`;
-
-      const map = new DefaultMap('main-map', defaultLocation ? new GeoPoint(defaultLocation.latitude, defaultLocation.longitude) : new GeoPoint(45.1690993, -69.2568189), zoomLevel);
-      const pantryMapper = new PantryMapper(serviceUri, map);
-      const domEventHandlers = new DomEventHandlers(pantryMapper);
-      
-      domEventHandlers.init();
-      pantryMapper.start(() => {
-        domEventHandlers.setFilterOptions();
-        // if (defaultLocation) {
-        //   map.reverseGeocode(new GeoPoint(defaultLocation.latitude, defaultLocation.longitude))
-        //   .then((cityCounty) => {
-        //     pantryMapper.setCountyFilter(cityCounty[1]);
-        //     pantryMapper.setTownFilter(cityCounty[0]); 
-        //     domEventHandlers.setFilterOptions()
-        //   });
-        // } else {
-        //   domEventHandlers.setFilterOptions();
-        // }
+    $(function(){ 
+      var navMain = $(".navbar-collapse");
+      navMain.on("click", "a:not([data-toggle])", null, function () {
+          navMain.collapse('hide');
       });
-      
 
-    });
-  </script>
+      $("page-content").click(() => {
+        console.log("pc");
+        navMain.collapse('hide');
+      });
+
+     });
+   </script>
 </body>
+
 </html>

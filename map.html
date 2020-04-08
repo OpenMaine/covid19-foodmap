@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="Food pantries, shelters, ">
+  <meta name="author" content="Jon">
+
+  <title>Maine Food Map</title>
+  
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="vendor/select2/css/select2.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <link href="css/map.css" rel="stylesheet">
+  <link href="css/shared.css" rel="stylesheet">
+
+  <!-- Leaflet and plugins -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+    crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+    integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+    crossorigin=""></script>
+</head>
+
+<body>
+  <div class="d-flex toggled" id="wrapper">
+    <!-- Sidebar -->
+    <div class="border-right shadow-lg" id="sidebar-wrapper">
+      <div class="sidebar-heading"></div>
+      <div id="map-results-list"></div>
+    </div>
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+      <!-- Navbar filled by handlebars template in DomEventHandlers -->
+      <span id="nav-desktop"></span>
+      <div class="main-content">
+        <div class="card main-card">
+          <div class="card-body filter-card">
+            <div class="row">
+              <div class="col-12">
+                <h1 class="header-dark map-header">Find food support services in Maine</h1>
+              </div>
+              <span class="col-12" id="filters-desktop"></span>
+            </div>
+          </div>
+          <div id="main-map"></div>
+        </div>
+      </div>
+      <!-- filled by handlebars template in DomEventHandlers if on mobile -->
+      <span id="filters-mobile"></span>
+      <span id="nav-mobile" ></span>
+    </div>
+    <!-- /#page-content-wrapper -->
+  </div>
+  <!-- /#wrapper -->
+
+
+  <!-- Begin handlebars templates -->
+  <!-- list template -->
+  <script id="pin-list-template" type="text/x-handlebars-template">    
+    <div class="row result-row">
+      {{#arr_empty this}}
+      <div class="no-results-container">
+        <i class="material-icons no-result-icon" title="No results found">cloud_off</i>
+        <div class="no-results-message p-2">
+          No results found
+        </div>
+      </div>
+      {{/arr_empty}}
+      {{#each this}}
+      <div class="result-card row col-12 pt-2 pb-2 pl-1">
+        <div class="col-2 result-row-icon">
+          <i class="material-icons" title="Toggle menu">{{Icon}}</i>
+        </div>
+        <div class="col-md-10 col-sm-12 col-xs-12 result-card-body">
+          {{#if WebLink}}
+            <a href="{{WebLink}}" title="{{WebLink}}" target="_blank" rel="noopener">{{Name}}</a>
+          {{else}}
+            <div>{{Name}}</div>
+          {{/if}}
+          <div class="small">
+            {{Category}} 
+            <span class="text-muted small ml-1">{{Phone}}</span>
+          </div>
+          <div>
+            <small class="text-muted">{{Address}}</small>
+          </div>
+        </div>
+      </div>
+      <hr class="result-divider col-12">
+      {{/each}}                
+    </div>            
+  </script>    
+  
+  <!-- navbar template -->
+  <script id="navbar-template" type="text/x-handlebars-template">
+    <nav class="navbar navbar-expand-lg navbar-custom navbar-dark">
+      <div class="navbar-header text-light hidden-sm">Maine Food Map</div>
+      <div>
+        <button class="btn btn-primary menu-button" id="home-button" aria-label="Go to Maine Food Map homepage">
+            <i class="material-icons toggle-icon" title="Home">home</i><br>
+            <div class="toggle-label">home</div>
+        </button>
+        <button class="btn btn-primary menu-button" id="filters-toggle" aria-label="View filters">
+            <i class="material-icons toggle-icon" title="Toggle filters">tune</i><br>
+            <div class="toggle-label">filter</div>
+        </button>
+        <button class="btn btn-primary menu-button" id="menu-toggle" aria-label="Toggle list view">
+          <i class="material-icons toggle-icon" title="Toggle list view">compare_arrows</i>
+          <div class="toggle-label">list</div>
+        </button>
+      </div>
+      <div class="navbar-header text-light hidden-lg">Maine Food Map</div>
+    </nav>
+  </script>
+
+  <!-- filters template -->
+  <script id="filters-template" type="text/x-handlebars-template">
+    <form class="form-inline row">
+      <div class="col-md-4 col-sm-12 col-xs-12">
+        <label class="top-label" for="category-select">Category</label>
+        <select class="custom-select select-default my-1 mr-sm-2" 
+                id="category-select"               
+                name="category-select[]"
+                multiple="multiple">
+        </select>
+      </div>
+      <div class="col">
+        <label class="top-label" for="county-select">County</label>
+        <select class="custom-select select-default my-1 mr-sm-2" id="county-select">
+        </select>
+      </div>
+      <div class="col">
+        <label class="top-label" for="town-select">Town</label>
+        <select class="custom-select select-default my-1 mr-sm-2" id="town-select">
+        </select>
+      </div>
+    </form>
+  </script>
+  <!-- End handlebars templates -->
+
+  <!-- Begin vendor JS -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+  <script src="vendor/select2/js/select2.min.js"></script>
+  <!-- End vendor JS -->
+
+  <!-- Begin app JS-->
+  <script src="js/pantryMapper.js"></script>
+  <script src="js/mappingCore.js"></script>
+  <script src="js/defaultMap.js"></script>
+  <script src="js/handlebarsHelpers.js"></script>
+  <script src="js/domEventHandlers.js"></script>
+  <script src="js/defaultLocation.js"></script>
+  <!-- End app JS -->
+
+  <script>
+    $(document).ready(async function() {
+      /** service settings */
+      const baseUri = "https://sheetsapi.azurewebsites.net/Sheets.php";
+      const sheetId = "1besYmYvgpk6ZWrhw8k3ys8OlkDj4s3A1_Y3oromVQBE";
+      const sheetName = "Pantries";
+      const sheetRange = "A:L";
+      /** End service settings */
+
+      let defaultLocation = await getDefaultLocation();
+      const zoomLevel = defaultLocation ? 12 : 7;
+      const serviceUri = `${baseUri}?sheetId=${sheetId}&sheetName=${sheetName}&sheetRange=${sheetRange}`;
+
+      const map = new DefaultMap('main-map', defaultLocation ? new GeoPoint(defaultLocation.latitude, defaultLocation.longitude) : new GeoPoint(45.1690993, -69.2568189), zoomLevel);
+      const pantryMapper = new PantryMapper(serviceUri, map);
+      const domEventHandlers = new DomEventHandlers(pantryMapper);
+      
+      $("#home-button").click((e) => {
+        console.log(e);
+        e.preventDefault();
+        prompt("Return to homepage?");
+      })
+
+      domEventHandlers.init();
+      pantryMapper.start(() => {
+        domEventHandlers.setFilterOptions();
+        $('#county-select').select2({placeholder: "Select county", allowClear: true});
+        $('#town-select').select2({placeholder: "Select town", allowClear: true});
+        $('#category-select').select2({placeholder: "Select categories"});
+        // if (defaultLocation) {
+        //   map.reverseGeocode(new GeoPoint(defaultLocation.latitude, defaultLocation.longitude))
+        //   .then((cityCounty) => {
+        //     pantryMapper.setCountyFilter(cityCounty[1]);
+        //     pantryMapper.setTownFilter(cityCounty[0]); 
+        //     domEventHandlers.setFilterOptions()
+        //   });
+        // } else {
+        //   domEventHandlers.setFilterOptions();
+        // }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+#filter-container {
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.62);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.62);
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.62);
+    padding: 32px 0px;
+    background-color: ghostwhite;
+    color: rgba(0,0,0,.87);
+    border-radius: 8px; 
+}
+
+
+.emphasis-box {
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #f0f0f0;
+    -webkit-box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.62);
+    -moz-box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.62);
+    box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.62);
+}

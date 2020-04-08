@@ -19,6 +19,17 @@ class GeoPoint {
 
 
 
+const FilterType = {
+    single: 0,
+    multi: 1
+};
+class Filter {
+    constructor(field, value, filterType) {
+        this.field = field;
+        this.value = value;
+        this.filterType = filterType;
+    }
+}
 
 const MarkerIcon = {
     getPath: (markerIcon) => `map-markers/${markerIcon}`,
