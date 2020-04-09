@@ -8,7 +8,8 @@ class HomeController {
     _categoriesSheetRange = "A:B";
     categoryOptions = [];
 
-    constructor() {
+    constructor(categorySelectId) {
+      this._categorySelectId = categorySelectId;
       this._getHomeData();
       this._getCategories();
     }
@@ -21,7 +22,7 @@ class HomeController {
                 if (r.Field.indexOf("-url") < 0) {
                     $(`#${r.Field}`).html(r.Value);
                 } else {
-
+                    //TODO: Set href attr of field with value
                 }
             });           
         });
@@ -30,9 +31,21 @@ class HomeController {
     _getCategories() {
         const categoriesUri = `${this._baseUri}?sheetId=${this._sheetId}&sheetName=${this._categoriesSheetName}&sheetRange=${this._categoriesSheetRange}`;
         $.get(categoriesUri).done((response, status) => {
-            this.categoryOptions = JSON.parse(response).forEach(c => c.Category);
-            
+            const categoryOptions = JSON.parse(response).map(c => c.Category);
+            this._setCategorySelectOptions(categoryOptions);
         });
+    }
+
+    _setCategorySelectOptions(optionSet) {
+        $(`#${this._categorySelectId}`).empty();
+        optionSet.forEach(o => $(`#${this._categorySelectId}`).append(`<option value="${o}">${o}</option>`));
+        $(`#${this._categorySelectId}`).select2({placeholder: "Select categories", minimumResultsForSearch: -1});
+        $(`#${this._categorySelectId}`).on('select2:opening select2:closing', function( event ) {
+          var $searchfield = $( '#'+event.target.id ).parent().find('.select2-search__field');
+          $searchfield.prop('disabled', true);
+        });
+        $(`#${this._categorySelectId}`).val(optionSet);
+        $(`#${this._categorySelectId}`).trigger('change');
     }
 
 }
