@@ -30,6 +30,7 @@ body {
     background-color: #323272!important;
     padding-top: 0.25rem;
     padding-bottom: 0.25rem;
+    box-shadow: 0 0 5px 0 rgba(50, 50, 50, 0.75);
 }
 
 .navbar-header  {
