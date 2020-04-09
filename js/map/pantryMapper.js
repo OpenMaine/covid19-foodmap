@@ -1,19 +1,17 @@
 //mappingCore must be imported before this class.
 class PantryMapper {
+    data = [];
+    filteredData = [];
+    sideBarData =  [];      // Sidebar shows only a portion of results, updated on scroll
+    refreshInterval = null; // Store interval created by start()
+    filters = [];           // Filters are type mappingCore.Filter
+    
     constructor(apiEndpoint, map) {
         this.apiEndpoint = apiEndpoint;
         this.map = map;
-        this.refreshInterval = null;
         this.intervalDelay = 1200000; //Refresh data every x ms
-        this.data = [];
-        this.filteredData = [];
-        this.sideBarData =  []; //Sidebar shows only a portion of results, updated on scroll
         this._getData = this._getData.bind(this);
-        //this.setCategoryFilter = this.setCategoryFilter.bind(this);
         this._setSidebarScrollListener();
-        
-        // Filters are type mappingCore.Filter
-        this.filters = [];
     }
 
     start(loadCallback) {
@@ -26,7 +24,7 @@ class PantryMapper {
             clearInterval(this.refreshInterval);
     }
 
-
+    // TODO: Obvious need to abstract this a bit.
     setCategoryFilter(filterArray) {
         this._setFilter(new Filter("Category", filterArray, FilterType.multi));
     }

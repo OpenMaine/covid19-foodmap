@@ -1,8 +1,9 @@
 class DomEventHandlers {
+    _categorySelectId = "category-select";
+    _countySelectId = "county-select";
+    _townSelectId = "town-select";
+    
     constructor(pantryMapper) {
-        this._categorySelectId = "category-select";
-        this._countySelectId = "county-select";
-        this._townSelectId = "town-select";
         this.pantryMapper = pantryMapper;
     }
 
@@ -18,6 +19,16 @@ class DomEventHandlers {
         const blankOption = "<option selected value=''></option>";
         $(`#${domId}`).append(blankOption);
         optionSet.forEach(o => $(`#${domId}`).append(`<option value="${o}">${o}</option>`));
+    }
+
+    setFilterOptions() {
+        const townOptions = [...new Set(this.pantryMapper.data.map(d => d.Town))].sort();
+        const countyOptions = [...new Set(this.pantryMapper.data.map(d => d.County))].sort();
+        const categoryOptions = [...new Set(this.pantryMapper.data.map(d => d.Category))].sort();
+        this.setSelectOptions(this._townSelectId, townOptions);
+        this.setSelectOptions(this._countySelectId, countyOptions);
+        this.setSelectOptions(this._categorySelectId, categoryOptions);
+        this._resetSelected();
     }
 
     //Reset filters after switch to/from mobile 
@@ -101,17 +112,6 @@ class DomEventHandlers {
 
         $(`#${clearId}`).empty();       
         this.setFilterOptions();
-    }
-
-    setFilterOptions() {
-        const townOptions = [...new Set(this.pantryMapper.data.map(d => d.Town))].sort();
-        const countyOptions = [...new Set(this.pantryMapper.data.map(d => d.County))].sort();
-        const categoryOptions = [...new Set(this.pantryMapper.data.map(d => d.Category))].sort();
-        this.setSelectOptions(this._townSelectId, townOptions);
-        this.setSelectOptions(this._countySelectId, countyOptions);
-        this.setSelectOptions(this._categorySelectId, categoryOptions);
-        this._resetSelected();
-        
     }
 
     _resetSelected() {

@@ -150,11 +150,11 @@
   <!-- End vendor JS -->
 
   <!-- Begin app JS-->
-  <script src="js/pantryMapper.js"></script>
+  <script src="js/map/pantryMapper.js"></script>
+  <script src="js/map/domEventHandlers.js"></script>
   <script src="js/mappingCore.js"></script>
   <script src="js/defaultMap.js"></script>
   <script src="js/handlebarsHelpers.js"></script>
-  <script src="js/domEventHandlers.js"></script>
   <script src="js/defaultLocation.js"></script>
   <!-- End app JS -->
 
@@ -187,7 +187,7 @@
           $('#county-select').select2({placeholder: "Filter county", allowClear: true});
           $('#town-select').select2({placeholder: "Filter town", allowClear: true});
         }
-        
+
         $('#category-select').select2({placeholder: "Filter categories", minimumResultsForSearch: -1});
         $('#category-select').on('select2:opening select2:closing', function( event ) {
           var $searchfield = $( '#'+event.target.id ).parent().find('.select2-search__field');

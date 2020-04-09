@@ -1,13 +1,13 @@
 class DefaultMap {
+    _geocodingService = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer";
+    _mapboxToken = 'pk.eyJ1Ijoiam9uamFuZWxsZSIsImEiOiJjazhxbXg0YmswNW5kM2RvNGNjb2hiN2poIn0.LiFKVlPQe_vqyqjjIw0DIw';
+    markers = {};
+    
     constructor(mapId, center, zoom=8) {
-        this._geocodingService = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer";
-        this._mapboxToken = 'pk.eyJ1Ijoiam9uamFuZWxsZSIsImEiOiJjazhxbXg0YmswNW5kM2RvNGNjb2hiN2poIn0.LiFKVlPQe_vqyqjjIw0DIw';
         this.center = center
-        this.markers = {};
-        this.map = L.map(mapId, {center: [center.latitude, center.longitude], zoom: zoom, layers: this._getBasemaps()}); //.setView([center.latitude, center.longitude], zoom);
+        this.map = L.map(mapId, {center: [center.latitude, center.longitude], zoom: zoom, layers: this._getBasemaps()});
         this.map.zoomControl.setPosition('topleft');
         this.layerGroup = L.layerGroup().addTo(this.map);
-
         L.control.layers(this._baseMaps,{}).addTo(this.map);
     }
     
