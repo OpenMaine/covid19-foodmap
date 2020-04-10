@@ -1,3 +1,7 @@
+#home {
+    background: linear-gradient(0deg,rgba(9,9,121,1) 0%, rgba(0, 123, 255, 1) 100%);
+}
+
 #filter-container {
     -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.62);
     -moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.62);
