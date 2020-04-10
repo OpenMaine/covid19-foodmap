@@ -1,4 +1,4 @@
-function getDefaultLocation() {
+function deviceLocationProvider() {
     return new Promise((resolve) => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(x => resolve(x.coords), (err) => resolve(null));

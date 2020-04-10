@@ -39,7 +39,7 @@
       <div class="main-content">
         <div class="card main-card">
           <div class="card-body filter-card">
-            <div class="row">
+            <div class="row ">
               <div class="col-12">
                 <h1 class="header-dark map-header">Find food support services in Maine</h1>
               </div>
@@ -50,7 +50,7 @@
         </div>
       </div>
       <!-- filled by handlebars template in DomEventHandlers if on mobile -->
-      <span id="filters-mobile"></span>
+      <span id="filters-mobile" class="toggled"></span>
       <span id="nav-mobile" ></span>
     </div>
     <!-- /#page-content-wrapper -->
@@ -75,7 +75,7 @@
         <div class="col-2 result-row-icon">
           <i class="material-icons" title="Toggle menu">{{Icon}}</i>
         </div>
-        <div class="col-md-10 col-sm-12 col-xs-12 result-card-body">
+        <div class="col-10 result-card-body">
           {{#if WebLink}}
             <a href="{{WebLink}}" title="{{WebLink}}" target="_blank" rel="noopener">{{Name}}</a>
           {{else}}
@@ -119,26 +119,49 @@
 
   <!-- filters template -->
   <script id="filters-template" type="text/x-handlebars-template">
-    <form class="form-inline row">
-      <div class="col-md-4 col-sm-12 col-xs-12">
-        <label class="top-label" for="category-select">Category</label>
-        <select class="custom-select select-default my-1 mr-sm-2" 
-                id="category-select"               
-                name="category-select[]"
-                multiple="multiple">
-        </select>
+    <div class="container-fluid">
+
+      <div class="row mb-4">
+        <div class="col-md-3 col-sm-5">
+          <label class="top-label" for="zipcode-input">Zip Code</label>
+          <input name="zipcode-input" id="zipcode-input" class="form-control" type="text" placeholder="Filter by Maine zip code">
+          <small class="text-muted">This clears county and town filters</small>
+        </div>
+        <div class="col-md-3 col-sm-4">
+          <label class="top-label" for="radius-select">Radius (miles)</label>
+          <select class="custom-select form-control select-default" id="radius-select" aria-describedby="hero-radius-help">
+            <option value=5>5</option>
+            <option value=10>10</option>
+            <option value=25>25</option>
+            <option value=50>50</option>
+          </select>
+        </div>
+        <div class="col-md-2 col-sm-3" id="zip-search-button-container">
+          <div class="hidden-lg" style="margin-bottom: 8px;">&nbsp;</div>
+          <button id="zip-search" type="button" class="btn btn-primary mb-2">Seach by Zip</button>
+        </div>
       </div>
-      <div class="col">
-        <label class="top-label" for="county-select">County</label>
-        <select class="custom-select select-default my-1 mr-sm-2" id="county-select">
-        </select>
+      <div class="row">
+        <div class="col-md-4 col-sm-12 col-xs-12">
+          <label class="top-label" for="category-select">Category</label>
+          <select class="custom-select select-default my-1 mr-sm-2" 
+                  id="category-select"               
+                  name="category-select[]"
+                  multiple="multiple">
+          </select>
+        </div>
+        <div class="col">
+          <label class="top-label" for="county-select">County</label>
+          <select class="custom-select select-default my-1 mr-sm-2" id="county-select">
+          </select>
+        </div>
+        <div class="col">
+          <label class="top-label" for="town-select">Town</label>
+          <select class="custom-select select-default my-1 mr-sm-2" id="town-select">
+          </select>
+        </div>
       </div>
-      <div class="col">
-        <label class="top-label" for="town-select">Town</label>
-        <select class="custom-select select-default my-1 mr-sm-2" id="town-select">
-        </select>
-      </div>
-    </form>
+    </div>
   </script>
   <!-- End handlebars templates -->
 
@@ -150,12 +173,14 @@
   <!-- End vendor JS -->
 
   <!-- Begin app JS-->
-  <script src="js/map/pantryMapper.js"></script>
+  <script src="js/core/util.js"></script>
+  <script src="js/core/mappingCore.js"></script>
+  <script src="js/core/defaultMap.js"></script>
+  <script src="js/core/deviceLocationProvider.js"></script>
+  <script src="js/map/foodResource.js"></script>
+  <script src="js/map/pantryMapController.js"></script>
   <script src="js/map/domEventHandlers.js"></script>
-  <script src="js/mappingCore.js"></script>
-  <script src="js/defaultMap.js"></script>
   <script src="js/handlebarsHelpers.js"></script>
-  <script src="js/defaultLocation.js"></script>
   <!-- End app JS -->
 
   <script>
@@ -167,40 +192,40 @@
       const sheetRange = "A:L";
       /** End service settings */
 
-      let defaultLocation = await getDefaultLocation();
+      let defaultLocation = await deviceLocationProvider();
       const zoomLevel = defaultLocation ? 12 : 7;
       const serviceUri = `${baseUri}?sheetId=${sheetId}&sheetName=${sheetName}&sheetRange=${sheetRange}`;
-
-      const map = new DefaultMap('main-map', defaultLocation ? new GeoPoint(defaultLocation.latitude, defaultLocation.longitude) : new GeoPoint(45.1690993, -69.2568189), zoomLevel);
-      const pantryMapper = new PantryMapper(serviceUri, map);
+      const startGeopoint = defaultLocation ? new GeoPoint(defaultLocation.latitude, defaultLocation.longitude) : new GeoPoint(45.1690993, -69.2568189);
+      const map = new DefaultMap('main-map', startGeopoint, zoomLevel);
+      const pantryMapper = new PantryMapController(serviceUri, map);
       const domEventHandlers = new DomEventHandlers(pantryMapper);
       
-
-
       domEventHandlers.init();
+      
+      //callback fires only after first data fetch completes
       pantryMapper.start(() => {
         domEventHandlers.setFilterOptions();
-        if (window.innerWidth < 768) {
-          $('#county-select').select2({placeholder: "Filter county", allowClear: true, minimumResultsForSearch: -1});
-          $('#town-select').select2({placeholder: "Filter town", allowClear: true, minimumResultsForSearch: -1});
-        } else {
-          $('#county-select').select2({placeholder: "Filter county", allowClear: true});
-          $('#town-select').select2({placeholder: "Filter town", allowClear: true});
+        $("#category-select").trigger('change');
+        map.setPosition(startGeopoint, zoomLevel);
+        
+
+        const queryParams = Util.getQueryParams();
+        if (queryParams.category && queryParams.category.length > 0)
+            $("#category-select").val(queryParams.category).trigger('change');
+        if (queryParams.town && queryParams.town.length > 0)
+            $("#town-select").val(queryParams.town).trigger('change');
+        if (queryParams.county && queryParams.county.length > 0)
+            $("#county-select").val(queryParams.county).trigger('change');
+        if (queryParams.zipCode && queryParams.zipCode.length > 0) {
+         
         }
 
-        $('#category-select').select2({placeholder: "Filter categories", minimumResultsForSearch: -1});
-        $('#category-select').on('select2:opening select2:closing', function( event ) {
-          var $searchfield = $( '#'+event.target.id ).parent().find('.select2-search__field');
-          $searchfield.prop('disabled', true);
-        });
         
-        $("#home-button").click((e) => {
-        e.preventDefault();
-        let userChoice = confirm("Return to homepage?");
-        if (userChoice)
-          window.location.href='index.html'
 
-      });
+        $("#zip-search").click(() => {
+
+        });
+
         // if (defaultLocation) {
         //   map.reverseGeocode(new GeoPoint(defaultLocation.latitude, defaultLocation.longitude))
         //   .then((cityCounty) => {

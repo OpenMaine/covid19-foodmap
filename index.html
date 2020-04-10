@@ -61,7 +61,7 @@
                 </div>
     
                 <div class="col-md-6 col-sm-12 mb-3">
-                  <label for="zipcode"><strong>Search radius</strong></label>
+                  <label for="radius-select"><strong>Search radius</strong></label>
                   <select class="custom-select form-control select-default" id="radius-select" aria-describedby="hero-radius-help">
                     <option value=5>5</option>
                     <option value=10>10</option>
@@ -95,14 +95,25 @@
         <div class="col-12">
           <h2 id="mission-title" class="text-dark"></h2>
           <hr>
+        </div>
+        <div class="col-sm-7">
           <p id="mission-text"></p>
         </div>
+        <div class="col-sm-5">
+          <img class="img-thumbnail" src="images/apple_red.jfif"/>
+        </div>
       </div>
+      
       <div class="row mb-5 mt-5">
         <div class="col-12">
           <h2 id="data-title" class="text-dark"></h2>
           <hr>
+        </div>
+        <div class="col-sm-7">
           <p id="data-text"></p>
+        </div>
+        <div class="col-sm-5">
+          <img class="img-thumbnail" src="images/produce.jpg"/>
         </div>
       </div>
       <div class="row mb-5">
@@ -154,23 +165,21 @@
     <!-- /.footer container -->
   </footer>
 
+  <!-- Begin vendor js -->
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="vendor/select2/js/select2.min.js"></script>
+  <!-- End vendor js -->
+
   <script src="js/home/homeController.js"></script>
   <script>
     $(function() { 
-      var homeController = new HomeController('category-select');
-
-      var navMain = $(".navbar-collapse");
-      navMain.on("click", "a:not([data-toggle])", null, function () {
-          navMain.collapse('hide');
-      });
-
-      $("#page-content").click(() => {
-        console.log("pc");
-        navMain.collapse('hide');
-      });
+      
+      const homeController = new HomeController('category-select');
+      // close the mobile expanded nav when option selected or click outside
+      const navMain = $(".navbar-collapse");
+      navMain.on("click", "a:not([data-toggle])", null, () => navMain.collapse('hide'));
+      $("#page-content").click(() => navMain.collapse('hide') );
 
      });
    </script>

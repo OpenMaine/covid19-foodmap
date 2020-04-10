@@ -1,11 +1,16 @@
+/**
+ * A (longitude, latitude) pair
+ */
 class GeoPoint {
     constructor(latitude, longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
 
-    // Calculate the distance between 2 GeoPoints in kilometers
-    // using the Haversine formula
+    /**
+     * Get the distance between two GeoPoints in kilometers using the Haversine formula
+     * @param other: A GeoPoint object to find the distance to 
+     */
     distanceTo(other) {
         const toRad = (n) => n*Math.PI/180.0;
          var R = 6371; // approx. radius of Earth in km 
@@ -18,11 +23,19 @@ class GeoPoint {
 }
 
 
-
+/* single: Filter value is a string
+   multi: Filter value is an array of strings
+*/
 const FilterType = {
     single: 0,
     multi: 1
 };
+/**
+ * A data filter (likely from a from user form input)
+ * @param field: The object property name to which the filter is applied
+ * @param value: a string, or array of strings, used to match against the field
+ * @param filterType: FilterType.single or FilterType.multi
+ */
 class Filter {
     constructor(field, value, filterType) {
         this.field = field;
@@ -31,6 +44,8 @@ class Filter {
     }
 }
 
+
+// TODO: think about other ways to do this.
 const MarkerIcon = {
     getPath: (markerIcon) => `map-markers/${markerIcon}`,
     AccessDenied: 'accessdenied.png',

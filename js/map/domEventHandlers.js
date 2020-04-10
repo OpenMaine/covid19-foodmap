@@ -3,6 +3,9 @@ class DomEventHandlers {
     _countySelectId = "county-select";
     _townSelectId = "town-select";
     
+    /**
+     * @param pantryMapper: PantryMapController 
+     */
     constructor(pantryMapper) {
         this.pantryMapper = pantryMapper;
     }
@@ -12,6 +15,8 @@ class DomEventHandlers {
         this._setNavbar();
         this._setFilters();
         this._setResizeHandler();
+        this._setHomeButtonHandler();
+        this._setSelect2Inputs();
     }
 
     setSelectOptions(domId, optionSet) {
@@ -29,6 +34,32 @@ class DomEventHandlers {
         this.setSelectOptions(this._countySelectId, countyOptions);
         this.setSelectOptions(this._categorySelectId, categoryOptions);
         this._resetSelected();
+    }
+
+
+    _setSelect2Inputs() {
+        if (window.innerWidth < 768) {
+            $('#county-select').select2({placeholder: "Filter county", allowClear: true, minimumResultsForSearch: -1});
+            $('#town-select').select2({placeholder: "Filter town", allowClear: true, minimumResultsForSearch: -1});
+          } else {
+            $('#county-select').select2({placeholder: "Filter county", allowClear: true});
+            $('#town-select').select2({placeholder: "Filter town", allowClear: true});
+          }
+
+          $('#category-select').select2({placeholder: "Filter categories", minimumResultsForSearch: -1});
+          $('#category-select').on('select2:opening select2:closing', function( event ) {
+            var $searchfield = $( '#'+event.target.id ).parent().find('.select2-search__field');
+            $searchfield.prop('disabled', true);
+          });
+    }
+
+    _setHomeButtonHandler() {
+        $("#home-button").click((e) => {
+            e.preventDefault();
+            let userChoice = confirm("Return to homepage?");
+            if (userChoice)
+                window.location.href='index.html'
+        });
     }
 
     //Reset filters after switch to/from mobile 

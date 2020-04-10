@@ -1,5 +1,10 @@
-//mappingCore must be imported before this class.
-class PantryMapper {
+/**
+ * PantryMapController is dependent on:
+ *  - core/mappingCore 
+ *  - core/util
+*/
+
+class PantryMapController {
     data = [];
     filteredData = [];
     sideBarData =  [];      // Sidebar shows only a portion of results, updated on scroll
@@ -9,7 +14,8 @@ class PantryMapper {
     constructor(apiEndpoint, map) {
         this.apiEndpoint = apiEndpoint;
         this.map = map;
-        this.intervalDelay = 1200000; //Refresh data every x ms
+        this.intervalDelay = 100000000; //Auto refresh data every x ms
+        this.dataLoaded = false;
         this._getData = this._getData.bind(this);
         this._setSidebarScrollListener();
     }
@@ -24,7 +30,7 @@ class PantryMapper {
             clearInterval(this.refreshInterval);
     }
 
-    // TODO: Obvious need to abstract this a bit.
+    // TODO: Abstract this when the next filter is added.
     setCategoryFilter(filterArray) {
         this._setFilter(new Filter("Category", filterArray, FilterType.multi));
     }
@@ -91,10 +97,15 @@ class PantryMapper {
                     markerInfo.MarkerIcon = MarkerIcon.Star;
                 }
             }      
-
+            
             this.data = markerInfoData;
-            this._applyFilters();
-            successCallback();
+
+            if (this.dataLoaded)
+                this._applyFilters();
+            else 
+                successCallback();     
+            
+            this.dataLoaded = true;
         });
     }
 
@@ -116,7 +127,7 @@ class PantryMapper {
 
     _applyFilters() {
         this.filteredData = this.data;
-        this.filters.filter(f => !this.isNullOrEmpty(f.value)).forEach(f => {
+        this.filters.filter(f => !Util.isNullOrEmpty(f.value)).forEach(f => {
             if (f.filterType == FilterType.single) {
                 this.filteredData = this.filteredData.filter(d => d[f.field].indexOf(f.value) >= 0);
             } else if (f.filterType == FilterType.multi) {
@@ -129,19 +140,18 @@ class PantryMapper {
         this._refreshMapAndSideBar();
     }
 
-    /*
+    /**
         Set filter value(s) for a field. Removes any existing filters for the field first.
-        @param filter: Oject of type mappingCore.Filter
+        @param filter: Filter of type mappingCore.Filter to apply
     */ 
     _setFilter(filter) {
-        if (!this.isNullOrEmpty(filter)) {
+        if (!Util.isNullOrEmpty(filter)) {
             this.filters = this.filters.filter(f => f.field !== filter.field);
             this.filters.push(filter);
             this._applyFilters();
             this.map.fitMarkerBounds();
         }
     }
-    
 
     _buildMapMarkers(pantryInfoArray) {
         for (let entry of pantryInfoArray) {
@@ -184,15 +194,5 @@ class PantryMapper {
         <small><b>Website: </b><a href='${pantryInfo.WebLink}' target='_blank'>${pantryInfo.WebLink}</a></small><br>
         <small><b>Address: </b>${pantryInfo.Address}</small><br>
         <small><b>Hours: </b>${pantryInfo.HoursOfOperation}</small>`;
-    }
-
-    isNullOrEmpty(value) {
-        if (value === null || value === undefined)
-            return true;
-        if (value.constructor.name === "String")
-            return value.trim().length === 0;
-        if (value.constructor.name === "Array")
-            return value.length === 0;
-        return false;
     }
 }

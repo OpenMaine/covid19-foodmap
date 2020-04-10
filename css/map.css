@@ -99,13 +99,17 @@
 /*  */
 
 @media (max-width: 768px) {
-  .result-card-body {
-    margin-left: 12px;
-  }
-
   .navbar-header {
     font-size: 1.1rem !important;
     max-width: 35vw;
+  }
+
+  #zip-search-button-container {
+    text-align: center;
+  }
+  #zip-search {
+    margin-top: 12px;
+    text-align: center;
   }
 
   .hidden-lg {
@@ -119,14 +123,15 @@
   .main-content {
     padding: 0;
   }
+  .filter-card {
+    padding: .5rem;
+  }
 
   #main-map { 
-    min-height: 80vh;
+    min-height: 85vh;
     height: 100%;
     width: 100%;
     margin: 0 auto;
-    margin-top: 16px;
-    margin-bottom: 16px;
   }
 
   #sidebar-wrapper {
@@ -246,7 +251,7 @@
 }
 
 #filters-mobile.toggled {
-  bottom: -150px;
+  bottom: -500px;
 }
 
 .leaflet-bottom {
