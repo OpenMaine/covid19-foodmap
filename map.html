@@ -176,6 +176,7 @@
   <script src="js/core/util.js"></script>
   <script src="js/core/mappingCore.js"></script>
   <script src="js/core/defaultMap.js"></script>
+  <script src="js/core/geocoder.js"></script>
   <script src="js/core/deviceLocationProvider.js"></script>
   <script src="js/map/foodResource.js"></script>
   <script src="js/map/pantryMapController.js"></script>
@@ -227,7 +228,7 @@
         });
 
         // if (defaultLocation) {
-        //   map.reverseGeocode(new GeoPoint(defaultLocation.latitude, defaultLocation.longitude))
+        //   new Geocoder().reverseGeocode(new GeoPoint(defaultLocation.latitude, defaultLocation.longitude))
         //   .then((cityCounty) => {
         //     pantryMapper.setCountyFilter(cityCounty[1]);
         //     pantryMapper.setTownFilter(cityCounty[0]); 

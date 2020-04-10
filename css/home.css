@@ -46,4 +46,7 @@
     #hero-search-title {
         font-size: 1.5rem;
     }
+    .toggle-label {
+        font-size: 10px;
+    }
 }
