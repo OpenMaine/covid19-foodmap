@@ -205,22 +205,22 @@
       //callback fires only after first data fetch completes
       pantryMapper.start(() => {
         domEventHandlers.setFilterOptions();
-        $("#category-select").trigger('change');
-        map.setPosition(startGeopoint, zoomLevel);
         
-
+        
         const queryParams = Util.getQueryParams();
         if (queryParams.category && queryParams.category.length > 0)
-            $("#category-select").val(queryParams.category).trigger('change');
-        if (queryParams.town && queryParams.town.length > 0)
-            $("#town-select").val(queryParams.town).trigger('change');
-        if (queryParams.county && queryParams.county.length > 0)
-            $("#county-select").val(queryParams.county).trigger('change');
-        if (queryParams.zipCode && queryParams.zipCode.length > 0) {
-         
-        }
-
-        
+            $("#category-select").val(queryParams.category);
+            if (queryParams.town && queryParams.town.length > 0)
+            $("#town-select").val(queryParams.town);
+            if (queryParams.county && queryParams.county.length > 0)
+            $("#county-select").val(queryParams.county);
+            if (queryParams.zipCode && queryParams.zipCode.length > 0) {
+              
+            }
+            
+            // Need to trigger change on any input to trigger filtering 
+            $("#category-select").trigger('change');
+            map.setPosition(startGeopoint, zoomLevel);
 
         $("#zip-search").click(() => {
 

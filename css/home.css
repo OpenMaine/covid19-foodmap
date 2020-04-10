@@ -1,5 +1,5 @@
 #home {
-    background: linear-gradient(0deg,rgba(9,9,121,1) 0%, rgba(0, 123, 255, 1) 100%);
+    background: linear-gradient(0deg, rgba(0, 123, 255, 1) 0%, rgba(9,9,121,.9) 100%);
 }
 
 #filter-container {
@@ -21,6 +21,21 @@
     -webkit-box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.62);
     -moz-box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.62);
     box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.62);
+}
+
+.select2-container {
+    width: 100%!important;
+}
+.toggle-label {
+    display: block; 
+    margin-top: -8px; 
+    color: #f0f0f0;
+    font-size: 12px;
+    font-weight: bold;
+}
+#locate-me:hover {
+    color: #FFFFFF;
+    background-color: #007bff !important;
 }
 
 @media (max-width: 768px) {

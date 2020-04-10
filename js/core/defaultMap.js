@@ -1,5 +1,5 @@
 class DefaultMap {
-    _geocodingService = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer";
+    _geocodingService = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer"; //remove after switch to Geocoder
     _mapboxToken = 'pk.eyJ1Ijoiam9uamFuZWxsZSIsImEiOiJjazhxbXg0YmswNW5kM2RvNGNjb2hiN2poIn0.LiFKVlPQe_vqyqjjIw0DIw';
     markers = {};
     

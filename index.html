@@ -52,17 +52,28 @@
           <div class="col-md-1 col-sm-0"></div>
           <div class="col-md-10">
             <h2 id="hero-search-title" style="color: #404040;"></h2>
-            <form class="mt-3">
-              <div class="row mb-5">
-                <div class="col-md-6 col-sm-12 mb-3">
-                  <label for="zipcode"><strong>Zip code</strong></label>
-                  <input type="text" class="form-control" id="zipcode" aria-describedby="hero-zip-help" placeholder="Enter zip code">
+            <form  id="search-form" class="mt-3">
+              <div class="row mb-5 d-flex align-items-center">
+                <div class="col-md-5 col-sm-9 col-9 mb-3 ">
+                  <label for="zip-code"><strong>Zip code</strong></label>
+                  <input required pattern="^([0-9]{5})\s*[-]?\s*([0-9]{4})?\s*$" 
+                         minlength="5" maxlength="10" 
+                         type="text" class="form-control" 
+                         id="zip-code" name="zip-code" 
+                         aria-describedby="hero-zip-help" 
+                         placeholder="Use format 12345 or 12345-1234">
                   <small id="hero-zip-help" class="form-text text-muted"></small>
                 </div>
+                <div class="col-md-3 col-sm-3 col-3">
+                  <button type="button" class="btn btn-secondary" id="locate-me">
+                    <i class="material-icons" title="Use my location">location_searching</i>
+                    <div class="toggle-label">locate me</div>
+                  </button>
+                </div>
     
-                <div class="col-md-6 col-sm-12 mb-3">
+                <div class="col-md-4 col-sm-12 mb-3">
                   <label for="radius-select"><strong>Search radius</strong></label>
-                  <select class="custom-select form-control select-default" id="radius-select" aria-describedby="hero-radius-help">
+                  <select required class="custom-select form-control select-default" id="radius-select" aria-describedby="hero-radius-help">
                     <option value=5>5</option>
                     <option value=10>10</option>
                     <option value=25>25</option>
@@ -72,7 +83,7 @@
                 </div>
                 <div class="col-12">
                   <label for="zipcode"><strong>Categories</strong></label>
-                  <select class="custom-select select-default" 
+                  <select required class="custom-select select-default" 
                     aria-describedby="hero-category-help"
                     id="category-select"               
                     name="category-select[]"
@@ -81,7 +92,7 @@
                   <small id="hero-category-help" class="form-text text-muted"></small>
                 </div>
               </div>
-              <button type="submit" class="btn btn-primary btn-block">Search</button>
+              <button type="submit" id="search-button" class="btn btn-primary btn-block">Search</button>
             </form>
           </div>
           <div class="col-md-1 col-sm-0"></div>
@@ -171,16 +182,15 @@
   <script src="vendor/select2/js/select2.min.js"></script>
   <!-- End vendor js -->
 
+  <!-- Begin app js -->
+  <script src="js/core/mappingCore.js"></script>
+  <script src="js/core/geocoder.js"></script>
   <script src="js/home/homeController.js"></script>
+  <!-- End app js -->
+  
   <script>
     $(function() { 
-      
       const homeController = new HomeController('category-select');
-      // close the mobile expanded nav when option selected or click outside
-      const navMain = $(".navbar-collapse");
-      navMain.on("click", "a:not([data-toggle])", null, () => navMain.collapse('hide'));
-      $("#page-content").click(() => navMain.collapse('hide') );
-
      });
    </script>
 </body>
