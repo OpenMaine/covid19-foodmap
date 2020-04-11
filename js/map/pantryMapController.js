@@ -147,6 +147,9 @@ class PantryMapController {
                 this.filteredData = this.filteredData.filter(d => d[f.field].indexOf(f.value) >= 0);
             } else if (f.filterType == FilterType.multi) {
                 this.filteredData = this.filteredData.filter(d => f.value.indexOf(d[f.field]) >= 0);
+            } else if (f.filterType == FilterType.geoPoint) {
+                const radiusInKM = parseInt(f.value.radius)*1.6093;
+                this.filteredData = this.filteredData.filter(d => new GeoPoint(d.Latitude, d.Longitude).distanceTo(f.value.geoPoint) <= radiusInKM);
             } else {
                 console.error("Invalid filter: ", f);
             }

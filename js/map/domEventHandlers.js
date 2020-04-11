@@ -61,8 +61,6 @@ class DomEventHandlers {
         });
     }
 
-
-
     //Reset filters after switch to/from mobile 
     _setResizeHandler() {
         window.onresize = () =>  {
@@ -105,8 +103,6 @@ class DomEventHandlers {
                 window.location.href='index.html'
         });
     }
-
-
 
     _setSidebarHandlers() {
         $("#menu-toggle").click(function(e) {
@@ -164,30 +160,31 @@ class DomEventHandlers {
                 this.pantryMapper.setCountyFilter(selectedCounty);
                 this._resetSelected();
             });
+
+            $("#zip-search-form").submit(e => {
+                e.preventDefault();
+                const zip = $(`#${this._zipCodeId}`).val();
+                const radius = $(`#${this._radiusSelectId}`).val();
+                if (zip && radius && zip.length > 0 && radius.length > 0) {
+                    new Geocoder().getZipcodeGeopoint(zip).then(geopoint => {
+                        this.pantryMapper.setRadiusFilter(zip, geopoint, radius);
+                        this._resetSelected();
+                        $(`#${this._townSelectId}`).trigger('change');
+                        $(`#${this._countySelectId}`).trigger('change');
+                    });
+                }
+            });
         }, 500);
-
-        $("#zip-search-form").submit(e => {
-            e.preventDefault();
-            const zip = $(`#${this._zipCodeId}`).val();
-            const radius = $(`#${this._radiusSelectId}`).val();
-            if (zip && radius && zip.length > 0 && radius.length > 0) {
-                new Geocoder().getZipcodeGeopoint(zip).then(gp => {
-                    this.pantryMapper.setRadiusFilter(zip, gp, radius);
-                    this._resetSelected();
-                    
-                });
-            }
-        });
-
-        $(`#${clearId}`).empty();       
+        
         this.setFilterOptions();
+        $(`#${clearId}`).empty();       
     }
 
     _resetSelected() {
         $(`#${this._categorySelectId}`).val(this.pantryMapper.getCategoryFilter());
         $(`#${this._townSelectId}`).val(this.pantryMapper.getTownFilter());
         $(`#${this._countySelectId}`).val(this.pantryMapper.getCountyFilter());
-        $(`#${this._radiusSelectId}`).val(30);
+        $(`#${this._radiusSelectId}`).val(this.pantryMapper.getRadiusFilter().radius);
         $(`#${this._zipCodeId}`).val(this.pantryMapper.getRadiusFilter().zipCode);
     }
 

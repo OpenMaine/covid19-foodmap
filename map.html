@@ -218,25 +218,35 @@
       //callback fires only after first data fetch completes
       pantryMapper.start(() => {
         domEventHandlers.setFilterOptions();
-        
+        let filterApplied = false;
         
         const queryParams = Util.getQueryParams();
-        if (queryParams.category && queryParams.category.length > 0)
-            $("#category-select").val(queryParams.category);
-            if (queryParams.town && queryParams.town.length > 0)
-            $("#town-select").val(queryParams.town);
-            if (queryParams.county && queryParams.county.length > 0)
-            $("#county-select").val(queryParams.county);
-            if (queryParams.zipCode && queryParams.zipCode.length > 0) {
-              $("#zipcode-input").val(queryParams.zipCode);
-              if (queryParams.radius && queryParams.radius.length > 0)
-                $("#radius-select").val(queryParams.radius);
-            }
-            
-            // Need to trigger change on any input to trigger filtering 
-            $("#category-select").trigger('change');
-            map.setPosition(startGeopoint, zoomLevel);
+        if (queryParams.category && queryParams.category.length > 0) {
+          $("#category-select").val(queryParams.category).trigger('change');
+          filterApplied = true;
+        }
+        if (queryParams.town && queryParams.town.length > 0) {
+          $("#town-select").val(queryParams.town).trigger('change');
+          filterApplied = true;
+        }    
+        if (queryParams.county && queryParams.county.length > 0) {
+          $("#county-select").val(queryParams.county).trigger('change');
+          filterApplied = true;
+        }    
+        if (queryParams.zipCode && queryParams.zipCode.length > 0) {
+          $("#zipcode-input").val(queryParams.zipCode);
+          if (queryParams.radius && queryParams.radius.length > 0)
+          $("#radius-select").val(queryParams.radius);
+          else 
+          $("#radius-select").val(10);
+          $("#zip-search-form").submit();
+          filterApplied = true;
+        }
 
+        if (!filterApplied) {
+          $("#town-select").trigger('change');
+          map.setPosition(startGeopoint, zoomLevel);
+        }
         // if (defaultLocation) {
         //   new Geocoder().reverseGeocode(new GeoPoint(defaultLocation.latitude, defaultLocation.longitude))
         //   .then((cityCounty) => {
