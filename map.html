@@ -121,7 +121,7 @@
   <script id="filters-template" type="text/x-handlebars-template">
     <div class="container-fluid">
 
-      <form class="row mb-4 d-flex align-items-center">
+      <form id="zip-search-form" class="row mb-4 d-flex align-items-center">
         <div class="col-md-3 col-sm-5 col-8">
           <label class="top-label" for="zipcode-input">Zip Code</label>
           <input name="zipcode-input" id="zipcode-input" 
@@ -129,7 +129,7 @@
                 minlength="5" maxlength="10" 
                 class="form-control" 
                 type="text" 
-                placeholder="Filter by Maine zip code">
+                placeholder="Use format 12345">
           <small class="text-muted">Clears county and town filters</small>
         </div>
         <div class="col-md-2 col-sm-3 col-4">
@@ -149,7 +149,7 @@
           <small class="text-muted">&nbsp;</small>
         </div>
         <div class="col-md-3 col-sm-12 col-6" id="zip-search-button-container">
-          <button id="zip-search" type="submit" title="Search by zip code" class="btn btn-primary btn-block">Seach by Zip</button>
+          <button id="zip-search" type="submit" title="Search by zip code" class="btn btn-primary btn-block">Seach Zip Code</button>
         </div>
       </form>
 

@@ -35,7 +35,7 @@ class PantryMapController {
     setCategoryFilter(filterArray) {
         this._setFilter(new Filter("Category", filterArray, FilterType.multi));
     }
-    getTownFilter() {
+    getCategoryFilter() {
         const filter = this.filters.find(f => f.field === "Category");
         return filter ? filter.value : [];
     }
@@ -48,7 +48,7 @@ class PantryMapController {
     }
     getCountyFilter() {
         const filter = this.filters.find(f => f.field === "County");
-        return filter ? filter.value : "";
+        return filter ? filter.value : null;
     }
     clearCountyFilter(){
         this.filters = this.filters.filter(f => f.field !== "County")
@@ -59,10 +59,24 @@ class PantryMapController {
     }
     getTownFilter() {
         const filter = this.filters.find(f => f.field === "Town");
-        return filter ? filter.value : "";
+        return filter ? filter.value : null;
     }
     clearTownFilter(){
         this.filters = this.filters.filter(f => f.field !== "Town")
+    }
+    
+    //
+    setRadiusFilter(zipCode, geopointCenter, radius) {
+        this.clearTownFilter();
+        this.clearCountyFilter();
+        this._setFilter(new Filter("Radius", {zipCode: zipCode, geoPoint: geopointCenter, radius: radius}, FilterType.geoPoint));
+    }
+    getRadiusFilter() {
+        const filter = this.filters.find(f => f.field === "Radius");
+        return filter ? filter.value : {zipCode: null, geoPoint: null, radius: 10};
+    }
+    clearRadiusFilter(){
+        this.filters = this.filters.filter(f => f.field !== "Radius")
     }
 
     //Begin private methods

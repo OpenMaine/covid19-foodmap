@@ -8,22 +8,23 @@ class DomEventHandlers {
     _categorySelectId = "category-select";
     _countySelectId = "county-select";
     _townSelectId = "town-select";
+    _radiusSelectId = "radius-select";
+    _zipCodeId = "zipcode-input";
+    
     
     /**
      * @param pantryMapper: PantryMapController 
      */
     constructor(pantryMapper) {
+        this._lastWasMobile = null;
         this.pantryMapper = pantryMapper;
     }
 
     init() {
         this._prevWidth = window.innerHeight;
         this._setNavbar();
-        this._setFilters();
+        this._resetInputHandlers();
         this._setResizeHandler();
-        this._setHomeButtonHandler();
-        this._setSelect2Inputs();
-        this._setLocateMeHandler();
     }
 
     setSelectOptions(domId, optionSet) {
@@ -48,16 +49,52 @@ class DomEventHandlers {
         if (window.innerWidth < 768) {
             $('#county-select').select2({placeholder: "Filter county", allowClear: true, minimumResultsForSearch: -1});
             $('#town-select').select2({placeholder: "Filter town", allowClear: true, minimumResultsForSearch: -1});
-          } else {
+        } else {
             $('#county-select').select2({placeholder: "Filter county", allowClear: true});
             $('#town-select').select2({placeholder: "Filter town", allowClear: true});
-          }
+        }
 
-          $('#category-select').select2({placeholder: "Filter categories", minimumResultsForSearch: -1});
-          $('#category-select').on('select2:opening select2:closing', function( event ) {
+        $('#category-select').select2({placeholder: "Filter categories", minimumResultsForSearch: -1});
+        $('#category-select').on('select2:opening select2:closing', function( event ) {
             var $searchfield = $( '#'+event.target.id ).parent().find('.select2-search__field');
             $searchfield.prop('disabled', true);
-          });
+        });
+    }
+
+
+
+    //Reset filters after switch to/from mobile 
+    _setResizeHandler() {
+        window.onresize = () =>  {
+            if (Math.abs(window.innerWidth - this._prevWidth) > 20) {
+                this._setNavbar(); 
+                this._resetInputHandlers();
+            }
+            this._prevWidth = window.innerWidth;
+        };
+    }
+
+    _setNavbar() {
+        const isMobile = window.innerWidth < 768;
+        if (this._lastWasMobile === null || isMobile !== this._lastWasMobile) {
+            const targetId = isMobile ? 'nav-mobile' : 'nav-desktop';
+            const clearId = targetId === 'nav-mobile' ? 'nav-desktop' : 'nav-mobile';
+            const src = document.getElementById('navbar-template').innerHTML;
+            const template = Handlebars.compile(src);
+            const target = document.getElementById(targetId);
+            target.innerHTML = template();
+            $(`#${clearId}`).empty(); 
+            this._setSidebarHandlers();
+        }
+
+        this._lastWasMobile = isMobile;
+    }
+
+    _resetInputHandlers() {
+        this._setHomeButtonHandler();
+        this._setFilters();
+        this._setSelect2Inputs();
+        this._setLocateMeHandler();
     }
 
     _setHomeButtonHandler() {
@@ -69,28 +106,7 @@ class DomEventHandlers {
         });
     }
 
-    //Reset filters after switch to/from mobile 
-    _setResizeHandler() {
-        window.onresize = () =>  {
-            if ((window.innerWidth < 768 && this._prevWidth >= 768) || 
-                (window.innerWidth >= 768 && this._prevWidth < 768)) {
-                this._setNavbar(); 
-                this._setFilters();
-            }
-            this._prevWidth = window.innerWidth;
-        };
-    }
 
-    _setNavbar() {
-        const targetId = window.innerWidth < 768 ? 'nav-mobile' : 'nav-desktop';
-        const clearId = targetId === 'nav-mobile' ? 'nav-desktop' : 'nav-mobile';
-        const src = document.getElementById('navbar-template').innerHTML;
-        const template = Handlebars.compile(src);
-        const target = document.getElementById(targetId);
-        target.innerHTML = template();
-        this._setSidebarHandlers();
-        $(`#${clearId}`).empty(); 
-    }
 
     _setSidebarHandlers() {
         $("#menu-toggle").click(function(e) {
@@ -120,32 +136,47 @@ class DomEventHandlers {
         const template = Handlebars.compile(src);
         const target = document.getElementById(targetId);
         target.innerHTML = template();
-
-        //set filter callbacks
-        $(`#${this._categorySelectId}`).change((e) => {
-            // Use .val() to get the values of a multiselect field.
-            this.pantryMapper.setCategoryFilter($(`#${this._categorySelectId}`).val());
-        });
-
-        $(`#${this._townSelectId}`).change((e) => {
-            this.pantryMapper.setTownFilter(e.target.value) 
-        });
-
-        $(`#${this._countySelectId}`).change((e) => {
-            const selectedCounty = e.target.value;
-            let townOptions = [];
-            if (selectedCounty.length > 0) {
-                townOptions = [...new Set(this.pantryMapper.data.filter(d => d.County === selectedCounty).map(d => d.Town))].sort();
-                if (townOptions.indexOf(this.pantryMapper.townFilter) < 0) {
-                    this.pantryMapper.clearTownFilter();
+        
+        setTimeout(()=> {
+            //set filter callbacks
+            $(`#${this._categorySelectId}`).change((e) => {
+                // Use .val() to get the values of a multiselect field (returns array of strings).
+                this.pantryMapper.setCategoryFilter($(`#${this._categorySelectId}`).val());
+            });
+    
+            $(`#${this._townSelectId}`).change((e) => {
+                this.pantryMapper.setTownFilter(e.target.value) 
+            });
+    
+            $(`#${this._countySelectId}`).change((e) => {
+                const selectedCounty = e.target.value;
+                let townOptions = [];
+                if (selectedCounty.length > 0) {
+                    townOptions = [...new Set(this.pantryMapper.data.filter(d => d.County === selectedCounty).map(d => d.Town))].sort();
+                    if (townOptions.indexOf(this.pantryMapper.townFilter) < 0) {
+                        this.pantryMapper.clearTownFilter();
+                    }
+                } else {
+                    townOptions = [...new Set(this.pantryMapper.data.map(d => d.Town))].sort();
                 }
-            } else {
-                townOptions = [...new Set(this.pantryMapper.data.map(d => d.Town))].sort();
+                
+                this.setSelectOptions(this._townSelectId, townOptions);
+                this.pantryMapper.setCountyFilter(selectedCounty);
+                this._resetSelected();
+            });
+        }, 500);
+
+        $("#zip-search-form").submit(e => {
+            e.preventDefault();
+            const zip = $(`#${this._zipCodeId}`).val();
+            const radius = $(`#${this._radiusSelectId}`).val();
+            if (zip && radius && zip.length > 0 && radius.length > 0) {
+                new Geocoder().getZipcodeGeopoint(zip).then(gp => {
+                    this.pantryMapper.setRadiusFilter(zip, gp, radius);
+                    this._resetSelected();
+                    
+                });
             }
-            
-            this.setSelectOptions(this._townSelectId, townOptions);
-            this.pantryMapper.setCountyFilter(selectedCounty);
-            this._resetSelected();
         });
 
         $(`#${clearId}`).empty();       
@@ -153,12 +184,11 @@ class DomEventHandlers {
     }
 
     _resetSelected() {
-        $(`#${this._categorySelectId} option`).removeAttr("selected");
-        $(`#${this._townSelectId} option`).removeAttr("selected");
-        $(`#${this._countySelectId} option`).removeAttr("selected");
-        $(`#${this._categorySelectId} option[value='${this.pantryMapper.categoryFilter}']`).attr("selected","selected");
-        $(`#${this._townSelectId} option[value='${this.pantryMapper.getTownFilter()}']`).attr("selected","selected");
-        $(`#${this._countySelectId} option[value='${this.pantryMapper.countyFilter}']`).attr("selected","selected");
+        $(`#${this._categorySelectId}`).val(this.pantryMapper.getCategoryFilter());
+        $(`#${this._townSelectId}`).val(this.pantryMapper.getTownFilter());
+        $(`#${this._countySelectId}`).val(this.pantryMapper.getCountyFilter());
+        $(`#${this._radiusSelectId}`).val(30);
+        $(`#${this._zipCodeId}`).val(this.pantryMapper.getRadiusFilter().zipCode);
     }
 
     _setLocateMeHandler() {
@@ -167,7 +197,7 @@ class DomEventHandlers {
               .then(dl => {
                 if (dl !== null) {
                     new Geocoder().reverseGeocode(new GeoPoint(dl.latitude, dl.longitude)).then(location => {
-                        $("#zipcode-input").val(location[2]);
+                        $(`#${this._zipCodeId}`).val(location[2]);
                     });
                 }
               }).catch((err) => {});

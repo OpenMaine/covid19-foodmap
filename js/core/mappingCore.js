@@ -28,13 +28,14 @@ class GeoPoint {
 */
 const FilterType = {
     single: 0,
-    multi: 1
+    multi: 1,
+    geoPoint: 2
 };
 /**
  * A data filter (likely from a from user form input)
  * @param field: The object property name to which the filter is applied
- * @param value: a string, or array of strings, used to match against the field
- * @param filterType: FilterType.single or FilterType.multi
+ * @param value: a string, array of strings, or {GeoPoint, radius} used to match against the field
+ * @param filterType: FilterType.single, FilterType.multi, or FilterType.geoPoint
  */
 class Filter {
     constructor(field, value, filterType) {

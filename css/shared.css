@@ -38,3 +38,7 @@ body {
     font-weight: 400;
     margin-left: 1rem;
 }
+
+.select2-container {
+    width: 100%!important;
+}

@@ -23,9 +23,7 @@
     box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.62);
 }
 
-.select2-container {
-    width: 100%!important;
-}
+
 .toggle-label {
     display: block; 
     margin-top: -8px; 
