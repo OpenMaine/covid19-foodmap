@@ -54,17 +54,17 @@
             <h2 id="hero-search-title" style="color: #404040;"></h2>
             <form  id="search-form" class="mt-3">
               <div class="row mb-5 d-flex align-items-center">
-                <div class="col-md-5 col-sm-9 col-9 mb-3 ">
+                <div class="col-md-5 col-sm-9 col-8 mb-3 ">
                   <label for="zip-code"><strong>Zip code</strong></label>
                   <input required pattern="^([0-9]{5})\s*[-]?\s*([0-9]{4})?\s*$" 
                          minlength="5" maxlength="10" 
                          type="text" class="form-control" 
                          id="zip-code" name="zip-code" 
                          aria-describedby="hero-zip-help" 
-                         placeholder="Use format 12345 or 12345-1234">
+                         placeholder="Use format 12345">
                   <small id="hero-zip-help" class="form-text text-muted"></small>
                 </div>
-                <div class="col-md-3 col-sm-3 col-3">
+                <div class="col-md-3 col-sm-3 col-4">
                   <button type="button" class="btn btn-secondary" id="locate-me">
                     <i class="material-icons" title="Use my location">location_searching</i>
                     <div class="toggle-label">locate me</div>
@@ -74,9 +74,9 @@
                 <div class="col-md-4 col-sm-12 mb-3">
                   <label for="radius-select"><strong>Search radius</strong></label>
                   <select required class="custom-select form-control select-default" id="radius-select" aria-describedby="hero-radius-help">
-                    <option value=5>5</option>
                     <option value=10>10</option>
-                    <option value=25>25</option>
+                    <option value=20>20</option>
+                    <option value=30>30</option>
                     <option value=50>50</option>
                   </select>
                   <small id="hero-radius-help" class="form-text text-muted"></small>
@@ -190,7 +190,7 @@
   
   <script>
     $(function() { 
-      const homeController = new HomeController('category-select');
+      const homeController = new HomeController();
      });
    </script>
 </body>

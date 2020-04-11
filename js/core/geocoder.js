@@ -6,10 +6,6 @@
 class Geocoder {
     _geocodingService = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer";
 
-    constructor() {
-
-    }
-
     getZipcodeGeopoint(zipCode) {
         const deferred = $.Deferred();
 

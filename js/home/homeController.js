@@ -8,8 +8,8 @@ class HomeController {
     _categoriesSheetRange = "A:B";
     categoryOptions = [];
 
-    constructor(categorySelectId) {
-      this._categorySelectId = categorySelectId;
+    constructor() {
+      this._categorySelectId = "category-select";
       this._getHomeData();
       this._getCategories();
       this._setMobileNavHandler();

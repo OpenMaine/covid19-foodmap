@@ -2,6 +2,7 @@
  * PantryMapController is dependent on:
  *  - core/mappingCore 
  *  - core/util
+ *  - core/geocoder
 */
 
 class PantryMapController {

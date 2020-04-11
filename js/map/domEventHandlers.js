@@ -1,3 +1,9 @@
+/**
+ * Dependencies
+ *  - core/mappingCore
+ *  - core/geocoder
+ *  - core/deviceLocationProvider
+ */
 class DomEventHandlers {
     _categorySelectId = "category-select";
     _countySelectId = "county-select";
@@ -17,6 +23,7 @@ class DomEventHandlers {
         this._setResizeHandler();
         this._setHomeButtonHandler();
         this._setSelect2Inputs();
+        this._setLocateMeHandler();
     }
 
     setSelectOptions(domId, optionSet) {
@@ -152,5 +159,18 @@ class DomEventHandlers {
         $(`#${this._categorySelectId} option[value='${this.pantryMapper.categoryFilter}']`).attr("selected","selected");
         $(`#${this._townSelectId} option[value='${this.pantryMapper.getTownFilter()}']`).attr("selected","selected");
         $(`#${this._countySelectId} option[value='${this.pantryMapper.countyFilter}']`).attr("selected","selected");
+    }
+
+    _setLocateMeHandler() {
+        $("#locate-me").click(() => {
+            new DeviceLocationProvider().getLocation()
+              .then(dl => {
+                if (dl !== null) {
+                    new Geocoder().reverseGeocode(new GeoPoint(dl.latitude, dl.longitude)).then(location => {
+                        $("#zipcode-input").val(location[2]);
+                    });
+                }
+              }).catch((err) => {});
+        });
     }
 }

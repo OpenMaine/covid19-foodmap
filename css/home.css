@@ -33,10 +33,14 @@
     font-size: 12px;
     font-weight: bold;
 }
-#locate-me:hover {
+
+#locate-me {
+padding: 4px 8px;
+}#locate-me:hover {
     color: #FFFFFF;
     background-color: #007bff !important;
 }
+
 
 @media (max-width: 768px) {
     #hero-title {

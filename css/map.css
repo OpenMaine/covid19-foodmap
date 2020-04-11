@@ -8,13 +8,10 @@
   transition: margin .25s ease-out;
   z-index: 2;
   background-color: #FDFDFD;
-  z-index: 1001;
-}
-
-#sidebar-wrapper .list-group {
+  z-index: 1002;
+}#sidebar-wrapper .list-group {
   width: 100%;
 }
-
 
 #wrapper.toggled #sidebar-wrapper {
   margin-left: 0;
@@ -22,6 +19,13 @@
 
 #page-content-wrapper {
   min-width: 100vw;
+}
+
+#locate-me {
+  padding: 4px 8px;
+}#locate-me:hover {
+  color: #FFFFFF;
+  background-color: #007bff !important;
 }
 
 .filter-card {
@@ -229,7 +233,7 @@
 /* navbar */
 #nav-mobile {
   position: fixed;
-  z-index: 999;
+  z-index: 1010;
   bottom: 0;
   width: 100%;
 }
@@ -246,7 +250,7 @@
   width: 100%;
   padding: 8px 8px 48px 8px;
   bottom: 48px;
-  z-index: 999;
+  z-index: 1001;
   transition: .3s ease-in-out;
 }
 
