@@ -4,15 +4,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+  <meta name="description" content="Find food pantries, meal sites, SNAP retailers, and other food resources in Maine">
+  <meta name="author" content="OpenMaine">
 
   <title>Maine Food Map</title>
 
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="vendor/select2/css/select2.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
   <link href="css/home.css" rel="stylesheet">
   <link href="css/shared.css" rel="stylesheet">
 </head>
@@ -100,8 +101,8 @@
       </div>
     </header>
     
-    <!-- About and contact -->
     <div class="container" id="about">
+      <!-- Mission statement -->
       <div class="row mb-5 mt-5">
         <div class="col-12">
           <h2 id="mission-title" class="text-dark"></h2>
@@ -115,6 +116,7 @@
         </div>
       </div>
       
+      <!-- About the data -->
       <div class="row mb-5 mt-5">
         <div class="col-12">
           <h2 id="data-title" class="text-dark"></h2>
@@ -127,30 +129,109 @@
           <img class="img-thumbnail" src="images/produce.jpg"/>
         </div>
       </div>
-      <div class="row mb-5" id="contact">
+
+      <!-- Other resources -->
+      <div class="row mb-5 mt-5">
         <div class="col-12">
-          <h2 id="contact-title" class="text-dark"></h2>
+          <h2 id="other-resources-title" class="text-dark">Other Resources</h2>
           <hr>
-          <div class="row">
-            <div class="col">
-              <div class="h5">Address</div>
-              <div id="contact-address"></div>
-              <div id="contact-city-state-zip"></div>
-            </div>
-            <div class="col">
-              <div>
-                <div class="h5">Phone:</div>
-                <div id="contact-phone"></div>
+        </div>
+        <div class="col-12">
+          <div class="row" id="other-resources-text">
+            <div class="col-12 resource-container" style="padding-top: 0;">
+              <div class="resource-header">2-1-1 Maine</div>
+              <div class="resource-description">Information about Maine food pantries, meal sites, senior dining sites, and more.</div>
+              <div class="resource-link">
+                <a href="https://211maine.org/" alt="2-1-1 Maine Website" target="_blank" rel="noopener">
+                  View Website
+                  <i class="material-icons ml-1" title="open website">launch</i>
+                </a>
               </div>
-              <div class="mt-2">
-                <div class="h5">Email</div>
-                <div id="contact-email"></div>
+            </div>
+            <div class="col-12 resource-container">
+              <div class="resource-header">Wayside Food Programs</div>
+              <div class="resource-description">A list of community resources available, including food pantries and meals (breakfast & lunch) for youth up to age 18.</div>
+              <div class="resource-link">
+                <a href="https://waysidemaine.org/community-resources" alt="Wayside Maine Website" target="_blank" rel="noopener">
+                  View Website 
+                 <i class="material-icons ml-1" title="open website">launch</i>
+                </a>
+              </div>
+            </div>
+            <div class="col-12 resource-container">
+              <div class="resource-header">Good Shepherd Food Bank</div>
+              <div class="resource-description">Good Shepherd Food Bank and its network of 450+ agency partners — including food pantries and meal sites — is the largest hunger-relief organization in Maine</div>
+              <div class="resource-link">
+                <a href="https://www.gsfb.org/" alt="Good Shepherd Food Bank Website" target="_blank" rel="noopener">
+                  View Website 
+                 <i class="material-icons ml-1" title="open website">launch</i>
+                </a>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <!-- feedback -->
+    </div>
+
+    <div class="container mt-2">
+      <!-- Contact and social media -->
+      <div class="row mb-5" id="contact">
+        <div class="col-12">
+          <h2 id="contact-title" class="text-dark"></h2>
+          <hr>
+          <div class="row">
+            <div class="col-12">
+              This site was developed by the the Code for America Brigade <a href="http://openmaine.org/" alt="Open Maine website">OpenMaine</a> whose volunteers help design, develop, and improve civic systems in Maine. 
+            </div>
+            <div class="col-12">
+              Please reach out to us via e-mail or social media with any questions or for more information about how you can get involved!
+            </div>
+            
+          </div>
+          <div class="row mt-4 text-center">
+            <div class="col-md-6">
+              <div class="mt-2">
+                <div class="h5">Email</div>
+                <div>
+                  <span>
+                    <span id="contact-email" class="mr-1">hello@openmaine.org</span>
+                    <a href="mailto:hello@openmaine.org" target="_blank" title="email hello@openmaine.org">
+                      <i class="fa fa-envelope"></i>
+                    </a>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mt-2">
+              <div class="h5">Social Media</div>
+              <ul class="list-inline mb-0" id="social-media-icons">
+                <li class="list-inline-item">
+                  <a href="https://www.facebook.com/openmaine" target="_blank">
+                      <i class="fab fa-fw fa-facebook-f"></i>
+                    </a>
+                </li>
+      
+                <li class="list-inline-item">
+                  <a href="https://twitter.com/Open_Maine" target="_blank">
+                      <i class="fab fa-fw fa-twitter"></i>
+                    </a>
+                </li>
+                <li class="list-inline-item">
+                  <a href="https://github.com/openmaine" target="_blank">
+                      <i class="fab fa-fw fa-github"></i>
+                    </a>
+                </li>
+                <li class="list-inline-item">
+                  <a href="https://join.slack.com/t/openmaine/shared_invite/zt-57d28mv4-j~WPnaNxVq43GDX~3Te4Hg" target="_blank">
+                      <i class="fab fa-fw fa-slack"></i>
+                    </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Feedback -->
       <div class="row ml-2 mr-2">
         <div class="col-12 mt-5 mb-5 bg-light emphasis-box text-center">
           <h4 id="feedback-title" class="text-dark"></h4>
@@ -189,9 +270,7 @@
   <!-- End app js -->
   
   <script>
-    $(function() { 
-      const homeController = new HomeController();
-     });
+    $(function() { const homeController = new HomeController(); });
    </script>
 </body>
 

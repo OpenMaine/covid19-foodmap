@@ -39,6 +39,30 @@ padding: 4px 8px;
     background-color: #007bff !important;
 }
 
+#social-media-icons {
+    font-size: 24px;
+}
+
+.resource-container {
+    padding: 16px;
+    border-bottom: 1px solid lightgray;
+}
+.resource-header {
+    font-weight: 500;
+    font-size: 20px;
+}
+.resource-description {
+    margin-bottom: 6px;
+}
+.resource-link>a{
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+}
+.resource-link>a:hover {
+    text-decoration: none;
+    
+}
 
 @media (max-width: 768px) {
     #hero-title {
