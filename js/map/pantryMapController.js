@@ -53,7 +53,7 @@ class PantryMapController {
     clearCountyFilter(){
         this.filters = this.filters.filter(f => f.field !== "County")
     }
-
+    
     setTownFilter(filterString) {
         this._setFilter(new Filter("Town", filterString, FilterType.single));
     }

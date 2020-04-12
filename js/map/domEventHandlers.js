@@ -64,7 +64,7 @@ class DomEventHandlers {
     //Reset filters after switch to/from mobile 
     _setResizeHandler() {
         window.onresize = () =>  {
-            if (Math.abs(window.innerWidth - this._prevWidth) > 20) {
+            if (Math.abs(window.innerWidth - this._prevWidth) > 15) {
                 this._setNavbar(); 
                 this._resetInputHandlers();
             }
@@ -141,10 +141,13 @@ class DomEventHandlers {
             });
     
             $(`#${this._townSelectId}`).change((e) => {
-                this.pantryMapper.setTownFilter(e.target.value) 
+                this.pantryMapper.clearRadiusFilter();
+                this.pantryMapper.setTownFilter(e.target.value);
+                this._resetSelected(); 
             });
     
             $(`#${this._countySelectId}`).change((e) => {
+                this.pantryMapper.clearRadiusFilter();
                 const selectedCounty = e.target.value;
                 let townOptions = [];
                 if (selectedCounty.length > 0) {
@@ -169,8 +172,8 @@ class DomEventHandlers {
                     new Geocoder().getZipcodeGeopoint(zip).then(geopoint => {
                         this.pantryMapper.setRadiusFilter(zip, geopoint, radius);
                         this._resetSelected();
-                        $(`#${this._townSelectId}`).trigger('change');
-                        $(`#${this._countySelectId}`).trigger('change');
+                        $(`#${this._townSelectId}`).trigger('change.select2');
+                        $(`#${this._countySelectId}`).trigger('change.select2');
                     });
                 }
             });
