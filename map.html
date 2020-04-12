@@ -221,10 +221,6 @@
         let filterApplied = false;
         
         const queryParams = Util.getQueryParams();
-        if (queryParams.category && queryParams.category.length > 0) {
-          $("#category-select").val(queryParams.category).trigger('change');
-          filterApplied = true;
-        }
 
         if (queryParams.zipCode && queryParams.zipCode.length > 0) {
           $("#zipcode-input").val(queryParams.zipCode);
@@ -245,10 +241,15 @@
             filterApplied = true;
           }    
         }
+
+        if (queryParams.category && queryParams.category.length > 0) {
+          $("#category-select").val(queryParams.category).trigger('change');
+          filterApplied = true;
+        }
         
         if (!filterApplied) {
-          map.setPosition(startGeopoint, zoomLevel);
           $("#town-select").trigger('change');
+          map.setPosition(startGeopoint, zoomLevel);
         }
 
 
