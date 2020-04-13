@@ -6,13 +6,13 @@
 */
 
 class PantryMapController {
-    data = [];
-    filteredData = [];
-    sideBarData =  [];      // Sidebar shows only a portion of results, updated on scroll
-    refreshInterval = null; // Store interval created by start()
-    filters = [];           // Filters are type mappingCore.Filter
     
     constructor(apiEndpoint, map) {
+        this.data = [];
+        this.filteredData = [];
+        this.sideBarData =  [];      // Sidebar shows only a portion of results, updated on scroll
+        this.refreshInterval = null; // Store interval created by start()
+        this.filters = [];           // Filters are type mappingCore.Filter
         this.apiEndpoint = apiEndpoint;
         this.map = map;
         this.intervalDelay = 100000000; //Auto refresh data every x ms

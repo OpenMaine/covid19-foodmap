@@ -1,20 +1,19 @@
 class HomeController {
-    _baseUri = "https://sheetsapi.azurewebsites.net/Sheets.php";
-
-    _sheetId = "1besYmYvgpk6ZWrhw8k3ys8OlkDj4s3A1_Y3oromVQBE";
-    _homeSheetName="Home Content";
-    _homeSheetRange = "A:B";
-    _categoriesSheetName = "Categories";
-    _categoriesSheetRange = "A:B";
-    categoryOptions = [];
-
+    
     constructor() {
-      this._categorySelectId = "category-select";
-      this._getHomeData();
-      this._getCategories();
-      this._setMobileNavHandler();
-      this._setFormSubmitHandler();
-      this._setLocateMeHandler();
+        this._baseUri = "https://sheetsapi.azurewebsites.net/Sheets.php";
+        this.categoryOptions = [];  
+        this._sheetId = "1besYmYvgpk6ZWrhw8k3ys8OlkDj4s3A1_Y3oromVQBE";
+        this._homeSheetName="Home Content";
+        this._homeSheetRange = "A:B";
+        this._categoriesSheetName = "Categories";
+        this._categoriesSheetRange = "A:B";
+        this._categorySelectId = "category-select";
+        this._getHomeData();
+        this._getCategories();
+        this._setMobileNavHandler();
+        this._setFormSubmitHandler();
+        this._setLocateMeHandler();
     }
     
     _getPosition() {
@@ -29,7 +28,7 @@ class HomeController {
               .then(r => {
                 new Geocoder().reverseGeocode(new GeoPoint(r.coords.latitude, r.coords.longitude)).then(location => {
                     $("#zip-code").val(location[2]);
-                });
+                }, () => {});
               }).catch((err) => {});
         });
     }

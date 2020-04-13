@@ -5,19 +5,20 @@
  *  - core/deviceLocationProvider
  */
 class DomEventHandlers {
-    _categorySelectId = "category-select";
-    _countySelectId = "county-select";
-    _townSelectId = "town-select";
-    _radiusSelectId = "radius-select";
-    _zipCodeId = "zipcode-input";
     
     
     /**
      * @param pantryMapper: PantryMapController 
      */
     constructor(pantryMapper) {
-        this._lastWasMobile = null;
         this.pantryMapper = pantryMapper;
+        
+        this._categorySelectId = "category-select";
+        this._countySelectId = "county-select";
+        this._townSelectId = "town-select";
+        this._radiusSelectId = "radius-select";
+        this._zipCodeId = "zipcode-input";
+        this._lastWasMobile = null;
     }
 
     init() {
@@ -174,7 +175,7 @@ class DomEventHandlers {
                         this._resetSelected();
                         $(`#${this._townSelectId}`).trigger('change.select2');
                         $(`#${this._countySelectId}`).trigger('change.select2');
-                    });
+                    }, () => {});
                 }
             });
         }, 500);
@@ -198,7 +199,7 @@ class DomEventHandlers {
                 if (dl !== null) {
                     new Geocoder().reverseGeocode(new GeoPoint(dl.latitude, dl.longitude)).then(location => {
                         $(`#${this._zipCodeId}`).val(location[2]);
-                    });
+                    }, () => {});
                 }
               }).catch((err) => {});
         });

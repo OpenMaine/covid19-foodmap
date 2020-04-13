@@ -1,6 +1,4 @@
 class DefaultMap {
-    _mapboxToken = 'pk.eyJ1Ijoiam9uamFuZWxsZSIsImEiOiJjazhxbXg0YmswNW5kM2RvNGNjb2hiN2poIn0.LiFKVlPQe_vqyqjjIw0DIw';
-    markers = {};
     
     /**
      * 
@@ -9,6 +7,9 @@ class DefaultMap {
      * @param {*} zoom : zoom level
      */
     constructor(mapId, center, zoom=8) {
+        this._mapboxToken = 'pk.eyJ1Ijoiam9uamFuZWxsZSIsImEiOiJjazhxbXg0YmswNW5kM2RvNGNjb2hiN2poIn0.LiFKVlPQe_vqyqjjIw0DIw';
+        
+        this.markers = {};
         this.center = center
         this.map = L.map(mapId, {center: [center.latitude, center.longitude], zoom: zoom, layers: this._getBasemaps()});
         this.map.zoomControl.setPosition('topleft');
