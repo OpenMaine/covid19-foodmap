@@ -83,38 +83,12 @@ class PantryMapController {
 
     /*
         Get all food pantry data from spreadsheet
-        - Sets this.data to an array of objects with fields:
-            Category, Name, County, Town, Address, Phone, HoursOfOperation, OperationalNotes, 
-            WebLink, AdditionalWebLink, Latitude, Longitude
+        - Response items projected onto FoodResource objects
     */
     _getData(successCallback) {
         $.get(this.apiEndpoint).done((response, status) => {
-            const markerInfoData = JSON.parse(response);
-            for (let markerInfo of markerInfoData) {
-                if (markerInfo.Category == "Meal Sites")  {
-                    markerInfo.Icon = "fastfood";
-                    markerInfo.MarkerIcon = MarkerIcon.Restaurant;
-                }
-                else if (markerInfo.Category == "Food Pantry") {
-                    markerInfo.Icon = "store";
-                    markerInfo.MarkerIcon = MarkerIcon.Grocery;
-                }
-                else if (markerInfo.Category == "Shelter") {
-                    markerInfo.Icon = "home";
-                    markerInfo.MarkerIcon = MarkerIcon.Home;
-                }
-                else if (markerInfo.Category == "Youth Programs") {
-                    markerInfo.Icon = "child_care";
-                    markerInfo.MarkerIcon = MarkerIcon.DayCare;
-                }
-                else {
-                    markerInfo.Icon = "category";
-                    markerInfo.MarkerIcon = MarkerIcon.Star;
-                }
-            }      
+            this.data = JSON.parse(response).map(data => new FoodResource(data));
             
-            this.data = markerInfoData;
-
             if (this.dataLoaded)
                 this._applyFilters();
             else 
@@ -185,9 +159,9 @@ class PantryMapController {
     }
 
     _getIcon(pantryInfo) {
-        if (pantryInfo.MarkerIcon) {
+        if (pantryInfo.IconUrl) {
             return L.icon({
-                iconUrl: MarkerIcon.getPath(pantryInfo.MarkerIcon),
+                iconUrl: pantryInfo.IconUrl,
                 iconSize:     [32, 37], // size of the icon
                 iconAnchor:   [22, 36], // point of the icon which will correspond to marker's location
                 popupAnchor:  [-3, -36] // point from which the popup should open relative to the iconAnchor

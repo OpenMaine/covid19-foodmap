@@ -1,4 +1,7 @@
 /**
+ * Dependencies
+ *  - mappingCore
+ * 
   Summary data about a food resource
   @param resourceData: object to map to the FoodResource
     The mapping needs to be updated when the shape of the source data changes. 
@@ -24,5 +27,24 @@ class FoodResource {
         this.SpecialHours = "";
         this.SpecialDays = "";
         this.SpecialNotes = "";
+        this._setIcon();
+    }
+
+    _setIcon() {
+        if (this.Category == "Meal Sites")  {
+            this.IconUrl = MarkerIcon.getPath(MarkerIcon.Restaurant);
+        }
+        else if (this.Category == "Food Pantry") {
+            this.IconUrl = MarkerIcon.getPath(MarkerIcon.Grocery);
+        }
+        else if (this.Category == "Shelter") {
+            this.IconUrl = MarkerIcon.getPath(MarkerIcon.Home);
+        }
+        else if (this.Category == "Youth Programs") {
+            this.IconUrl = MarkerIcon.getPath(MarkerIcon.DayCare);
+        }
+        else {
+            this.IconUrl = MarkerIcon.getPath(MarkerIcon.Star);
+        }
     }
 }
