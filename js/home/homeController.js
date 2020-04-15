@@ -4,12 +4,9 @@ class HomeController {
         this._baseUri = "https://sheetsapi.azurewebsites.net/Sheets.php";
         this.categoryOptions = [];  
         this._sheetId = "1besYmYvgpk6ZWrhw8k3ys8OlkDj4s3A1_Y3oromVQBE";
-        this._homeSheetName="Home Content";
-        this._homeSheetRange = "A:B";
         this._categoriesSheetName = "Categories";
         this._categoriesSheetRange = "A:B";
         this._categorySelectId = "category-select";
-        this._getHomeData();
         this._getCategories();
         this._setMobileNavHandler();
         this._setFormSubmitHandler();
@@ -37,20 +34,6 @@ class HomeController {
         $("#search-form").submit((e) => {
             e.preventDefault();
             window.location.href = `map.html${this._buildQueryFilter()}`;
-        });
-    }
-
-    _getHomeData() {
-        const homeDataUri = `${this._baseUri}?sheetId=${this._sheetId}&sheetName=${this._homeSheetName}&sheetRange=${this._homeSheetRange}`;
-        $.get(homeDataUri).done((response, status) => {
-            this.pageData = JSON.parse(response);
-            this.pageData.forEach(r => {
-                if (r.Field.indexOf("-url") < 0) {
-                    $(`#${r.Field}`).html(r.Value);
-                } else {
-                    //TODO: Set href attr of field with value
-                }
-            });           
         });
     }
 
