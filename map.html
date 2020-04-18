@@ -61,38 +61,80 @@
   <!-- Begin handlebars templates -->
   <!-- list template -->
   <script id="pin-list-template" type="text/x-handlebars-template">    
-    <div class="row result-row">
+    <div class="container">
       {{#arr_empty this}}
-      <div class="no-results-container">
-        <i class="material-icons no-result-icon" title="No results found">cloud_off</i>
-        <div class="no-results-message p-2">
-          No results found
+      <div class="row result-list-row">
+        <div class="no-results-container">
+          <i class="material-icons no-result-icon" title="No results found">cloud_off</i>
+          <div class="no-results-message p-2">
+            No results found
+          </div>
         </div>
       </div>
       {{/arr_empty}}
       {{#each this}}
-      <div class="result-card row col-12 pt-2 pb-2 pl-1">
-        <div class="col-2 result-row-icon">
-          <img src={{IconUrl}}  alt="{{Category}} icon" title="{{Category}}" />
-        </div>
-        <div class="col-10 result-card-body">
-          {{#if WebLink}}
-            <a href="{{WebLink}}" title="{{WebLink}}" target="_blank" rel="noopener">{{Name}}</a>
-          {{else}}
-            <div>{{Name}}</div>
-          {{/if}}
-          <div class="small">
-            {{Category}} 
-            <span class="text-muted small ml-1">{{Phone}}</span>
+      <div class="row pt-3 pb-3 result-list-item-container">
+        <div class="row result-list-item-row">
+          <div class="col-2 result-row-icon">
+            <img src={{IconUrl}}  alt="{{Category}} icon" title="{{Category}}" />
           </div>
-          <div>
-            <small class="text-muted">{{Address}}</small>
+          <div class="col-10">
+            {{#if WebLink}}
+              <a href="{{WebLink}}" title="{{WebLink}}" target="_blank" rel="noopener">{{Name}}</a>
+            {{else}}
+              <div>{{Name}}</div>
+            {{/if}}
+            <div class="small">
+              {{Category}} 
+              <span class="text-muted small ml-1">{{Phone}}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row result-list-item-row">
+          <div class="col-12 small">
+              <strong>Address: </strong>
+              {{Address}}
+          </div>
+          <div class="col-12 small mt-1">
+            {{#if SpecialHoursOfOperation}}
+              <strong>Covid-19 Hours: </strong>
+            {{SpecialHoursOfOperation}}
+            {{else}}
+              <strong>Hours: </strong>
+              {{HoursOfOperation}}
+            {{/if}} 
+          </div>
+          <div class="col-12 small mt-1">
+            {{#if SpecialNotes}}
+              <strong>Covid-19 Notes: </strong>
+              {{SpecialNotes}}
+            {{/if}} 
+          </div>
+          <div class="col-12 small mt-1">
+            {{#if OperationalNotes}}
+              <strong>Notes: </strong>
+              {{OperationalNotes}}
+            {{/if}} 
+          </div>
+          <div class="col-12 small mt-1">
+            {{#if WebLink}}
+              <strong>Website: </strong>
+              <a href="{{WebLink}}" title="{{WebLink}}" target="_blank" rel="noopener">
+                {{WebLink}}
+              </a>
+            {{/if}} 
+          </div>
+          <div class="col-12 small mt-1">
+            {{#if WebLink2}}
+              <strong>Website 2: </strong>
+              <a href="{{WebLink2}}" title="{{WebLink2}}" target="_blank" rel="noopener">{{WebLink2}}</a>
+            {{/if}} 
           </div>
         </div>
       </div>
-      <hr class="result-divider col-12">
-      {{/each}}                
-    </div>            
+      {{/each}}                         
+    </div> 
   </script>    
   
   <!-- navbar template -->
@@ -200,9 +242,9 @@
     $(async function() {
       /** service settings */
       const baseUri = "https://sheetsapi.azurewebsites.net/Sheets.php";
-      const sheetId = "1besYmYvgpk6ZWrhw8k3ys8OlkDj4s3A1_Y3oromVQBE";
-      const sheetName = "Pantries";
-      const sheetRange = "A:L";
+      const sheetId = "1H9utiRTBZrGreyqSB6oGL1BiVMi7UnM3JOx1HiMWEkc";
+      const sheetName = "QueryData";
+      const sheetRange = "A:S";
       /** End service settings */
 
       const defaultLocation = await new DeviceLocationProvider().getLocation();
@@ -215,7 +257,7 @@
       
       domEventHandlers.init();
       
-      //callback fires only after first data fetch completes
+      //callback for after first data fetch completes
       pantryMapper.start(() => {
         domEventHandlers.setFilterOptions();
         let filterApplied = false;
@@ -251,18 +293,6 @@
           $("#town-select").trigger('change');
           map.setPosition(startGeopoint, zoomLevel);
         }
-
-
-        // if (defaultLocation) {
-        //   new Geocoder().reverseGeocode(new GeoPoint(defaultLocation.latitude, defaultLocation.longitude))
-        //   .then((cityCounty) => {
-        //     pantryMapper.setCountyFilter(cityCounty[1]);
-        //     pantryMapper.setTownFilter(cityCounty[0]); 
-        //     domEventHandlers.setFilterOptions()
-        //   });
-        // } else {
-        //   domEventHandlers.setFilterOptions();
-        // }
       });
     });
   </script>

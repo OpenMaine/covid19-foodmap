@@ -226,23 +226,19 @@
   max-height: 100%;
   max-width: 100%;
 }
-#map-results-list .result-row {
+#map-results-list .result-list-item-container {
+  border-bottom: 1px solid lightgray;
   margin: 0 auto;
   max-height: 100%;
   width: 100%;
   max-width: 100%;
   overflow-x: hidden;
 }
-
-#map-results-list .result-card {
-  padding-left: 6px;
-  padding-right: 6px;
+#map-results-list .result-list-item-row {
   width: 100%;
+  margin-bottom: 4px;
 }
-#map-results-list .result-divider {
-  margin-top: 2px;
-  margin-bottom: 2px;
-}
+
 
 .result-row-icon {
   padding-left: 24px;

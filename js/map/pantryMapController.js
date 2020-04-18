@@ -145,23 +145,23 @@ class PantryMapController {
         }
     }
 
-    _buildMapMarkers(pantryInfoArray) {
-        for (let entry of pantryInfoArray) {
-            if (entry.Latitude && entry.Longitude) {
-                if (this.map.markers[entry.Address]) {
-                    this.map.addMarkerPopup(entry.Address, this._getMarkerPopupHtml(entry));
+    _buildMapMarkers(foodResourceArray) {
+        for (let foodResource of foodResourceArray) {
+            if (foodResource.Latitude && foodResource.Longitude) {
+                if (this.map.markers[foodResource.Address]) {
+                    this.map.addMarkerPopup(foodResource.Address, this._getMarkerPopupHtml(foodResource));
                 } else {
-                    this.map.addMarker(new GeoPoint(entry.Latitude, entry.Longitude), entry.Address, this._getIcon(entry));
-                    this.map.addMarkerPopup(entry.Address, this._getMarkerPopupHtml(entry));
+                    this.map.addMarker(new GeoPoint(foodResource.Latitude, foodResource.Longitude), foodResource.Address, this._getIcon(foodResource));
+                    this.map.addMarkerPopup(foodResource.Address, this._getMarkerPopupHtml(foodResource));
                 }
             }
         }
     }
 
-    _getIcon(pantryInfo) {
-        if (pantryInfo.IconUrl) {
+    _getIcon(foodResource) {
+        if (foodResource.IconUrl) {
             return L.icon({
-                iconUrl: pantryInfo.IconUrl,
+                iconUrl: foodResource.IconUrl,
                 iconSize:     [32, 37], // size of the icon
                 iconAnchor:   [22, 36], // point of the icon which will correspond to marker's location
                 popupAnchor:  [-3, -36] // point from which the popup should open relative to the iconAnchor
@@ -171,20 +171,45 @@ class PantryMapController {
         return null;
     }
 
-    _buildSidebarListing(pantryInfoArray) {
+    _buildSidebarListing(foodResourceArray) {
         let target = document.getElementById('map-results-list');
         let src = document.getElementById('pin-list-template').innerHTML;
         let template = Handlebars.compile(src);
-        target.innerHTML = template(pantryInfoArray);
+        target.innerHTML = template(foodResourceArray);
     }
     
-    _getMarkerPopupHtml(pantryInfo) {
-        return `<span style="font-size:1.1rem">${pantryInfo.Name}</span><br>
-        <hr style="margin-top: 0; margin-bottom: 4px;">
-        <small><b>Category: </b>${pantryInfo.Category}</small><br>
-        <small><b>Phone: </b>${pantryInfo.Phone}</small><br>
-        <small><b>Website: </b><a href='${pantryInfo.WebLink}' target='_blank'>${pantryInfo.WebLink}</a></small><br>
-        <small><b>Address: </b>${pantryInfo.Address}</small><br>
-        <small><b>Hours: </b>${pantryInfo.HoursOfOperation}</small>`;
+    _getMarkerPopupHtml(foodResource) {
+        let components = [
+            `<span style="font-size:1.1rem">${foodResource.Name}</span><br>`,
+            `<hr style="margin-top: 0; margin-bottom: 4px;">`,
+            `<small><b>Category: </b>${foodResource.Category}</small><br>`,
+            `<small><b>Phone: </b>${foodResource.Phone}</small><br>`,
+        ];
+
+        if (!Util.isNullOrEmpty(foodResource.WebLink)) {
+            components.push(`<small><b>Website: </b><a href='${foodResource.WebLink}' target='_blank'>${foodResource.WebLink}</a></small><br>`);
+        }
+        
+        if (!Util.isNullOrEmpty(foodResource.WebLink2)) {
+            components.push(`<small><b>Website 2: </b><a href='${foodResource.WebLink}' target='_blank'>${foodResource.WebLink}</a></small><br>`);
+        }
+        
+        components.push(`<small><b>Address: </b>${foodResource.Address}</small><br>`);
+        
+        if (!Util.isNullOrEmpty(foodResource.SpecialHoursOfOperation)) {
+            components.push(`<small><b>Covid-19 Hours: </b>${foodResource.SpecialHoursOfOperation}</small><br>`);   
+        } else if (!Util.isNullOrEmpty(foodResource.HoursOfOperation)) {
+            components.push(`<small><b>Hours: </b>${foodResource.HoursOfOperation}</small><br>`);
+        }
+
+        if (!Util.isNullOrEmpty(foodResource.SpecialNotes)) {
+            components.push(`<small><b>Covid-19 Notes: </b>${foodResource.SpecialNotes}</small><br>`);   
+        }
+        
+        if (!Util.isNullOrEmpty(foodResource.OperationalNotes)) {
+            components.push(`<small><b>Notes: </b>${foodResource.OperationalNotes}</small><br>`);
+        }
+        
+        return components.join("");
     }
 }
