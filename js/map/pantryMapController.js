@@ -107,7 +107,7 @@ class PantryMapController {
 
     _setSidebarScrollListener() {
         document.getElementById('map-results-list').onscroll = (e) =>  {;
-            const minPassed =  parseInt(e.target.scrollTop/90);
+            const minPassed =  parseInt(e.target.scrollTop/250);
             let end = Math.min(this.filteredData.length, minPassed + 20);
             this.sideBarData = this.filteredData.slice(0, end);
             this._buildSidebarListing(this.sideBarData);

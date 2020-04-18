@@ -153,13 +153,13 @@
 
   #sidebar-wrapper {
     position: fixed;
-    max-width: 75vw;
-    min-width: 75vw;
+    max-width: 100vw;
+    min-width: 100vw;
     margin-left: 0;
   }
 
   #wrapper.toggled #sidebar-wrapper {
-    margin-left: -75vw;
+    margin-left: -100vw;
   }
 
 }
@@ -265,7 +265,7 @@
   width: 100%;
   padding: 8px 8px 48px 8px;
   bottom: 48px;
-  z-index: 1001;
+  z-index: 1005;
   transition: .3s ease-in-out;
 }
 
