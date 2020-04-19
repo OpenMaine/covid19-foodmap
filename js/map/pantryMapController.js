@@ -177,7 +177,7 @@ class PantryMapController {
         target.innerHTML = template(foodResourceArray);
 
         this._setSidebarHeader();
-
+        $("#map-result-spacer").css("height", ($("#sidebar-heading").height()+8)+"px");
     }
 
     _setSidebarHeader() {
@@ -193,7 +193,7 @@ class PantryMapController {
                 filterBadges.push(`<span class="badge badge-info">${filter.value.zipCode} (${filter.value.radius}mi)</span>`);
             }
         }
-        
+
         $("#sidebar-heading").html(filterBadges.join(' '));
     }
     

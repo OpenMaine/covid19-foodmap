@@ -27,8 +27,11 @@
 <body>
   <!-- Sidebar -->
   <div class="border-right shadow-lg toggled sidebar-toggleable margin-transition" id="sidebar-wrapper">
-    <div class="sidebar-heading" id="sidebar-heading"></div>
-    <div id="map-results-list"></div>
+    <div class="sidebar-toggleable toggled" id="sidebar-heading"></div>
+    <div style="max-height:100%; overflow-y: scroll;">
+      <div id="map-result-spacer"></div>
+      <div id="map-results-list"></div>
+    </div>
   </div>
   
   <div class="d-flex" id="wrapper">
