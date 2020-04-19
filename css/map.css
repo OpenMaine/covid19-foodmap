@@ -120,6 +120,12 @@
     font-size: 1.1rem !important;
     max-width: 35vw;
   }
+
+  .result-row-icon {
+    padding-left: 0!important;
+    text-align: center;
+  } 
+
   #zip-search-button-container {
     text-align: center;
   }

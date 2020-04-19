@@ -4,7 +4,6 @@
  *  - core/util
  *  - core/geocoder
 */
-
 class PantryMapController {
     
     constructor(apiEndpoint, map) {
@@ -185,10 +184,10 @@ class PantryMapController {
     _setSidebarHeader() {
         const filterBadges = ['<div class="small"><strong>Current filters</strong></div>'];
         for (let filter of this.filters) {
-            if (filter.filterType == FilterType.single) {
+            if (filter.filterType == FilterType.single && !Util.isNullOrEmpty(filter.value)) {
                 filterBadges.push(`<span class="badge badge-info">${filter.field}: ${filter.value}</span>`);
             }
-            if (filter.filterType == FilterType.multi) {
+            if (filter.filterType == FilterType.multi && !Util.isNullOrEmpty(filter.value)) {
                 filter.value.forEach(value => filterBadges.push(`<span class="badge badge-info">${filter.field}: ${value}</span>`));
             }
             if (filter.filterType == FilterType.geoPoint) {
