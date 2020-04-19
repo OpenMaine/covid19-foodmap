@@ -10,27 +10,29 @@
 }
 
 #sidebar-wrapper {
-  width: 35vw;
-  height: 100vh;
-  margin-left: -35vw;
-  -webkit-transition: margin .25s ease-out;
-  -moz-transition: margin .25s ease-out;
-  -o-transition: margin .25s ease-out;
-  transition: margin .25s ease-out;
-  z-index: 2;
-  background-color: #FDFDFD;
+  position: fixed;
   z-index: 1002;
+  overflow: hidden;
+  background-color: #FDFDFD;
+  
 }#sidebar-wrapper .list-group {
   width: 100%;
 }
 
-#wrapper.toggled #sidebar-wrapper {
-  margin-left: 0;
+.sidebar-heading {
+  padding: .5rem;
+  background-color: ghostwhite;
+  -webkit-box-shadow: 0px 1px 3px 0px rgba(68,68,68,0.7);
+  -moz-box-shadow: 0px 1px 3px 0px rgba(68,68,68,0.7);
+  box-shadow: 0px 1px 3px 0px rgba(68,68,68,0.7);
 }
 
-
-
-
+.margin-transition {
+  -webkit-transition: margin .25s ease-out;
+  -moz-transition: margin .25s ease-out;
+  -o-transition: margin .25s ease-out;
+  transition: margin .25s ease-out;
+}
 
 .filter-card {
   padding-bottom: 0;
@@ -151,17 +153,16 @@
     margin: 0 auto;
   }
 
-  #sidebar-wrapper {
-    position: fixed;
+  .sidebar-toggleable {
+    height: calc(100vh - 66px);
     max-width: 100vw;
     min-width: 100vw;
     margin-left: 0;
   }
 
-  #wrapper.toggled #sidebar-wrapper {
-    margin-left: -100vw;
+  .sidebar-toggleable.toggled {
+    margin-left: -100vw!important;
   }
-
 }
 
 .select2-selection__clear:hover {
@@ -196,17 +197,18 @@
     display: none;
   }
 
-  #sidebar-wrapper {
-    margin-left: 0;
-  }
-
   #page-content-wrapper {
     min-width: 0;
     max-width: 100vw;
     width: 100%;
   }
 
-  #wrapper.toggled #sidebar-wrapper {
+  .sidebar-toggleable  {
+    min-width: 35vw;
+    max-width: 35vw;
+    height: 100vh;
+  }
+  .sidebar-toggleable.toggled {
     margin-left: -35vw;
   }
 
@@ -221,15 +223,12 @@
 }
 
 #map-results-list {
+  max-height: 90%;
   overflow-y: scroll;
-  overflow-x: hidden;
-  max-height: 100%;
-  max-width: 100%;
 }
 #map-results-list .result-list-item-container {
   border-bottom: 1px solid lightgray;
   margin: 0 auto;
-  max-height: 100%;
   width: 100%;
   max-width: 100%;
   overflow-x: hidden;
@@ -238,7 +237,6 @@
   width: 100%;
   margin-bottom: 4px;
 }
-
 
 .result-row-icon {
   padding-left: 24px;
@@ -258,7 +256,11 @@
 #filters-toggle {
   margin-bottom: 0;
 }
-
+.filters-applied {
+  position: absolute;
+  width: 100%;
+  border-radius: 1px solid lightgray;
+}
 #filters-mobile {
   position: fixed;
   background-color: white;

@@ -65,7 +65,6 @@ class PantryMapController {
         this.filters = this.filters.filter(f => f.field !== "Town")
     }
     
-    //
     setRadiusFilter(zipCode, geopointCenter, radius) {
         this.clearTownFilter();
         this.clearCountyFilter();
@@ -173,9 +172,29 @@ class PantryMapController {
 
     _buildSidebarListing(foodResourceArray) {
         let target = document.getElementById('map-results-list');
-        let src = document.getElementById('pin-list-template').innerHTML;
+        let src = document.getElementById('list-result-template').innerHTML;
         let template = Handlebars.compile(src);
         target.innerHTML = template(foodResourceArray);
+
+        this._setSidebarHeader();
+
+    }
+
+    _setSidebarHeader() {
+        const filterBadges = ['<div class="small"><strong>Current filters</strong></div>'];
+        for (let filter of this.filters) {
+            if (filter.filterType == FilterType.single) {
+                filterBadges.push(`<span class="badge badge-info">${filter.field}: ${filter.value}</span>`);
+            }
+            if (filter.filterType == FilterType.multi) {
+                filter.value.forEach(value => filterBadges.push(`<span class="badge badge-info">${filter.field}: ${value}</span>`));
+            }
+            if (filter.filterType == FilterType.geoPoint) {
+                filterBadges.push(`<span class="badge badge-info">${filter.value.zipCode} (${filter.value.radius}mi)</span>`);
+            }
+        }
+        
+        $("#sidebar-heading").html(filterBadges.join(' '));
     }
     
     _getMarkerPopupHtml(foodResource) {

@@ -106,9 +106,9 @@ class DomEventHandlers {
     }
 
     _setSidebarHandlers() {
-        $("#menu-toggle").click(function(e) {
+        $("#list-toggle").click(function(e) {
             e.preventDefault();
-            $("#wrapper").toggleClass("toggled");
+            $(".sidebar-toggleable").toggleClass("toggled");
             e.stopPropagation();
         });
         $("#filters-toggle").click(function(e) {

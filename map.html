@@ -25,13 +25,17 @@
 </head>
 
 <body>
-  <div class="d-flex toggled" id="wrapper">
-    <!-- Sidebar -->
-    <div class="border-right shadow-lg" id="sidebar-wrapper">
-      <div class="sidebar-heading"></div>
-      <div id="map-results-list"></div>
+  <!-- Sidebar -->
+  <div class="border-right shadow-lg toggled sidebar-toggleable margin-transition" id="sidebar-wrapper">
+    <div class="sidebar-heading" id="sidebar-heading">
+      Filters: 
+      <span class="badge badge-secondary">New</span>
     </div>
-
+    <div id="map-results-list"></div>
+  </div>
+  
+  <div class="d-flex" id="wrapper">
+    <div class="toggled sidebar-toggleable margin-transition hidden-lg">&nbsp;</div>
     <!-- Page Content -->
     <div id="page-content-wrapper">
       <!-- Navbar filled by handlebars template in DomEventHandlers -->
@@ -41,7 +45,7 @@
           <div class="card-body filter-card">
             <div class="row ">
               <div class="col-12">
-                <h1 class="header-dark map-header">Find food support services in Maine</h1>
+                <h1 class="header-dark">Find food support services in Maine</h1>
               </div>
               <span class="col-12" id="filters-desktop"></span>
             </div>
@@ -60,15 +64,14 @@
 
   <!-- Begin handlebars templates -->
   <!-- list template -->
-  <script id="pin-list-template" type="text/x-handlebars-template">    
-    <div class="container">
+  <script id="list-result-template" type="text/x-handlebars-template">
+    <div class="container-fluid">
       {{#arr_empty this}}
       <div class="row result-list-row">
         <div class="no-results-container">
+          <div class="no-results-message p-2">No results found</div>
           <i class="material-icons no-result-icon" title="No results found">cloud_off</i>
-          <div class="no-results-message p-2">
-            No results found
-          </div>
+          <div class="no-results-message p-2">Please select new filters and try again</div>
         </div>
       </div>
       {{/arr_empty}}
@@ -150,7 +153,7 @@
             <i class="material-icons toggle-icon" title="Toggle filters">tune</i><br>
             <div class="toggle-label">filter</div>
         </button>
-        <button class="btn btn-primary menu-button" id="menu-toggle" aria-label="Toggle list view">
+        <button class="btn btn-primary menu-button" id="list-toggle" aria-label="Toggle list view">
           <i class="material-icons toggle-icon" title="Toggle list view">compare_arrows</i>
           <div class="toggle-label">list</div>
         </button>
@@ -290,7 +293,7 @@
         }
         
         if (!filterApplied) {
-          $("#town-select").trigger('change');
+          $("#category-select").val([...new Set(pantryMapper.data.map(d => d.Category))]).trigger('change');
           map.setPosition(startGeopoint, zoomLevel);
         }
       });
