@@ -39,6 +39,10 @@ function modules() {
       '!./node_modules/jquery/dist/core.js'
     ])
     .pipe(gulp.dest('./vendor/jquery'));
+  var jqueryEasing = gulp.src('./node_modules/jquery-easing/dist/**/*')
+    .pipe(gulp.dest('./vendor/jquery-easing'));
+  var select2 = gulp.src('./node_modules/select2/dist/**/*')
+    .pipe(gulp.dest('./vendor/select2'));
   return merge(bootstrap, jquery);
 }
 
