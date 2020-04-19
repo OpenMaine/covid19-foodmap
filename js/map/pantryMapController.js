@@ -106,7 +106,7 @@ class PantryMapController {
 
     _setSidebarScrollListener() {
         document.getElementById('map-results-list').onscroll = (e) =>  {;
-            const minPassed =  parseInt(e.target.scrollTop/250);
+            const minPassed =  parseInt(e.target.scrollTop/150);
             let end = Math.min(this.filteredData.length, minPassed + 20);
             this.sideBarData = this.filteredData.slice(0, end);
             this._buildSidebarListing(this.sideBarData);
@@ -177,7 +177,9 @@ class PantryMapController {
         target.innerHTML = template(foodResourceArray);
 
         this._setSidebarHeader();
-        $("#map-result-spacer").css("height", ($("#sidebar-heading").height()+8)+"px");
+        const sidebarHeadingHeight = $("#sidebar-heading").height()+8;
+        $("#map-result-spacer").css("height", sidebarHeadingHeight+"px");
+        $("#map-results-list").css("height", ($("#map-list-wrapper").height()-sidebarHeadingHeight-12)+"px");
     }
 
     _setSidebarHeader() {
