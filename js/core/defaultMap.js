@@ -51,6 +51,12 @@ class DefaultMap {
         this.markers = {};
     }
 
+    addLegend(html) {
+        var legend = L.control({position: 'bottomright'});
+        legend.onAdd = (map) => html;
+        legend.addTo(this.map);
+    }
+
     fitMarkerBounds() {
         const nMarkers = Object.keys(this.markers).length;
         if (nMarkers > 1) {

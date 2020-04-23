@@ -3,30 +3,18 @@ class HomeController {
     constructor() {
         this._baseUri = "https://sheetsapi.azurewebsites.net/Sheets.php";
         this.categoryOptions = [];  
-        this._sheetId = "1besYmYvgpk6ZWrhw8k3ys8OlkDj4s3A1_Y3oromVQBE";
+        this._sheetId = "1H9utiRTBZrGreyqSB6oGL1BiVMi7UnM3JOx1HiMWEkc";
         this._categoriesSheetName = "Categories";
-        this._categoriesSheetRange = "A:B";
+        this._categoriesSheetRange = "A:A";
         this._categorySelectId = "category-select";
         this._getCategories();
         this._setMobileNavHandler();
         this._setFormSubmitHandler();
-        this._setLocateMeHandler();
     }
     
     _getPosition() {
         return new Promise(function (resolve, reject) {
             navigator.geolocation.getCurrentPosition(resolve, reject);
-        });
-    }
-
-    _setLocateMeHandler() {
-        $("#locate-me").click(() => {
-            this._getPosition()
-              .then(r => {
-                new Geocoder().reverseGeocode(new GeoPoint(r.coords.latitude, r.coords.longitude)).then(location => {
-                    $("#zip-code").val(location[2]);
-                }, () => {});
-              }).catch((err) => {});
         });
     }
 
@@ -56,11 +44,14 @@ class HomeController {
         $(`#${this._categorySelectId}`).empty();
         optionSet.forEach(o => $(`#${this._categorySelectId}`).append(`<option value="${o}">${o}</option>`));
         $(`#${this._categorySelectId}`).select2({placeholder: "Select categories", minimumResultsForSearch: -1});
+        
+        //Turn off the autocomplete text field.
         $(`#${this._categorySelectId}`).on('select2:opening select2:closing', function( event ) {
           var $searchfield = $( '#'+event.target.id ).parent().find('.select2-search__field');
           $searchfield.prop('disabled', true);
         });
-        $(`#${this._categorySelectId}`).val(optionSet);
+
+        $(`#${this._categorySelectId}`).val(["Food Pantry", "Meal Sites"]);
         $(`#${this._categorySelectId}`).trigger('change');
     }
 

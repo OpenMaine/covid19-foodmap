@@ -168,7 +168,7 @@
     <div class="container-fluid">
 
       <form id="zip-search-form" class="row mb-4 d-flex align-items-center">
-        <div class="col-md-3 col-sm-5 col-8">
+        <div class="col-sm-5 col-9">
           <label class="top-label" for="zipcode-input">Zip Code</label>
           <input name="zipcode-input" id="zipcode-input" 
                 required pattern="^([0-9]{5})\s*[-]?\s*([0-9]{4})?\s*$" 
@@ -178,23 +178,17 @@
                 placeholder="Use format 12345">
           <small class="text-muted">Clears county and town filters</small>
         </div>
-        <div class="col-md-2 col-sm-3 col-4">
-          <button type="button" class="btn btn-secondary" id="locate-me" title="Use my location">
-            <i class="material-icons" title="Use my location">location_searching</i>
-            <div class="toggle-label">locate me</div>
-          </button>
-        </div>
-        <div class="col-md-2 col-sm-4 col-6">
-          <label class="top-label" for="radius-select">Radius (miles)</label>
+        <div class="col-sm-2 col-3">
+          <label class="top-label" for="radius-select">Radius</label>
           <select class="custom-select form-control select-default" id="radius-select" size="1" aria-describedby="hero-radius-help" required>
             <option value=10>10</option>
             <option value=20>20</option>
             <option value=30>30</option>
             <option value=50>50</option>
           </select>
-          <small class="text-muted">&nbsp;</small>
+          <small class="text-muted">Miles</small>
         </div>
-        <div class="col-md-3 col-sm-12 col-6" id="zip-search-button-container">
+        <div class="col-lg-2 col-sm-3 col-12" id="zip-search-button-container">
           <button id="zip-search" type="submit" title="Search by zip code" class="btn btn-primary btn-block">Seach Zip Code</button>
         </div>
       </form>
@@ -237,9 +231,9 @@
   <script src="js/core/geocoder.js"></script>
   <script src="js/core/deviceLocationProvider.js"></script>
   <script src="js/map/foodResource.js"></script>
-  <script src="js/map/pantryMapController.js"></script>
   <script src="js/map/domEventHandlers.js"></script>
   <script src="js/handlebarsHelpers.js"></script>
+  <script src="js/map/pantryMapController.js"></script>
   <!-- End app JS -->
 
   <script>
@@ -294,7 +288,7 @@
         }
         
         if (!filterApplied) {
-          $("#category-select").val([...new Set(pantryMapper.data.map(d => d.Category))]).trigger('change');
+          $("#category-select").val(["Food Pantry", "Meal Sites"]).trigger('change');
           map.setPosition(startGeopoint, zoomLevel);
         }
       });

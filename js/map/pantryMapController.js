@@ -18,6 +18,7 @@ class PantryMapController {
         this.dataLoaded = false;
         this._getData = this._getData.bind(this);
         this._setSidebarScrollListener();
+        this._setLegend();
     }
 
     start(loadCallback) {
@@ -94,6 +95,18 @@ class PantryMapController {
             
             this.dataLoaded = true;
         });
+    }
+
+    _setLegend() {
+        let div = L.DomUtil.create('div', 'info legend');
+        div.innerHTML += '<div style="background-color:white;>';
+        div.innerHTML += `<img src=${MarkerIcon.getPath(MarkerIcon.Restaurant)} /> &ndash; Meal Site <br>`;
+        div.innerHTML += `<img src=${MarkerIcon.getPath(MarkerIcon.Grocery)} /> &ndash; Food Pantry <br>`;
+        div.innerHTML += `<img src=${MarkerIcon.getPath(MarkerIcon.Home)} /> &ndash; Shelter <br>`;
+        div.innerHTML += `<img src=${MarkerIcon.getPath(MarkerIcon.DayCare)} /> &ndash; Youth Program <br>`;
+        div.innerHTML += `<img src=${MarkerIcon.getPath(MarkerIcon.Star)} /> &ndash; Other <br>`;
+        div.innerHTML += '</div>'; 
+        this.map.addLegend(div);
     }
 
     _refreshMapAndSideBar() {

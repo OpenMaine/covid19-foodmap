@@ -65,7 +65,7 @@
             </h2>
             <form  id="search-form" class="mt-3">
               <div class="row mb-5 d-flex align-items-center">
-                <div class="col-md-5 col-sm-9 col-8 mb-3 ">
+                <div class="col mb-3 ">
                   <label for="zip-code"><strong>Zip code</strong></label>
                   <input required pattern="^([0-9]{5})\s*[-]?\s*([0-9]{4})?\s*$" 
                          minlength="5" maxlength="10" 
@@ -75,14 +75,8 @@
                          placeholder="Use format 12345">
                   <small id="hero-zip-help" class="form-text text-muted">Enter a Maine zip code</small>
                 </div>
-                <div class="col-md-3 col-sm-3 col-4">
-                  <button type="button" class="btn btn-secondary" id="locate-me">
-                    <i class="material-icons" title="Use my location">location_searching</i>
-                    <span class="toggle-label">locate me</span>
-                  </button>
-                </div>
     
-                <div class="col-md-4 col-sm-12 mb-3">
+                <div class="col mb-3">
                   <label for="radius-select"><strong>Search radius</strong></label>
                   <select size="1" required class="custom-select form-control select-default" id="radius-select" aria-describedby="hero-radius-help">
                     <option value=10>10</option>
@@ -339,7 +333,6 @@
     $(document).ready(() => {
       const homeController = new HomeController(); 
     });
-
   </script>
 </body>
 

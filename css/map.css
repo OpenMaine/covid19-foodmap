@@ -1,10 +1,3 @@
-#locate-me {
-  padding: 4px 8px;
-}#locate-me:hover {
-  color: #FFFFFF;
-  background-color: #007bff !important;
-}
-
 #page-content-wrapper {
   min-width: 100vw;
 }
@@ -31,6 +24,15 @@
 
 #map-list-wrapper {
   height: 100%;
+}
+
+.legend {
+  line-height: 18px;
+  color: #555;
+  background-color: rgba(255,255,255,.8);
+  border: 1px solid whitesmoke;
+  padding: 3px;
+  border-radius: 8px;
 }
 
 .margin-transition {
@@ -80,7 +82,7 @@
 }
 
 .select-default {
-  padding: 0 24px 0 12px;
+  padding: .375rem .75rem;
   border-radius: 4px;
   background-position-x: 94%;
 }

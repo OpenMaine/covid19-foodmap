@@ -93,7 +93,6 @@ class DomEventHandlers {
         this._setHomeButtonHandler();
         this._setFilters();
         this._setSelect2Inputs();
-        this._setLocateMeHandler();
     }
 
     _setHomeButtonHandler() {
@@ -190,18 +189,5 @@ class DomEventHandlers {
         $(`#${this._countySelectId}`).val(this.pantryMapper.getCountyFilter());
         $(`#${this._radiusSelectId}`).val(this.pantryMapper.getRadiusFilter().radius);
         $(`#${this._zipCodeId}`).val(this.pantryMapper.getRadiusFilter().zipCode);
-    }
-
-    _setLocateMeHandler() {
-        $("#locate-me").click(() => {
-            new DeviceLocationProvider().getLocation()
-              .then(dl => {
-                if (dl !== null) {
-                    new Geocoder().reverseGeocode(new GeoPoint(dl.latitude, dl.longitude)).then(location => {
-                        $(`#${this._zipCodeId}`).val(location[2]);
-                    }, () => {});
-                }
-              }).catch((err) => {});
-        });
     }
 }
