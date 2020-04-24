@@ -84,8 +84,20 @@ class DomEventHandlers {
             target.innerHTML = template();
             $(`#${clearId}`).empty(); 
             this._setSidebarHandlers();
+
         }
 
+        setTimeout(() => {
+            if (isMobile) {
+                let topHeight = $("#top-card").height();
+                let navHeight = $('#nav-mobile').height();
+                console.log(topHeight, navHeight);
+                $("#main-map").css("min-height", `${window.innerHeight-topHeight-navHeight-20}px`);
+            } else {
+                $("#main-map").css("min-height", "70vh");
+            }
+        }, 350);
+            
         this._lastWasMobile = isMobile;
     }
 

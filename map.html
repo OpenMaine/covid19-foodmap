@@ -42,7 +42,7 @@
       <span id="nav-desktop"></span>
       <div class="main-content">
         <div class="card main-card">
-          <div class="card-body filter-card">
+          <div id="top-card" class="card-body filter-card">
             <div class="row ">
               <div class="col-12">
                 <h1 class="header-dark">Find food support services in Maine</h1>
@@ -55,7 +55,7 @@
       </div>
       <!-- filled by handlebars template in DomEventHandlers if on mobile -->
       <span id="filters-mobile" class="toggled"></span>
-      <span id="nav-mobile" ></span>
+      <span id="nav-mobile"></span>
     </div>
     <!-- /#page-content-wrapper -->
   </div>
@@ -144,7 +144,10 @@
   <!-- navbar template -->
   <script id="navbar-template" type="text/x-handlebars-template">
     <nav class="navbar navbar-expand-lg navbar-custom navbar-dark">
-      <div class="navbar-header text-light hidden-sm">Maine Food Map</div>
+      <div class="navbar-header text-light hidden-sm">
+        <div>Maine</div>
+        <div>Food Map</div>
+      </div>
       <div>
         <button class="btn btn-primary menu-button" id="home-button" aria-label="Go to Maine Food Map homepage">
             <i class="material-icons toggle-icon" title="Home">home</i><br>
