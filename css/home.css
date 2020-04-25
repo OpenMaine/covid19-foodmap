@@ -1,5 +1,5 @@
 #home {
-    background: linear-gradient(0deg,  rgba(9,9,121,.9) 0%, rgba(0, 123, 255, 1) 100%);
+    background: linear-gradient(0deg,  rgba(9,9,121,.9) 0%, #0063cc 100%);
 }
 
 #home-footer {
@@ -7,13 +7,13 @@
 }
 
 #hero-tagline {
-    color: rgba(255, 255, 255, .65);
+    color: rgba(255, 255, 255, .85);
 }
 #hero-tagline > a {
-    color: rgba(255, 255, 255, .65);
+    color: rgba(255, 255, 255, .85);
 }
 #hero-tagline > a:hover {
-    color: rgba(255, 255, 255, .95);
+    color: rgb(255, 255, 255);
 }
 
 #filter-container {
@@ -41,7 +41,7 @@
 .toggle-label {
     display: block; 
     margin-top: -8px; 
-    color: #f0f0f0;
+    color: #ffffff;
     font-size: 12px;
     font-weight: bold;
 }
@@ -58,17 +58,12 @@
     font-weight: 500;
     font-size: 20px;
 }
-.resource-description {
-    margin-bottom: 6px;
-}
-.resource-link>a{
-    font-size: 18px;
+.resource-header>a{
     display: flex;
     align-items: center;
 }
-.resource-link>a:hover {
-    text-decoration: none;
-    
+.resource-description {
+    margin-bottom: 6px;
 }
 
 @media (max-width: 768px) {
