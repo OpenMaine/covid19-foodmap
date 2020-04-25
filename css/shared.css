@@ -64,8 +64,13 @@ label {
   width: 100%;
 }
 
+.badge.badge-info {
+  background-color: #117888;
+}
+
 /* select2 overrides */
-.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove,
+.select2-container--default .select2-selection--single .select2-selection__placeholder {
   color: #666666;
 }
 /* End accessibility tweaks to theme */

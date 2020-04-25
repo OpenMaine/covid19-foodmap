@@ -100,11 +100,11 @@ class PantryMapController {
     _setLegend() {
         let div = L.DomUtil.create('div', 'info legend');
         div.innerHTML += '<div style="background-color:white;>';
-        div.innerHTML += `<img src=${MarkerIcon.getPath(MarkerIcon.Restaurant)} /> &ndash; Meal Site <br>`;
-        div.innerHTML += `<img src=${MarkerIcon.getPath(MarkerIcon.Grocery)} /> &ndash; Food Pantry <br>`;
-        div.innerHTML += `<img src=${MarkerIcon.getPath(MarkerIcon.Home)} /> &ndash; Shelter <br>`;
-        div.innerHTML += `<img src=${MarkerIcon.getPath(MarkerIcon.DayCare)} /> &ndash; Youth Program <br>`;
-        div.innerHTML += `<img src=${MarkerIcon.getPath(MarkerIcon.Star)} /> &ndash; Other <br>`;
+        div.innerHTML += `<img src=${MarkerIcon.getPath(MarkerIcon.Restaurant)} alt="Meal Site"/> &ndash; Meal Site <br>`;
+        div.innerHTML += `<img src=${MarkerIcon.getPath(MarkerIcon.Grocery)} alt="Food Pantry"/> &ndash; Food Pantry <br>`;
+        div.innerHTML += `<img src=${MarkerIcon.getPath(MarkerIcon.Home)} alt="Shelter"/> &ndash; Shelter <br>`;
+        div.innerHTML += `<img src=${MarkerIcon.getPath(MarkerIcon.DayCare)} alt="Youth Program"/> &ndash; Youth Program <br>`;
+        div.innerHTML += `<img src=${MarkerIcon.getPath(MarkerIcon.Star)} alt="Other"/> &ndash; Other <br>`;
         div.innerHTML += '</div>'; 
         this.map.addLegend(div);
     }

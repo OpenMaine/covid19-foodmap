@@ -94,12 +94,12 @@
 }
 .toggle-icon {
   font-size: 32px !important;
-  color: orange;
+  color: #ffab0f;
 }
 .toggle-label {
   display: block; 
   margin-top: -8px; 
-  color: burlywood;
+  color: #f4e7d7;
   font-size: 12px;
   font-weight: bold;
 }

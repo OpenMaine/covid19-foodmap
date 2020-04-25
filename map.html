@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Find food pantries, meal sites, SNAP retailers, and other food resources in Maine">
   <meta name="author" content="OpenMaine Code for America Brigade">
 
@@ -26,15 +26,15 @@
 
 <body>
   <!-- Sidebar -->
-  <div class="border-right shadow-lg toggled sidebar-toggleable margin-transition" id="sidebar-wrapper">
+  <aside class="border-right shadow-lg toggled sidebar-toggleable margin-transition" id="sidebar-wrapper">
     <div class="sidebar-toggleable toggled" id="sidebar-heading"></div>
     <div id="map-list-wrapper">
       <div id="map-result-spacer"></div>
       <div id="map-results-list"></div>
     </div>
-  </div>
+  </aside>
   
-  <div class="d-flex" id="wrapper">
+  <main class="d-flex" id="wrapper">
     <div class="toggled sidebar-toggleable margin-transition hidden-lg">&nbsp;</div>
     <!-- Page Content -->
     <div id="page-content-wrapper">
@@ -58,7 +58,7 @@
       <span id="nav-mobile"></span>
     </div>
     <!-- /#page-content-wrapper -->
-  </div>
+  </main>
   <!-- /#wrapper -->
 
 
@@ -182,13 +182,15 @@
           <small class="text-muted">Clears county and town filters</small>
         </div>
         <div class="col-sm-2 col-3">
-          <label class="top-label" for="radius-select">Radius</label>
-          <select class="custom-select form-control select-default" id="radius-select" size="1" aria-describedby="hero-radius-help" required>
-            <option value=10>10</option>
-            <option value=20>20</option>
-            <option value=30>30</option>
-            <option value=50>50</option>
-          </select>
+          <label class="top-label" for="radius-select">
+            Radius
+            <select class="custom-select form-control select-default" id="radius-select" size="1" required>
+              <option value=10>10</option>
+              <option value=20>20</option>
+              <option value=30>30</option>
+              <option value=50>50</option>
+            </select>
+          </label>
           <small class="text-muted">Miles</small>
         </div>
         <div class="col-lg-2 col-sm-3 col-12" id="zip-search-button-container">
@@ -198,22 +200,25 @@
 
       <div class="row">
         <div class="col-md-5 col-sm-12 col-12">
-          <label class="top-label" for="category-select">Category</label>
-          <select class="custom-select select-default my-1 mr-sm-2" 
-                  id="category-select"               
-                  name="category-select[]"
-                  multiple="multiple">
-          </select>
+          <label class="top-label" for="category-select">Category
+            <select class="custom-select select-default my-1 mr-sm-2" 
+                    id="category-select"               
+                    name="category-select[]"
+                    multiple="multiple">
+            </select>
+          </label>
         </div>
         <div class="col-md-3 col-6">
-          <label class="top-label" for="county-select">County</label>
-          <select class="custom-select select-default my-1 mr-sm-2" id="county-select">
-          </select>
+          <label class="top-label" for="county-select">County
+            <select class="custom-select select-default my-1 mr-sm-2" id="county-select">
+            </select>
+          </label>
         </div>
         <div class="col-md-4 col-6">
-          <label class="top-label" for="town-select">Town</label>
-          <select class="custom-select select-default my-1 mr-sm-2" id="town-select">
-          </select>
+          <label class="top-label" for="town-select">Town
+            <select class="custom-select select-default my-1 mr-sm-2" id="town-select">
+            </select>
+          </label>
         </div>
       </div>
     </div>
