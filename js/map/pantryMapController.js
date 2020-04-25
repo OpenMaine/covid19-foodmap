@@ -216,7 +216,7 @@ class PantryMapController {
             `<span style="font-size:1.1rem">${foodResource.Name}</span><br>`,
             `<hr style="margin-top: 0; margin-bottom: 4px;">`,
             `<small><b>Category: </b>${foodResource.Category}</small><br>`,
-            `<small><b>Phone: </b>${foodResource.Phone}</small><br>`,
+            `<small><b>Phone: </b><a href="tel:${Util.telFormat(foodResource.Phone)}">${foodResource.Phone}</a></small><br>`,
         ];
 
         if (!Util.isNullOrEmpty(foodResource.WebLink)) {
