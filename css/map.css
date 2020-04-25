@@ -319,3 +319,8 @@
 .leaflet-bottom {
   z-index: 998 !important;
 }
+
+a[href^="tel:"]:before {
+  content: "\260e";
+  margin-right: 0.5em;
+}
