@@ -27,7 +27,7 @@ body {
 }
 
 .navbar-custom {
-    background-color: #323272!important;
+    background-color: #323272;
     padding-top: 0.25rem;
     padding-bottom: 0.25rem;
     -webkit-box-shadow: 0 0 5px 0 rgba(50, 50, 50, 0.75);
@@ -40,6 +40,35 @@ body {
     font-weight: 400;
     margin-left: 1rem;
 }
+
+/* Begin accessibility tweaks to theme */
+.navbar-dark.navbar-custom .navbar-nav .nav-link {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+a {
+  color: #0063cc;
+}
+
+/* Bootstrap overrides */
+.btn-primary {
+  background-color: #0063cc;
+  border-color: #0063cc;
+}
+
+.text-muted {
+  color: #5f666d !important;
+}
+
+label {
+  width: 100%;
+}
+
+/* select2 overrides */
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+  color: #666666;
+}
+/* End accessibility tweaks to theme */
 
 .select2-container {
     width: 100%!important;
