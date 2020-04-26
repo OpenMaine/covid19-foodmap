@@ -5,3 +5,7 @@ Handlebars.registerHelper('arr_empty', function(arr, opts) {
         return opts.inverse(this);
     }
 });
+
+Handlebars.registerHelper('tel', function(phone) {
+    return phone.replace(/\D/g, '').replace(/^1?/, '+1');
+});

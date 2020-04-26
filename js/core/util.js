@@ -20,5 +20,8 @@ const Util = {
         if (value.constructor.name === "Array")
             return value.length === 0;
         return false;
-    }
+    },
+  
+    telFormat: (phone) => 
+      phone.replace(/\D/g, '').replace(/^1?/, '+1')
 }

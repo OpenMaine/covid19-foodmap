@@ -6,15 +6,26 @@
 */
 class PantryMapController {
     
-    constructor(apiEndpoint, map) {
+    constructor(map) {
+        /** service settings */
+        const baseUri = "https://sheetsapi.azurewebsites.net/Sheets.php";
+        const dataSheetId = "1H9utiRTBZrGreyqSB6oGL1BiVMi7UnM3JOx1HiMWEkc";
+        const foodResourceSheetName = "QueryData";
+        const foodResourceSheetRange = "A:S";
+        const cityOptionsSheetName = "Cities";
+        const cityOptionsSheetRange = "A:A";
+        
+        this.foodResourceUrl = `${baseUri}?sheetId=${dataSheetId}&sheetName=${foodResourceSheetName}&sheetRange=${foodResourceSheetRange}`;
+        this.cityOptionsUrl = `${baseUri}?sheetId=${dataSheetId}&sheetName=${cityOptionsSheetName}&sheetRange=${cityOptionsSheetRange}`;
+        /** End service settings */
+        
+
         this.data = [];
+        this.cityOptions = [];
         this.filteredData = [];
         this.sideBarData =  [];      // Sidebar shows only a portion of results, updated on scroll
-        this.refreshInterval = null; // Store interval created by start()
-        this.filters = [];           // Filters are type mappingCore.Filter
-        this.apiEndpoint = apiEndpoint;
+        this.filters = [];           // Type mappingCore.Filter
         this.map = map;
-        this.intervalDelay = 100000000; //Auto refresh data every x ms
         this.dataLoaded = false;
         this._getData = this._getData.bind(this);
         this._setSidebarScrollListener();
@@ -22,13 +33,10 @@ class PantryMapController {
     }
 
     start(loadCallback) {
-        this._getData(loadCallback);
-        this.refreshInterval = setInterval(() => this._getData(loadCallback), this.intervalDelay); 
-    }
-
-    stop() {
-        if (this.refreshInterval !== null)
-            clearInterval(this.refreshInterval);
+        this._getCityOptions().then(() => {
+        }).always(() => {
+            this._getData(loadCallback);
+        });
     }
 
     // TODO: Abstract this when the next filter is added.
@@ -85,7 +93,7 @@ class PantryMapController {
         - Response items projected onto FoodResource objects
     */
     _getData(successCallback) {
-        $.get(this.apiEndpoint).done((response, status) => {
+        $.get(this.foodResourceUrl).done((response, status) => {
             this.data = JSON.parse(response).map(data => new FoodResource(data));
             
             if (this.dataLoaded)
@@ -97,14 +105,24 @@ class PantryMapController {
         });
     }
 
+    _getCityOptions() {
+        const deferred = $.Deferred();
+
+        $.get(this.cityOptionsUrl).done((response, status) => {
+            this.cityOptions = JSON.parse(response).map(data => data.City);
+            deferred.resolve();
+        }).fail((e) => {
+            deferred.reject();
+        });
+
+        return deferred.promise();
+    }
+
     _setLegend() {
-        let div = L.DomUtil.create('div', 'info legend');
+        let div = L.DomUtil.create('div', 'legend');
         div.innerHTML += '<div style="background-color:white;>';
-        div.innerHTML += `<img src=${MarkerIcon.getPath(MarkerIcon.Restaurant)} /> &ndash; Meal Site <br>`;
-        div.innerHTML += `<img src=${MarkerIcon.getPath(MarkerIcon.Grocery)} /> &ndash; Food Pantry <br>`;
-        div.innerHTML += `<img src=${MarkerIcon.getPath(MarkerIcon.Home)} /> &ndash; Shelter <br>`;
-        div.innerHTML += `<img src=${MarkerIcon.getPath(MarkerIcon.DayCare)} /> &ndash; Youth Program <br>`;
-        div.innerHTML += `<img src=${MarkerIcon.getPath(MarkerIcon.Star)} /> &ndash; Other <br>`;
+        div.innerHTML += `<img src=${MarkerIcon.getPath(MarkerIcon.Grocery)} alt="Food Pantry"/> &ndash; Food Pantry <br>`;
+        div.innerHTML += `<img src=${MarkerIcon.getPath(MarkerIcon.Restaurant)} alt="Meal Site"/> &ndash; Meal Site <br>`;
         div.innerHTML += '</div>'; 
         this.map.addLegend(div);
     }
@@ -215,32 +233,32 @@ class PantryMapController {
         let components = [
             `<span style="font-size:1.1rem">${foodResource.Name}</span><br>`,
             `<hr style="margin-top: 0; margin-bottom: 4px;">`,
-            `<small><b>Category: </b>${foodResource.Category}</small><br>`,
-            `<small><b>Phone: </b>${foodResource.Phone}</small><br>`,
+            `<span><b>Category: </b>${foodResource.Category}</span><br>`,
+            `<span><b>Phone: </b><a href="tel:${Util.telFormat(foodResource.Phone)}">${foodResource.Phone}</a></span><br>`,
         ];
 
         if (!Util.isNullOrEmpty(foodResource.WebLink)) {
-            components.push(`<small><b>Website: </b><a href='${foodResource.WebLink}' target='_blank'>${foodResource.WebLink}</a></small><br>`);
+            components.push(`<span><b>Website: </b><a href='${foodResource.WebLink}' target='_blank'>${foodResource.WebLink}</a></span><br>`);
         }
         
         if (!Util.isNullOrEmpty(foodResource.WebLink2)) {
-            components.push(`<small><b>Website 2: </b><a href='${foodResource.WebLink}' target='_blank'>${foodResource.WebLink}</a></small><br>`);
+            components.push(`<span><b>Website 2: </b><a href='${foodResource.WebLink}' target='_blank'>${foodResource.WebLink}</a></span><br>`);
         }
         
-        components.push(`<small><b>Address: </b>${foodResource.Address}</small><br>`);
+        components.push(`<span><b>Address: </b>${foodResource.Address}</span><br>`);
         
         if (!Util.isNullOrEmpty(foodResource.SpecialHoursOfOperation)) {
-            components.push(`<small><b>Covid-19 Hours: </b>${foodResource.SpecialHoursOfOperation}</small><br>`);   
+            components.push(`<span><b>Covid-19 Hours: </b>${foodResource.SpecialHoursOfOperation}</span><br>`);   
         } else if (!Util.isNullOrEmpty(foodResource.HoursOfOperation)) {
-            components.push(`<small><b>Hours: </b>${foodResource.HoursOfOperation}</small><br>`);
+            components.push(`<span><b>Hours: </b>${foodResource.HoursOfOperation}</span><br>`);
         }
 
         if (!Util.isNullOrEmpty(foodResource.SpecialNotes)) {
-            components.push(`<small><b>Covid-19 Notes: </b>${foodResource.SpecialNotes}</small><br>`);   
+            components.push(`<span><b>Covid-19 Notes: </b>${foodResource.SpecialNotes}</span><br>`);   
         }
         
         if (!Util.isNullOrEmpty(foodResource.OperationalNotes)) {
-            components.push(`<small><b>Notes: </b>${foodResource.OperationalNotes}</small><br>`);
+            components.push(`<span><b>Notes: </b>${foodResource.OperationalNotes}</span><br>`);
         }
         
         return components.join("");

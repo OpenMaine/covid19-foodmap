@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="description" content="Find food pantries, meal sites, SNAP retailers, and other food resources in Maine">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Find food pantries, meal sites, and other food resources in Maine">
   <meta name="author" content="OpenMaine Code for America Brigade">
 
   <title>Maine Food Finder</title>
@@ -26,15 +26,15 @@
 
 <body>
   <!-- Sidebar -->
-  <div class="border-right shadow-lg toggled sidebar-toggleable margin-transition" id="sidebar-wrapper">
+  <aside class="border-right shadow-lg toggled sidebar-toggleable margin-transition" id="sidebar-wrapper">
     <div class="sidebar-toggleable toggled" id="sidebar-heading"></div>
     <div id="map-list-wrapper">
       <div id="map-result-spacer"></div>
       <div id="map-results-list"></div>
     </div>
-  </div>
+  </aside>
   
-  <div class="d-flex" id="wrapper">
+  <main class="d-flex" id="wrapper">
     <div class="toggled sidebar-toggleable margin-transition hidden-lg">&nbsp;</div>
     <!-- Page Content -->
     <div id="page-content-wrapper">
@@ -58,7 +58,7 @@
       <span id="nav-mobile"></span>
     </div>
     <!-- /#page-content-wrapper -->
-  </div>
+  </main>
   <!-- /#wrapper -->
 
 
@@ -89,7 +89,7 @@
             {{/if}}
             <div class="small">
               {{Category}} 
-              <span class="text-muted small ml-1">{{Phone}}</span>
+              <a href="tel:{{tel Phone}}" class="small ml-1">{{Phone}}</a>
             </div>
           </div>
         </div>
@@ -170,52 +170,47 @@
   <script id="filters-template" type="text/x-handlebars-template">
     <div class="container-fluid">
 
-      <form id="zip-search-form" class="row mb-4 d-flex align-items-center">
-        <div class="col-sm-5 col-9">
-          <label class="top-label" for="zipcode-input">Zip Code</label>
-          <input name="zipcode-input" id="zipcode-input" 
-                required pattern="^([0-9]{5})\s*[-]?\s*([0-9]{4})?\s*$" 
-                minlength="5" maxlength="10" 
-                class="form-control" 
-                type="text" 
-                placeholder="Use format 12345">
-          <small class="text-muted">Clears county and town filters</small>
-        </div>
-        <div class="col-sm-2 col-3">
-          <label class="top-label" for="radius-select">Radius</label>
-          <select class="custom-select form-control select-default" id="radius-select" size="1" aria-describedby="hero-radius-help" required>
-            <option value=10>10</option>
-            <option value=20>20</option>
-            <option value=30>30</option>
-            <option value=50>50</option>
-          </select>
-          <small class="text-muted">Miles</small>
-        </div>
-        <div class="col-lg-2 col-sm-3 col-12" id="zip-search-button-container">
-          <button id="zip-search" type="submit" title="Search by zip code" class="btn btn-primary btn-block">Seach Zip Code</button>
-        </div>
-      </form>
-
       <div class="row">
-        <div class="col-md-5 col-sm-12 col-12">
-          <label class="top-label" for="category-select">Category</label>
-          <select class="custom-select select-default my-1 mr-sm-2" 
-                  id="category-select"               
-                  name="category-select[]"
-                  multiple="multiple">
-          </select>
-        </div>
-        <div class="col-md-3 col-6">
-          <label class="top-label" for="county-select">County</label>
-          <select class="custom-select select-default my-1 mr-sm-2" id="county-select">
-          </select>
-        </div>
-        <div class="col-md-4 col-6">
-          <label class="top-label" for="town-select">Town</label>
-          <select class="custom-select select-default my-1 mr-sm-2" id="town-select">
-          </select>
+        <div class="col-sm-11 col-12">
+          <label class="top-label" for="category-select">Category
+            <select class="custom-select select-default my-1 mr-sm-2" 
+              id="category-select"               
+              name="category-select[]"
+              multiple="multiple">
+            </select>
+          </label>
         </div>
       </div>
+
+      <form id="zip-search-form" class="row mb-4 d-flex align-items-center">
+        <div class="col-sm-6 col-9">
+          <label class="top-label" for="zipcode-input">Town or Zip Code</label>
+          <select 
+            class="custom-select select-default my-1 mr-sm-2" 
+            id="zipcode-input"
+            size="1"
+            class="form-control" 
+            required>
+          </select>
+          <small class="text-muted">Search by Maine town or zip code</small>
+        </div>
+        <div class="col-sm-2 col-3">
+          <label class="top-label" for="radius-select">
+            Radius
+          </label>
+            <select class="custom-select form-control select-default" id="radius-select" size="1" required>
+              <option value=10>10</option>
+              <option value=20>20</option>
+              <option value=30>30</option>
+              <option value=50>50</option>
+              <option value=75>75</option>
+            </select>
+          <small class="text-muted">Miles</small>
+        </div>
+        <div class="col-sm-3 col-12" id="zip-search-button-container">
+          <button id="zip-search" type="submit" title="Search by zip code" class="btn btn-primary btn-block">Seach</button>
+        </div>
+      </form>
     </div>
   </script>
   <!-- End handlebars templates -->
@@ -237,64 +232,20 @@
   <script src="js/map/domEventHandlers.js"></script>
   <script src="js/handlebarsHelpers.js"></script>
   <script src="js/map/pantryMapController.js"></script>
+  <script src="js/map/select2Extensions.js"></script>
   <!-- End app JS -->
 
   <script>
     $(async function() {
-      /** service settings */
-      const baseUri = "https://sheetsapi.azurewebsites.net/Sheets.php";
-      const sheetId = "1H9utiRTBZrGreyqSB6oGL1BiVMi7UnM3JOx1HiMWEkc";
-      const sheetName = "QueryData";
-      const sheetRange = "A:S";
-      /** End service settings */
-
       const defaultLocation = await new DeviceLocationProvider().getLocation();
       const zoomLevel = defaultLocation ? 12 : 7;
-      const serviceUri = `${baseUri}?sheetId=${sheetId}&sheetName=${sheetName}&sheetRange=${sheetRange}`;
       const startGeopoint = defaultLocation ? new GeoPoint(defaultLocation.latitude, defaultLocation.longitude) : new GeoPoint(45.1690993, -69.2568189);
+
       const map = new DefaultMap('main-map', startGeopoint, zoomLevel);
-      const pantryMapper = new PantryMapController(serviceUri, map);
-      const domEventHandlers = new DomEventHandlers(pantryMapper);
+      const mapController = new PantryMapController(map);
       
+      const domEventHandlers = new DomEventHandlers(mapController);
       domEventHandlers.init();
-      
-      //callback for after first data fetch completes
-      pantryMapper.start(() => {
-        domEventHandlers.setFilterOptions();
-        let filterApplied = false;
-        
-        const queryParams = Util.getQueryParams();
-
-        if (queryParams.zipCode && queryParams.zipCode.length > 0) {
-          $("#zipcode-input").val(queryParams.zipCode);
-          if (queryParams.radius && queryParams.radius.length > 0) {
-            $("#radius-select").val(queryParams.radius);
-          } else {
-            $("#radius-select").val(10);
-          }
-          $("#zip-search-form").submit();
-          filterApplied = true;
-        } else {
-          if (queryParams.town && queryParams.town.length > 0) {
-            $("#town-select").val(queryParams.town).trigger('change');
-            filterApplied = true;
-          }
-          if (queryParams.county && queryParams.county.length > 0) {
-            $("#county-select").val(queryParams.county).trigger('change');
-            filterApplied = true;
-          }    
-        }
-
-        if (queryParams.category && queryParams.category.length > 0) {
-          $("#category-select").val(queryParams.category).trigger('change');
-          filterApplied = true;
-        }
-        
-        if (!filterApplied) {
-          $("#category-select").val(["Food Pantry", "Meal Sites"]).trigger('change');
-          map.setPosition(startGeopoint, zoomLevel);
-        }
-      });
     });
   </script>
 </body>

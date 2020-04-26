@@ -44,6 +44,7 @@
 
 .filter-card {
   padding-bottom: 0;
+  overflow-x: hidden;
 }
 
 .header-dark {
@@ -94,12 +95,12 @@
 }
 .toggle-icon {
   font-size: 32px !important;
-  color: orange;
+  color: #ffab0f;
 }
 .toggle-label {
   display: block; 
   margin-top: -8px; 
-  color: burlywood;
+  color: #f4e7d7;
   font-size: 12px;
   font-weight: bold;
 }
@@ -141,7 +142,7 @@
   }
   
   .header-dark {
-    font-size: 1.25em;
+    font-size: 1.15em;
     margin-bottom: 0;
   }
   .main-content {
@@ -318,4 +319,9 @@
 
 .leaflet-bottom {
   z-index: 998 !important;
+}
+
+a[href^="tel:"]:before {
+  content: "\260e";
+  margin-right: 0.5em;
 }

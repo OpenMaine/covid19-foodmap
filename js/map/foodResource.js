@@ -44,12 +44,6 @@ class FoodResource {
         else if (this.Category == "Food Pantry") {
             this.IconUrl = MarkerIcon.getPath(MarkerIcon.Grocery);
         }
-        else if (this.Category == "Shelter") {
-            this.IconUrl = MarkerIcon.getPath(MarkerIcon.Home);
-        }
-        else if (this.Category == "Youth Programs") {
-            this.IconUrl = MarkerIcon.getPath(MarkerIcon.DayCare);
-        }
         else {
             this.IconUrl = MarkerIcon.getPath(MarkerIcon.Star);
         }

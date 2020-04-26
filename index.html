@@ -3,8 +3,8 @@
 
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="Find food pantries, meal sites, SNAP retailers, and other food resources in Maine">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="Find food pantries, meal sites, and other food resources in Maine">
   <meta name="author" content="OpenMaine Code for America Brigade">
 
   <title>Maine Food Finder</title>
@@ -39,7 +39,7 @@
     </div>
   </nav>
 
-  <div id="page-content">
+  <main id="page-content">
     <!-- Header -->
     <header class="py-5 mb-5" id="home">
       <div class="container h-100">
@@ -66,34 +66,38 @@
             <form  id="search-form" class="mt-3">
               <div class="row mb-5 d-flex align-items-center">
                 <div class="col-sm-6 col-7 mb-3 ">
-                  <label for="zip-code"><strong>Zip code</strong></label>
-                  <input required pattern="^([0-9]{5})\s*[-]?\s*([0-9]{4})?\s*$" 
-                         minlength="5" maxlength="10" 
-                         type="text" class="form-control" 
-                         id="zip-code" name="zip-code" 
-                         aria-describedby="hero-zip-help" 
-                         placeholder="Use format 12345">
+                  <label for="zip-code"><strong>Zip code</strong>
+                    <input required pattern="^([0-9]{5})\s*[-]?\s*([0-9]{4})?\s*$" 
+                           minlength="5" maxlength="10" 
+                           type="text" class="form-control" 
+                           id="zip-code" name="zip-code" 
+                           aria-describedby="hero-zip-help" 
+                           placeholder="Use format 12345">
+                  </label>
                   <small id="hero-zip-help" class="form-text text-muted">Enter a Maine zip code</small>
                 </div>
     
                 <div class="col-sm-6 col-5 mb-3">
-                  <label for="radius-select"><strong>Search radius</strong></label>
-                  <select size="1" required class="custom-select form-control select-default" id="radius-select" aria-describedby="hero-radius-help">
-                    <option value=10>10</option>
-                    <option value=20>20</option>
-                    <option value=30>30</option>
-                    <option value=50>50</option>
-                  </select>
+                  <label for="radius-select"><strong>Search radius</strong>
+                    <select size="1" required class="custom-select form-control select-default" id="radius-select" aria-describedby="hero-radius-help">
+                      <option value=10>10</option>
+                      <option value=20>20</option>
+                      <option value=30>30</option>
+                      <option value=50>50</option>
+                      <option value=75>75</option>
+                    </select>
+                  </label>
                   <small id="hero-radius-help" class="form-text text-muted">Miles from zip code</small>
                 </div>
                 <div class="col-12">
-                  <label for="category-select"><strong>Categories</strong></label>
-                  <select required class="custom-select select-default" 
-                    aria-describedby="hero-category-help"
-                    id="category-select"               
-                    name="category-select[]"
-                    multiple="multiple">
-                  </select>
+                  <label for="category-select"><strong>Categories</strong>
+                    <select required class="custom-select select-default" 
+                      aria-describedby="hero-category-help"
+                      id="category-select"               
+                      name="category-select[]"
+                      multiple="multiple">
+                    </select>
+                  </label>
                   <small id="hero-category-help" class="form-text text-muted">Select one or more categories</small>
                 </div>
               </div>
@@ -106,7 +110,7 @@
     </header>
     
     <!-- Mission statement -->
-    <div class="container" id="mission">
+    <section class="container" id="mission">
       <div class="row mb-5 mt-5">
         <div class="col-12">
           <h2 id="mission-title" class="text-dark">
@@ -141,12 +145,12 @@
           </div>
         </div>
         <div class="col-sm-5">
-          <img class="img-thumbnail" alt="apples" src="images/apple_red.jfif"/>
+          <img class="img-thumbnail" src="images/apple_red.jfif" alt="Dripping wet red apples"/>
         </div>
       </div>
-    </div>
+    </section>
     <!-- About the data -->
-    <div class="container" id="about">
+    <section class="container" id="about">
       <div class="row mb-5 mt-5">
         <div class="col-12">
           <h2 id="data-title" class="text-dark">
@@ -164,12 +168,12 @@
           </div>
         </div>
         <div class="col-sm-5">
-          <img class="img-thumbnail" alt="vegetables" src="images/produce.jpg"/>
+          <img class="img-thumbnail" src="images/produce.jpg" alt="Stacks of vegetables"/>
         </div>
       </div>
-    </div>
+    </section>
     <!-- Other resources -->
-    <div class="container" id="other-resources">
+    <section class="container" id="other-resources">
       <div class="row mb-5 mt-5">
         <div class="col-12">
           <h2 id="other-resources-title" class="text-dark">Other Resources</h2>
@@ -178,55 +182,51 @@
         <div class="col-12">
           <div class="row" id="other-resources-text">
             <div class="col-12 resource-container" style="padding-top: 0;">
-              <div class="resource-header">Good Shepherd Food Bank</div>
-              <div class="resource-description">Good Shepherd Food Bank and its network of 450+ agency partners — including food pantries and meal sites — is the largest hunger-relief organization in Maine</div>
-              <div class="resource-link">
-                <a href="https://www.gsfb.org/" title="Good Shepherd Food Bank Website" target="_blank" rel="noopener">
-                  View Website 
-                 <i class="material-icons ml-1" title="open website">launch</i>
-                </a>
-              </div>
-            </div>
-            <div class="col-12 resource-container">
-              <div class="resource-header">2-1-1 Maine</div>
-              <div class="resource-description">Information about Maine food pantries, meal sites, senior dining sites, and more.</div>
-              <div class="resource-link">
-                <a href="https://211maine.org/" title="2-1-1 Maine Website" target="_blank" rel="noopener">
-                  View Website
+              <div class="resource-header">
+                <a href="https://www.gsfb.org/" alt="Good Shepherd Food Bank Website" target="_blank" rel="noopener">
+                  Good Shepherd Food Bank
                   <i class="material-icons ml-1" title="open website">launch</i>
                 </a>
               </div>
+              <div class="resource-description">Good Shepherd Food Bank and its network of 450+ agency partners — including food pantries and meal sites — is the largest hunger-relief organization in Maine</div>
             </div>
             <div class="col-12 resource-container">
-              <div class="resource-header">Wayside Food Programs</div>
-              <div class="resource-description">A list of community resources available, including food pantries and meals (breakfast & lunch) for youth up to age 18.</div>
-              <div class="resource-link">
-                <a href="https://waysidemaine.org/community-resources" title="Wayside Maine Website" target="_blank" rel="noopener">
-                  View Website 
-                 <i class="material-icons ml-1" title="open website">launch</i>
+              <div class="resource-header">
+                <a href="https://211maine.org/" alt="2-1-1 Maine Website" target="_blank" rel="noopener">
+                  2-1-1 Maine
+                  <i class="material-icons ml-1" title="open website">launch</i>
                 </a>
+              </div>
+              <div class="resource-description">Information about Maine food pantries, meal sites, senior dining sites, and more.</div>
+            </div>
+            <div class="col-12 resource-container">
+              <div class="resource-header">
+                <a href="https://waysidemaine.org/community-resources" alt="Wayside Maine Website" target="_blank" rel="noopener">
+                  Wayside Food Programs
+                  <i class="material-icons ml-1" title="open website">launch</i>
+                </a>
+                <div class="resource-description">A list of community resources available, including food pantries and meals (breakfast &amp; lunch) for youth up to age 18.</div>
               </div>
             </div>
 
             <div class="col-12 resource-container">
-              <div class="resource-header">The Emergency Food Assistance Program</div>
+              <div class="resource-header">
+                <a href="https://www.maine.gov/dacf/ard/tefap/bytown.shtml" alt="Visit The Emergency Food Assistance Program website" target="_blank" rel="noopener">
+                  The Emergency Food Assistance Program
+                  <i class="material-icons ml-1" title="open website">launch</i>
+                </a>
+              </div>
               <div class="resource-description">
                 The Emergency Food Assistance Program (TEFAP) is a federal program that helps supplement the diets of low-income Americans by providing them with emergency food assistance at no cost. 
-              </div>
-              <div class="resource-link">
-                <a href="https://www.maine.gov/dacf/ard/tefap/bytown.shtml" title="Visit The Emergency Food Assistance Program website" target="_blank" rel="noopener">
-                  View Website 
-                 <i class="material-icons ml-1" title="open website">launch</i>
-                </a>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
     <!-- Contact and social media -->
-    <div class="container mt-2" id="contact">
+    <section class="container mt-2" id="contact">
       <div class="row mb-5">
         <div class="col-12">
           <h2 id="contact-title" class="text-dark">
@@ -244,11 +244,11 @@
           <div class="row mt-4 text-center">
             <div class="col-md-6">
               <div class="mt-3">
-                <h4 class="h4">Email</h4>
+                <h3 class="h4">Email</h3>
                 <div>
                   <span>
-                    <span id="contact-email" class="mr-1">hello@openmaine.org</span>
                     <a href="mailto:hello@openmaine.org" target="_blank" title="Email hello@openmaine.org">
+                      <span id="contact-email" class="mr-1">hello@openmaine.org</span>
                       <i class="fa fa-envelope"></i>
                     </a>
                   </span>
@@ -256,7 +256,7 @@
               </div>
             </div>
             <div class="col-md-6 mt-3">
-              <h4 class="h4">Social Media</h4>
+              <h3 class="h4">Social Media</h3>
               <ul class="list-inline mb-0" id="social-media-icons">
                 <li class="list-inline-item">
                   <a href="https://www.facebook.com/openmaine" target="_blank" rel="noopener" title="OpenMaine Facebook">
@@ -303,9 +303,9 @@
           </div>
         </div>
       </div>
-    </div>
+    </section>
     <!-- /.about container -->
-  </div>
+  </main>
 
   <!-- Footer -->
   <footer class="py-5 bg-dark" id="home-footer">
