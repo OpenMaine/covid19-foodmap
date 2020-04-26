@@ -5,19 +5,15 @@
  *  - core/deviceLocationProvider
  */
 class DomEventHandlers {
-    
-    
     /**
-     * @param pantryMapper: PantryMapController 
+     * @param mapController: PantryMapController 
      */
-    constructor(pantryMapper) {
-        this.pantryMapper = pantryMapper;
+    constructor(mapController) {
+        this.mapController = mapController;
         
         this._categorySelectId = "category-select";
-        this._countySelectId = "county-select";
-        this._townSelectId = "town-select";
         this._radiusSelectId = "radius-select";
-        this._zipCodeId = "zipcode-input";
+        this._townZipId = "zipcode-input";
         this._lastWasMobile = null;
     }
 
@@ -26,6 +22,47 @@ class DomEventHandlers {
         this._setNavbar();
         this._resetInputHandlers();
         this._setResizeHandler();
+        this._initMapController();
+    }
+
+    _initMapController() {
+      //callback for after first data fetch completes
+      this.mapController.start(() => {
+        this.setFilterOptions();
+        let filterApplied = false;
+        
+        const queryParams = Util.getQueryParams();
+
+        if (queryParams.zipCode && queryParams.zipCode.length > 0) {
+          if ($('#zipcode-input').find("option[value='" + queryParams.zipCode + "']").length) {
+              $('#zipcode-input').val(queryParams.zipCode).trigger('change.select2');
+          } else { 
+              // Create a DOM Option and pre-select by default
+              var newOption = new Option(queryParams.zipCode, queryParams.zipCode, true, true);
+              // Append it to the select
+              $('#zipcode-input').append(newOption).trigger('change.select2');
+          } 
+
+          if (queryParams.radius && queryParams.radius.length > 0) {
+            $("#radius-select").val(queryParams.radius);
+          } else {
+            $("#radius-select").val(20);
+          }
+          $("#zip-search-form").submit();
+          filterApplied = true;
+        }    
+        
+        if (queryParams.category && queryParams.category.length > 0) {
+          $("#category-select").val(queryParams.category).trigger('change');
+          filterApplied = true;
+        }
+        
+        if (!filterApplied) {
+          $("#radius-select").val(20);
+          $("#category-select").val(["Food Pantry", "Meal Sites"]).trigger('change');
+          this.mapController.map.zoomDefault();
+        }
+      });
     }
 
     setSelectOptions(domId, optionSet) {
@@ -36,24 +73,21 @@ class DomEventHandlers {
     }
 
     setFilterOptions() {
-        const townOptions = [...new Set(this.pantryMapper.data.map(d => d.Town))].sort();
-        const countyOptions = [...new Set(this.pantryMapper.data.map(d => d.County))].sort();
-        const categoryOptions = [...new Set(this.pantryMapper.data.map(d => d.Category))].sort();
-        this.setSelectOptions(this._townSelectId, townOptions);
-        this.setSelectOptions(this._countySelectId, countyOptions);
+        const cityOptions = this.mapController.cityOptions.sort();
+        this.setSelectOptions(this._townZipId, cityOptions);
+
+        const categoryOptions = ["Food Pantry", "Meal Sites"].sort();
         this.setSelectOptions(this._categorySelectId, categoryOptions);
         this._resetSelected();
     }
 
-
     _setSelect2Inputs() {
-        if (window.innerWidth < 768) {
-            $('#county-select').select2({placeholder: "Filter county", allowClear: true, minimumResultsForSearch: -1});
-            $('#town-select').select2({placeholder: "Filter town", allowClear: true, minimumResultsForSearch: -1});
-        } else {
-            $('#county-select').select2({placeholder: "Filter county", allowClear: true});
-            $('#town-select').select2({placeholder: "Filter town", allowClear: true});
-        }
+        $('#zipcode-input').select2({
+            placeholder: "Enter town or zip code", 
+            allowClear: true, 
+            tags: true,
+            dropdownPosition: 'below'
+        });
 
         $('#category-select').select2({placeholder: "Filter categories", minimumResultsForSearch: -1});
         $('#category-select').on('select2:opening select2:closing', function( event ) {
@@ -84,14 +118,12 @@ class DomEventHandlers {
             target.innerHTML = template();
             $(`#${clearId}`).empty(); 
             this._setSidebarHandlers();
-
         }
 
         setTimeout(() => {
             if (isMobile) {
                 let topHeight = $("#top-card").height();
                 let navHeight = $('#nav-mobile').height();
-                console.log(topHeight, navHeight);
                 $("#main-map").css("min-height", `${window.innerHeight-topHeight-navHeight-20}px`);
             } else {
                 $("#main-map").css("min-height", "70vh");
@@ -149,43 +181,21 @@ class DomEventHandlers {
             //set filter callbacks
             $(`#${this._categorySelectId}`).change((e) => {
                 // Use .val() to get the values of a multiselect field (returns array of strings).
-                this.pantryMapper.setCategoryFilter($(`#${this._categorySelectId}`).val());
-            });
-    
-            $(`#${this._townSelectId}`).change((e) => {
-                this.pantryMapper.clearRadiusFilter();
-                this.pantryMapper.setTownFilter(e.target.value);
-                this._resetSelected(); 
-            });
-    
-            $(`#${this._countySelectId}`).change((e) => {
-                this.pantryMapper.clearRadiusFilter();
-                const selectedCounty = e.target.value;
-                let townOptions = [];
-                if (selectedCounty.length > 0) {
-                    townOptions = [...new Set(this.pantryMapper.data.filter(d => d.County === selectedCounty).map(d => d.Town))].sort();
-                    if (townOptions.indexOf(this.pantryMapper.townFilter) < 0) {
-                        this.pantryMapper.clearTownFilter();
-                    }
-                } else {
-                    townOptions = [...new Set(this.pantryMapper.data.map(d => d.Town))].sort();
-                }
-                
-                this.setSelectOptions(this._townSelectId, townOptions);
-                this.pantryMapper.setCountyFilter(selectedCounty);
-                this._resetSelected();
+                this.mapController.setCategoryFilter($(`#${this._categorySelectId}`).val());
             });
 
             $("#zip-search-form").submit(e => {
                 e.preventDefault();
-                const zip = $(`#${this._zipCodeId}`).val();
+                let userSearch = $(`#${this._townZipId}`).val();
                 const radius = $(`#${this._radiusSelectId}`).val();
-                if (zip && radius && zip.length > 0 && radius.length > 0) {
-                    new Geocoder().getZipcodeGeopoint(zip).then(geopoint => {
-                        this.pantryMapper.setRadiusFilter(zip, geopoint, radius);
+                
+                if (userSearch && radius && userSearch.length > 0 && radius.length > 0) {
+                    let queryString = userSearch;
+                    if (!userSearch.toString().trim().match(/^([0-9]{5})(-[0-9]{4})?$/))
+                        queryString += ", ME";
+                    new Geocoder().geocodeSingleLine(queryString).then(geopoint => {
+                        this.mapController.setRadiusFilter(userSearch, geopoint, radius);
                         this._resetSelected();
-                        $(`#${this._townSelectId}`).trigger('change.select2');
-                        $(`#${this._countySelectId}`).trigger('change.select2');
                     }, () => {});
                 }
             });
@@ -196,10 +206,8 @@ class DomEventHandlers {
     }
 
     _resetSelected() {
-        $(`#${this._categorySelectId}`).val(this.pantryMapper.getCategoryFilter());
-        $(`#${this._townSelectId}`).val(this.pantryMapper.getTownFilter());
-        $(`#${this._countySelectId}`).val(this.pantryMapper.getCountyFilter());
-        $(`#${this._radiusSelectId}`).val(this.pantryMapper.getRadiusFilter().radius);
-        $(`#${this._zipCodeId}`).val(this.pantryMapper.getRadiusFilter().zipCode);
+        $(`#${this._categorySelectId}`).val(this.mapController.getCategoryFilter());
+        $(`#${this._radiusSelectId}`).val(this.mapController.getRadiusFilter().radius);
+        $(`#${this._townZipId}`).val(this.mapController.getRadiusFilter().zipCode);
     }
 }

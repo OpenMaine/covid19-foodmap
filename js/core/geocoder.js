@@ -8,12 +8,11 @@ class Geocoder {
         this._geocodingService = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer";
     }
 
-    getZipcodeGeopoint(zipCode) {
+    geocodeSingleLine(singleLineAddress) {
         const deferred = $.Deferred();
 
-        const match = zipCode.toString().trim().match(/^([0-9]{5})(-[0-9]{4})?$/);
-        if (match){
-            const requestUri = `${this._geocodingService}/findAddressCandidates?f=json&SingleLine=${match[1]}`;
+        if (singleLineAddress && singleLineAddress.length > 0){
+            const requestUri = `${this._geocodingService}/findAddressCandidates?f=json&SingleLine=${singleLineAddress}`;
             $.get(requestUri).done((response, status) => {
                 if (response.candidates && response.candidates.length > 0)
                     deferred.resolve(new GeoPoint(response.candidates[0].location.y, response.candidates[0].location.x));

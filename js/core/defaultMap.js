@@ -1,17 +1,16 @@
 class DefaultMap {
-    
     /**
      * 
-     * @param {*} mapId : The DOM element id for map mounting
-     * @param {*} center : A mappingCore.GeoPoint
-     * @param {*} zoom : zoom level
+     * @param {*} mapId : DOM element id for map mounting
+     * @param {*} defaultCenter : Default center position (type mappingCore.GeoPoint)
+     * @param {*} defaultZoom : Default zoom level 
      */
     constructor(mapId, center, zoom=8) {
         this._mapboxToken = 'pk.eyJ1Ijoiam9uamFuZWxsZSIsImEiOiJjazhxbXg0YmswNW5kM2RvNGNjb2hiN2poIn0.LiFKVlPQe_vqyqjjIw0DIw';
-        
         this.markers = {};
-        this.center = center
-        this.map = L.map(mapId, {center: [center.latitude, center.longitude], zoom: zoom, layers: this._getBasemaps()});
+        this.defaultCenter = center;
+        this.defaultZoom = zoom;
+        this.map = L.map(mapId, {center: [this.defaultCenter.latitude, this.defaultCenter.longitude], zoom: this.defaultZoom, layers: this._getBasemaps()});
         this.map.zoomControl.setPosition('topleft');
         this.layerGroup = L.layerGroup().addTo(this.map);
         L.control.layers(this._baseMaps,{}).addTo(this.map);
@@ -34,6 +33,10 @@ class DefaultMap {
 
     setPosition(geoPoint, zoom) {
         this.map.setView([geoPoint.latitude, geoPoint.longitude], zoom);
+    }
+
+    zoomDefault() {
+        this.setPosition(this.defaultCenter, this.defaultZoom);
     }
 
     addMarker(geoPoint, key, icon = null) {

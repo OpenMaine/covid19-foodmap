@@ -44,6 +44,7 @@
 
 .filter-card {
   padding-bottom: 0;
+  overflow-x: hidden;
 }
 
 .header-dark {
@@ -141,7 +142,7 @@
   }
   
   .header-dark {
-    font-size: 1.25em;
+    font-size: 1.15em;
     margin-bottom: 0;
   }
   .main-content {

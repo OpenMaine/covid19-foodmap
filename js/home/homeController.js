@@ -1,15 +1,10 @@
 class HomeController {
-    
     constructor() {
-        this._baseUri = "https://sheetsapi.azurewebsites.net/Sheets.php";
-        this.categoryOptions = [];  
-        this._sheetId = "1H9utiRTBZrGreyqSB6oGL1BiVMi7UnM3JOx1HiMWEkc";
-        this._categoriesSheetName = "Categories";
-        this._categoriesSheetRange = "A:A";
         this._categorySelectId = "category-select";
-        this._getCategories();
+        this._setCategorySelectOptions(["Food Pantry", "Meal Sites"]);
         this._setMobileNavHandler();
         this._setFormSubmitHandler();
+        $("#radius-select").val(20);
     }
     
     _getPosition() {
@@ -22,14 +17,6 @@ class HomeController {
         $("#search-form").submit((e) => {
             e.preventDefault();
             window.location.href = `map.html${this._buildQueryFilter()}`;
-        });
-    }
-
-    _getCategories() {
-        const categoriesUri = `${this._baseUri}?sheetId=${this._sheetId}&sheetName=${this._categoriesSheetName}&sheetRange=${this._categoriesSheetRange}`;
-        $.get(categoriesUri).done((response, status) => {
-            const categoryOptions = JSON.parse(response).map(c => c.Category);
-            this._setCategorySelectOptions(categoryOptions);
         });
     }
 
@@ -51,7 +38,7 @@ class HomeController {
           $searchfield.prop('disabled', true);
         });
 
-        $(`#${this._categorySelectId}`).val(["Food Pantry", "Meal Sites"]);
+        $(`#${this._categorySelectId}`).val(optionSet);
         $(`#${this._categorySelectId}`).trigger('change');
     }
 
@@ -61,5 +48,4 @@ class HomeController {
         const radius = $("#radius-select").val();
         return "?" + selectedCategories.map(sc => `category=${sc}`).join("&") + `&radius=${radius}&zipCode=${zipCode}`;
     }
-
 }
