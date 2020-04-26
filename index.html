@@ -65,20 +65,22 @@
             </h2>
             <form  id="search-form" class="mt-3">
               <div class="row mb-5 d-flex align-items-center">
-                <div class="col-sm-6 col-7 mb-3 ">
-                  <label for="zip-code"><strong>Zip code</strong>
-                    <input required pattern="^([0-9]{5})\s*[-]?\s*([0-9]{4})?\s*$" 
-                           minlength="5" maxlength="10" 
-                           type="text" class="form-control" 
-                           id="zip-code" name="zip-code" 
-                           aria-describedby="hero-zip-help" 
-                           placeholder="Use format 12345">
+                <div class="col-sm-6 col-12 mb-3 ">
+                  <label class="top-label" for="town-zip-input">
+                    <strong>Town or Zip Code</strong>
+                    <select 
+                      class="form-control custom-select select-default my-1 mr-sm-2" 
+                      id="town-zip-input"
+                      size="1"
+                      class="form-control" 
+                      required>
+                    </select>
+                    <small class="text-muted">Maine town or zip code</small>
                   </label>
-                  <small id="hero-zip-help" class="form-text text-muted">Enter a Maine zip code</small>
                 </div>
     
-                <div class="col-sm-6 col-5 mb-3">
-                  <label for="radius-select"><strong>Search radius</strong>
+                <div class="col-sm-6 col-12 mb-3">
+                  <label for="radius-select"><strong>Radius</strong>
                     <select size="1" required class="custom-select form-control select-default" id="radius-select" aria-describedby="hero-radius-help">
                       <option value=10>10</option>
                       <option value=20>20</option>
@@ -87,7 +89,7 @@
                       <option value=75>75</option>
                     </select>
                   </label>
-                  <small id="hero-radius-help" class="form-text text-muted">Miles from zip code</small>
+                  <small id="hero-radius-help" class="form-text text-muted">Miles to search</small>
                 </div>
                 <div class="col-12">
                   <label for="category-select"><strong>Categories</strong>
@@ -326,6 +328,8 @@
   <!-- Begin app js -->
   <script src="js/core/mappingCore.js"></script>
   <script src="js/core/geocoder.js"></script>
+  <script src="js/core/pantryDataService.js"></script>
+  <script src="js/extensions/select2Extensions.js"></script>
   <script src="js/home/homeController.js"></script>
   <!-- End app js -->
   

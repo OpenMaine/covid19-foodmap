@@ -184,10 +184,10 @@
 
       <form id="zip-search-form" class="row mb-4 d-flex align-items-center">
         <div class="col-sm-6 col-9">
-          <label class="top-label" for="zipcode-input">Town or Zip Code</label>
+          <label class="top-label" for="town-zip-input">Town or Zip Code</label>
           <select 
             class="custom-select select-default my-1 mr-sm-2" 
-            id="zipcode-input"
+            id="town-zip-input"
             size="1"
             class="form-control" 
             required>
@@ -230,9 +230,10 @@
   <script src="js/core/deviceLocationProvider.js"></script>
   <script src="js/map/foodResource.js"></script>
   <script src="js/map/domEventHandlers.js"></script>
-  <script src="js/handlebarsHelpers.js"></script>
+  <script src="js/extensions/handlebarsHelpers.js"></script>
+  <script src="js/core/pantryDataService.js"></script>
   <script src="js/map/pantryMapController.js"></script>
-  <script src="js/map/select2Extensions.js"></script>
+  <script src="js/extensions/select2Extensions.js"></script>
   <!-- End app JS -->
 
   <script>

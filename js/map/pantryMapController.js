@@ -1,8 +1,11 @@
 /**
- * PantryMapController is dependent on:
+ * PantryMapControllers handle data fetching and filter processing for food resources.
+ *  
+ * Dependent on:
  *  - core/mappingCore 
  *  - core/util
  *  - core/geocoder
+ *  - core/pantryDataService
 */
 class PantryMapController {
     
@@ -27,19 +30,21 @@ class PantryMapController {
         this.filters = [];           // Type mappingCore.Filter
         this.map = map;
         this.dataLoaded = false;
+        this._dataService = new PantryDataService();
         this._getData = this._getData.bind(this);
         this._setSidebarScrollListener();
         this._setLegend();
     }
 
     start(loadCallback) {
-        this._getCityOptions().then(() => {
+        this._dataService.getCities().then((cities) => {
+            this.cityOptions = cities;
         }).always(() => {
             this._getData(loadCallback);
         });
     }
 
-    // TODO: Abstract this when the next filter is added.
+    // Filter access methods
     setCategoryFilter(filterArray) {
         this._setFilter(new Filter("Category", filterArray, FilterType.multi));
     }
@@ -47,35 +52,11 @@ class PantryMapController {
         const filter = this.filters.find(f => f.field === "Category");
         return filter ? filter.value : [];
     }
-    clearCountyFilter(){
+    clearCategoryFilter(){
         this.filters = this.filters.filter(f => f.field !== "Category")
-    }
-
-    setCountyFilter(filterString) {
-        this._setFilter(new Filter("County", filterString, FilterType.single));
-    }
-    getCountyFilter() {
-        const filter = this.filters.find(f => f.field === "County");
-        return filter ? filter.value : null;
-    }
-    clearCountyFilter(){
-        this.filters = this.filters.filter(f => f.field !== "County")
-    }
-    
-    setTownFilter(filterString) {
-        this._setFilter(new Filter("Town", filterString, FilterType.single));
-    }
-    getTownFilter() {
-        const filter = this.filters.find(f => f.field === "Town");
-        return filter ? filter.value : null;
-    }
-    clearTownFilter(){
-        this.filters = this.filters.filter(f => f.field !== "Town")
     }
     
     setRadiusFilter(zipCode, geopointCenter, radius) {
-        this.clearTownFilter();
-        this.clearCountyFilter();
         this._setFilter(new Filter("Radius", {zipCode: zipCode, geoPoint: geopointCenter, radius: radius}, FilterType.geoPoint));
     }
     getRadiusFilter() {
@@ -86,16 +67,11 @@ class PantryMapController {
         this.filters = this.filters.filter(f => f.field !== "Radius")
     }
 
-    //Begin private methods
 
-    /*
-        Get all food pantry data from spreadsheet
-        - Response items projected onto FoodResource objects
-    */
+
     _getData(successCallback) {
-        $.get(this.foodResourceUrl).done((response, status) => {
-            this.data = JSON.parse(response).map(data => new FoodResource(data));
-            
+        this._dataService.getFoodResources().then((foodResources) => {
+            this.data = foodResources;
             if (this.dataLoaded)
                 this._applyFilters();
             else 
@@ -103,19 +79,6 @@ class PantryMapController {
             
             this.dataLoaded = true;
         });
-    }
-
-    _getCityOptions() {
-        const deferred = $.Deferred();
-
-        $.get(this.cityOptionsUrl).done((response, status) => {
-            this.cityOptions = JSON.parse(response).map(data => data.City);
-            deferred.resolve();
-        }).fail((e) => {
-            deferred.reject();
-        });
-
-        return deferred.promise();
     }
 
     _setLegend() {

@@ -1,9 +1,12 @@
 class HomeController {
     constructor() {
+        this._townZipSelectId = "town-zip-input"
         this._categorySelectId = "category-select";
         this._setCategorySelectOptions(["Food Pantry", "Meal Sites"]);
         this._setMobileNavHandler();
         this._setFormSubmitHandler();
+        this._dataService = new PantryDataService();
+        this._setSelect2Inputs();
         $("#radius-select").val(20);
     }
     
@@ -44,8 +47,24 @@ class HomeController {
 
     _buildQueryFilter() {
         const selectedCategories = $(`#${this._categorySelectId}`).val();
-        const zipCode = $("#zip-code").val();
+        const zipCode = $(`#${this._townZipSelectId}`).val();
         const radius = $("#radius-select").val();
         return "?" + selectedCategories.map(sc => `category=${sc}`).join("&") + `&radius=${radius}&zipCode=${zipCode}`;
+    }
+
+
+    _setSelect2Inputs() {
+        $(`#${this._townZipSelectId}`).select2({
+            placeholder: "Enter town or zip code", 
+            allowClear: true, 
+            tags: true,
+            dropdownPosition: 'below'
+        });
+
+        this._dataService.getCities().then((cities) => {
+            $(`#${this._townZipSelectId}`).empty();
+            $(`#${this._townZipSelectId}`).append("<option selected value=''></option>");
+            cities.forEach(o => $(`#${this._townZipSelectId}`).append(`<option value="${o}">${o}</option>`));
+        });
     }
 }

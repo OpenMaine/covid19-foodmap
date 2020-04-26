@@ -13,7 +13,7 @@ class DomEventHandlers {
         
         this._categorySelectId = "category-select";
         this._radiusSelectId = "radius-select";
-        this._townZipId = "zipcode-input";
+        this._townZipId = "town-zip-input";
         this._lastWasMobile = null;
     }
 
@@ -34,13 +34,13 @@ class DomEventHandlers {
         const queryParams = Util.getQueryParams();
 
         if (queryParams.zipCode && queryParams.zipCode.length > 0) {
-          if ($('#zipcode-input').find("option[value='" + queryParams.zipCode + "']").length) {
-              $('#zipcode-input').val(queryParams.zipCode).trigger('change.select2');
+          if ($('#town-zip-input').find("option[value='" + queryParams.zipCode + "']").length) {
+              $('#town-zip-input').val(queryParams.zipCode).trigger('change.select2');
           } else { 
               // Create a DOM Option and pre-select by default
               var newOption = new Option(queryParams.zipCode, queryParams.zipCode, true, true);
               // Append it to the select
-              $('#zipcode-input').append(newOption).trigger('change.select2');
+              $('#town-zip-input').append(newOption).trigger('change.select2');
           } 
 
           if (queryParams.radius && queryParams.radius.length > 0) {
@@ -82,7 +82,7 @@ class DomEventHandlers {
     }
 
     _setSelect2Inputs() {
-        $('#zipcode-input').select2({
+        $('#town-zip-input').select2({
             placeholder: "Enter town or zip code", 
             allowClear: true, 
             tags: true,
