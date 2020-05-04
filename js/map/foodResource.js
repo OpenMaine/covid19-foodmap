@@ -32,9 +32,11 @@ class FoodResource {
         this.WebLink2 = resourceData.AdditionalWebLink;
         this.Latitude = resourceData.Latitude;
         this.Longitude = resourceData.Longitude;
-        
         this.SpecialHoursOfOperation = resourceData.Covid19DaysOfWeek;
         this.SpecialNotes = resourceData.Covid19PickupNotes;
+        
+        // Must explicitly be false to be inactive.
+        this.IsActive = resourceData.IsActive == null || resourceData == undefined || resourceData.IsActive.trim().toLocaleLowerCase() == "true";
     }
 
     _setIcon() {
@@ -48,4 +50,6 @@ class FoodResource {
             this.IconUrl = MarkerIcon.getPath(MarkerIcon.Star);
         }
     }
+
+    
 }

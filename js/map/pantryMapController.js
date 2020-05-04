@@ -10,19 +10,6 @@
 class PantryMapController {
     
     constructor(map) {
-        /** service settings */
-        const baseUri = "https://sheetsapi.azurewebsites.net/Sheets.php";
-        const dataSheetId = "1H9utiRTBZrGreyqSB6oGL1BiVMi7UnM3JOx1HiMWEkc";
-        const foodResourceSheetName = "QueryData";
-        const foodResourceSheetRange = "A:S";
-        const cityOptionsSheetName = "Cities";
-        const cityOptionsSheetRange = "A:A";
-        
-        this.foodResourceUrl = `${baseUri}?sheetId=${dataSheetId}&sheetName=${foodResourceSheetName}&sheetRange=${foodResourceSheetRange}`;
-        this.cityOptionsUrl = `${baseUri}?sheetId=${dataSheetId}&sheetName=${cityOptionsSheetName}&sheetRange=${cityOptionsSheetRange}`;
-        /** End service settings */
-        
-
         this.data = [];
         this.cityOptions = [];
         this.filteredData = [];
@@ -71,7 +58,7 @@ class PantryMapController {
 
     _getData(successCallback) {
         this._dataService.getFoodResources().then((foodResources) => {
-            this.data = foodResources;
+            this.data = foodResources.filter(fr => fr.IsActive);
             if (this.dataLoaded)
                 this._applyFilters();
             else 

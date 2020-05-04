@@ -1,10 +1,11 @@
 class PantryDataService {
     constructor() {
-        this.baseUri = "https://sheetsapi.azurewebsites.net/Sheets.php";
-        this.dataSheetId = "1H9utiRTBZrGreyqSB6oGL1BiVMi7UnM3JOx1HiMWEkc";
-        this.foodResourceSheetName = "QueryData";
-        this.foodResourceSheetRange = "A:S";
-        this.cityOptionsSheetName = "Cities";
+        this.baseUri = "https://sheetsapi.azurewebsites.net/api/ReadSheet.php";
+        
+        this.dataSheetId = "135l8GGHQ2DSqvTI28_Pgu3HjA2u8fZNqsbPX3_xWbbk";
+        this.foodResourceSheetName = "Pantries";
+        this.foodResourceSheetRange = "A:T";
+        this.cityOptionsSheetName = "FormOptions";
         this.cityOptionsSheetRange = "A:A";
 
         this.foodResourceUrl = `${this.baseUri}?sheetId=${this.dataSheetId}&sheetName=${this.foodResourceSheetName}&sheetRange=${this.foodResourceSheetRange}`;
@@ -18,6 +19,7 @@ class PantryDataService {
             let cityOptions = JSON.parse(response).map(data => data.City);
             deferred.resolve(cityOptions);
         }).fail((e) => {
+            console.error(e);
             deferred.reject();
         });
         
@@ -32,6 +34,7 @@ class PantryDataService {
             let foodResources = JSON.parse(response).map(data => new FoodResource(data));
             deferred.resolve(foodResources);
         }).fail((e) => {
+            console.error(e);
             deferred.reject();
         });
 
