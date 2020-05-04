@@ -7,6 +7,22 @@ Check out the [wiki](https://github.com/OpenMaine/covid19-foodmap/wiki) for ways
 
 # Contributing changes
 We're excited for you to help improve this project. We've outlined a few steps to get it running locally as easily as possible. Let us know on Slack if you run into any trouble!
+
+## Option #1: Use npm
+1. Download and install Node.js and npm (if needed) from https://nodejs.org/en/
+
+
+2. Open a command prompt to the root directory of the covid19-foodmap and install dependencies:
+```
+$ npm install
+```
+
+3. Start the development server:
+```
+$ npm start
+```
+
+## Option #2: Use Docker 
 1. Install Docker Desktop (for [Mac](https://hub.docker.com/editions/community/docker-ce-desktop-mac) or [Windows](https://hub.docker.com/editions/community/docker-ce-desktop-windows))
 2. Pull the code down:
 ```
