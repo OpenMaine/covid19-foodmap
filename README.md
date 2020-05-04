@@ -1,7 +1,7 @@
 # Food Map
 Mapping when/where food pickups are available during covid-19 crisis.
 
-Live site: http://pantries.openmaine.org/
+Live site: https://pantries.openmaine.org/
 
 Check out the [wiki](https://github.com/OpenMaine/covid19-foodmap/wiki) for ways to get involved!
 
