@@ -6,6 +6,7 @@ class DefaultMap {
      * @param {*} defaultZoom : Default zoom level 
      */
     constructor(mapId, center, zoom=8) {
+        //Todo: Should programmatically cycle tokens.
         this._mapboxToken = 'pk.eyJ1Ijoiam9uamFuZWxsZSIsImEiOiJjazhxbXg0YmswNW5kM2RvNGNjb2hiN2poIn0.LiFKVlPQe_vqyqjjIw0DIw';
         this.markers = {};
         this.defaultCenter = center;
@@ -14,21 +15,6 @@ class DefaultMap {
         this.map.zoomControl.setPosition('topleft');
         this.layerGroup = L.layerGroup().addTo(this.map);
         L.control.layers(this._baseMaps,{}).addTo(this.map);
-    }
-    
-    _getBasemaps() {
-        this._baseMaps = {
-            "OpenStreetMap": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', 
-                        {attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}),
-            "Dark": L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token='+this._mapboxToken, 
-                        {id: 'mapbox/dark-v10', attribution: "&copy; Mapbox dark", tileSize: 512, zoomOffset: -1}),
-            "Light": L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token='+this._mapboxToken, 
-                        {id: 'mapbox/light-v10', attribution: "&copy; Mapbox light", tileSize: 512, zoomOffset: -1}),
-            "Default": L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token='+this._mapboxToken, 
-                        {id: 'mapbox/streets-v11', attribution: "&copy; Mapbox streets", tileSize: 512, zoomOffset: -1})
-        };
-
-        return Object.values(this._baseMaps);
     }
 
     setPosition(geoPoint, zoom) {
@@ -69,5 +55,21 @@ class DefaultMap {
             var markerBounds = L.latLngBounds([Object.values(this.markers)[0].getLatLng()]);
             this.map.fitBounds(markerBounds);
         }
+    }
+
+
+    _getBasemaps() {
+        this._baseMaps = {
+            "OpenStreetMap": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', 
+                        {attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}),
+            "Dark": L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token='+this._mapboxToken, 
+                        {id: 'mapbox/dark-v10', attribution: "&copy; Mapbox dark", tileSize: 512, zoomOffset: -1}),
+            "Light": L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token='+this._mapboxToken, 
+                        {id: 'mapbox/light-v10', attribution: "&copy; Mapbox light", tileSize: 512, zoomOffset: -1}),
+            "Default": L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token='+this._mapboxToken, 
+                        {id: 'mapbox/streets-v11', attribution: "&copy; Mapbox streets", tileSize: 512, zoomOffset: -1})
+        };
+
+        return Object.values(this._baseMaps);
     }
 }

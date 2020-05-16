@@ -1,6 +1,7 @@
 class PantryDataService {
     constructor() {
         this.baseUri = "https://sheetsapi.azurewebsites.net/api/ReadSheet.php";
+        //this.baseUri = "http://localhost:80/api/ReadSheet.php";
         
         this.dataSheetId = "135l8GGHQ2DSqvTI28_Pgu3HjA2u8fZNqsbPX3_xWbbk";
         this.foodResourceSheetName = "Pantries";
@@ -25,7 +26,6 @@ class PantryDataService {
         
         return deferred.promise();
     }
-
 
     getFoodResources() {
         const deferred = $.Deferred();

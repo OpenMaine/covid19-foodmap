@@ -1,13 +1,17 @@
+/**
+ * Dependencies
+ *  - core/mappingCore
+ */
 class HomeController {
     constructor() {
         this._townZipSelectId = "town-zip-input"
         this._categorySelectId = "category-select";
-        this._setCategorySelectOptions(["Food Pantry", "Meal Sites"]);
+        this._setCategorySelectOptions(Settings.ActiveCategories);
         this._setMobileNavHandler();
         this._setFormSubmitHandler();
         this._dataService = new PantryDataService();
         this._setSelect2Inputs();
-        $("#radius-select").val(20);
+        $("#radius-select").val(20); 
     }
     
     _getPosition() {

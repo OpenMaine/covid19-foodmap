@@ -32,14 +32,14 @@ class DomEventHandlers {
         let filterApplied = false;
         
         const queryParams = Util.getQueryParams();
-
+        
         if (queryParams.zipCode && queryParams.zipCode.length > 0) {
           if ($('#town-zip-input').find("option[value='" + queryParams.zipCode + "']").length) {
               $('#town-zip-input').val(queryParams.zipCode).trigger('change.select2');
           } else { 
-              // Create a DOM Option and pre-select by default
+              // Create a Option element and pre-select by default
               var newOption = new Option(queryParams.zipCode, queryParams.zipCode, true, true);
-              // Append it to the select
+              // Trigger a change that won't reload the data.
               $('#town-zip-input').append(newOption).trigger('change.select2');
           } 
 
@@ -59,7 +59,7 @@ class DomEventHandlers {
         
         if (!filterApplied) {
           $("#radius-select").val(20);
-          $("#category-select").val(["Food Pantry", "Meal Sites"]).trigger('change');
+          $("#category-select").val(Settings.ActiveCategories).trigger('change');
           this.mapController.map.zoomDefault();
         }
       });
@@ -76,7 +76,7 @@ class DomEventHandlers {
         const cityOptions = this.mapController.cityOptions.sort();
         this.setSelectOptions(this._townZipId, cityOptions);
 
-        const categoryOptions = ["Food Pantry", "Meal Sites"].sort();
+        const categoryOptions = Settings.ActiveCategories.sort();
         this.setSelectOptions(this._categorySelectId, categoryOptions);
         this._resetSelected();
     }
@@ -128,7 +128,7 @@ class DomEventHandlers {
             } else {
                 $("#main-map").css("min-height", "70vh");
             }
-        }, 350);
+        }, 300);
             
         this._lastWasMobile = isMobile;
     }
@@ -199,7 +199,7 @@ class DomEventHandlers {
                     }, () => {});
                 }
             });
-        }, 500);
+        }, 250);
         
         this.setFilterOptions();
         $(`#${clearId}`).empty();       
