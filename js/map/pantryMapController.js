@@ -75,6 +75,7 @@ class PantryMapController {
         div.innerHTML += '<div style="background-color:white;>';
         div.innerHTML += `<img src=${MarkerIcon.getPath(MarkerIcon.Grocery)} alt="Food Pantry"/> &ndash; Food Pantry <br>`;
         div.innerHTML += `<img src=${MarkerIcon.getPath(MarkerIcon.Restaurant)} alt="Meal Site"/> &ndash; Meal Site <br>`;
+        div.innerHTML += `<img src=${MarkerIcon.getPath(MarkerIcon.Utensils)} alt="School Pickup Site"/> &ndash; School Pickup Site <br>`;
         div.innerHTML += '</div>'; 
         this.map.addLegend(div);
     }
@@ -186,16 +187,19 @@ class PantryMapController {
         let components = [
             `<span style="font-size:1.1rem">${foodResource.Name}</span><br>`,
             `<hr style="margin-top: 0; margin-bottom: 4px;">`,
-            `<span><b>Category: </b>${foodResource.Category}</span><br>`,
-            `<span><b>Phone: </b><a href="tel:${Util.telFormat(foodResource.Phone)}">${foodResource.Phone}</a></span><br>`,
+            `<span><b>Category: </b>${foodResource.Category}</span><br>`
         ];
+        
+        if (!Util.isNullOrEmpty(foodResource.Phone)) {
+            components.push(`<span><b>Phone: </b><a href="tel:${Util.telFormat(foodResource.Phone)}">${foodResource.Phone}</a></span><br>`);
+        }
 
         if (!Util.isNullOrEmpty(foodResource.WebLink)) {
             components.push(`<span><b>Website: </b><a href='${foodResource.WebLink}' target='_blank'>${foodResource.WebLink}</a></span><br>`);
         }
         
         if (!Util.isNullOrEmpty(foodResource.WebLink2)) {
-            components.push(`<span><b>Website 2: </b><a href='${foodResource.WebLink}' target='_blank'>${foodResource.WebLink}</a></span><br>`);
+            components.push(`<span><b>Website 2: </b><a href='${foodResource.WebLink2}' target='_blank'>${foodResource.WebLink2}</a></span><br>`);
         }
         
         components.push(`<span><b>Address: </b>${foodResource.Address}</span><br>`);
