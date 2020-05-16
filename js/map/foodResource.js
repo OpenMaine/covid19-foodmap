@@ -30,7 +30,7 @@ class FoodResource {
         this.WebLink2 = resourceData.AdditionalWebLink;
         this.Latitude = parseFloat(resourceData.Latitude);
         this.Longitude = parseFloat(resourceData.Longitude);
-        this.SpecialHoursOfOperation = resourceData.Covid19DaysOfWeek;
+        this.SpecialHoursOfOperation = resourceData.Covid19Hours;
         this.SpecialNotes = resourceData.Covid19PickupNotes;
         // Must explicitly be false to be inactive.
         this.IsActive = resourceData.IsActive == null || resourceData == undefined || resourceData.IsActive.trim().toLocaleLowerCase() == "true";
@@ -41,7 +41,7 @@ class FoodResource {
             this.IconUrl = MarkerIcon.getPath(MarkerIcon.Restaurant);
         } else if (this.Category == "Food Pantry") {
             this.IconUrl = MarkerIcon.getPath(MarkerIcon.Grocery);
-        } else if (this.Category == "School Pickup") {
+        } else if (this.Category == "School Meal Pickup") {
             this.IconUrl = MarkerIcon.getPath(MarkerIcon.Utensils);
         } else {
             this.IconUrl = MarkerIcon.getPath(MarkerIcon.Star);

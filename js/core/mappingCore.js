@@ -24,7 +24,7 @@ class GeoPoint {
 
 // Shared app settings
 const Settings = {
-    ActiveCategories: ["Food Pantry", "Meal Sites", "School Pickup"]
+    ActiveCategories: ["Food Pantry", "Meal Sites", "School Meal Pickup"]
 };
 
 

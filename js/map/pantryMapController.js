@@ -75,7 +75,7 @@ class PantryMapController {
         div.innerHTML += '<div style="background-color:white;>';
         div.innerHTML += `<img src=${MarkerIcon.getPath(MarkerIcon.Grocery)} alt="Food Pantry"/> &ndash; Food Pantry <br>`;
         div.innerHTML += `<img src=${MarkerIcon.getPath(MarkerIcon.Restaurant)} alt="Meal Site"/> &ndash; Meal Site <br>`;
-        div.innerHTML += `<img src=${MarkerIcon.getPath(MarkerIcon.Utensils)} alt="School Pickup Site"/> &ndash; School Pickup Site <br>`;
+        div.innerHTML += `<img src=${MarkerIcon.getPath(MarkerIcon.Utensils)} alt="School Meal Pickup Site"/> &ndash; School Meal Pickup<br>`;
         div.innerHTML += '</div>'; 
         this.map.addLegend(div);
     }
@@ -193,14 +193,6 @@ class PantryMapController {
         if (!Util.isNullOrEmpty(foodResource.Phone)) {
             components.push(`<span><b>Phone: </b><a href="tel:${Util.telFormat(foodResource.Phone)}">${foodResource.Phone}</a></span><br>`);
         }
-
-        if (!Util.isNullOrEmpty(foodResource.WebLink)) {
-            components.push(`<span><b>Website: </b><a href='${foodResource.WebLink}' target='_blank'>${foodResource.WebLink}</a></span><br>`);
-        }
-        
-        if (!Util.isNullOrEmpty(foodResource.WebLink2)) {
-            components.push(`<span><b>Website 2: </b><a href='${foodResource.WebLink2}' target='_blank'>${foodResource.WebLink2}</a></span><br>`);
-        }
         
         components.push(`<span><b>Address: </b>${foodResource.Address}</span><br>`);
         
@@ -216,6 +208,14 @@ class PantryMapController {
         
         if (!Util.isNullOrEmpty(foodResource.OperationalNotes)) {
             components.push(`<span><b>Notes: </b>${foodResource.OperationalNotes}</span><br>`);
+        }
+
+        if (!Util.isNullOrEmpty(foodResource.WebLink)) {
+            components.push(`<span><b>Website: </b><a href='${foodResource.WebLink}' target='_blank'>${foodResource.WebLink}</a></span><br>`);
+        }
+        
+        if (!Util.isNullOrEmpty(foodResource.WebLink2)) {
+            components.push(`<span><b>Website 2: </b><a href='${foodResource.WebLink2}' target='_blank'>${foodResource.WebLink2}</a></span><br>`);
         }
         
         return components.join('');
