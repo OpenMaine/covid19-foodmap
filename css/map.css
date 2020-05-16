@@ -26,6 +26,11 @@
   height: 100%;
 }
 
+.filter-badge {
+  margin-left: 4px; 
+  margin-right: 4px;
+}
+
 .legend {
   line-height: 18px;
   color: #555;

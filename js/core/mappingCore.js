@@ -22,15 +22,23 @@ class GeoPoint {
     }
 }
 
+// Shared app settings
+const Settings = {
+    ActiveCategories: ["Food Pantry", "Meal Sites", "School Pickup"]
+};
 
-/* single: Filter value is a string
-   multi: Filter value is an array of strings
-*/
+
+/** 
+ * single: Filter is a string
+ * multi: Filter is an array of strings
+ * geoPoint: Filter is any object {zipCode: [string], geoPoint: [Geopoint], radius: [number]}
+ */
 const FilterType = {
     single: 0,
     multi: 1,
     geoPoint: 2
 };
+
 /**
  * A data filter (likely from a from user form input)
  * @param field: The object property name to which the filter is applied
@@ -46,7 +54,7 @@ class Filter {
 }
 
 
-// TODO: think about other ways to do this.
+// Available map marker icons
 const MarkerIcon = {
     getPath: (markerIcon) => `map-markers/${markerIcon}`,
     AccessDenied: 'accessdenied.png',
@@ -79,5 +87,6 @@ const MarkerIcon = {
     DayCare: 'daycare.png',
     FastFood: 'fastfood.png',
     Farm: 'farm-2.png',
-    Grocery: 'grocery.png'
+    Grocery: 'grocery.png',
+    Utensils: 'eating-utensils.png'
 };

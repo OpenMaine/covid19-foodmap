@@ -14,9 +14,7 @@ class FoodResource {
     }
 
     /**
-     * Mapping for sheet ID 1H9utiRTBZrGreyqSB6oGL1BiVMi7UnM3JOx1HiMWEkc
-     * Sheet Name: QueryData
-     * Range: A:S
+     * Mapping for the currently available data sheet. 
      */
     _defaultMapping(resourceData) {
         this.Category = resourceData.Category;
@@ -30,11 +28,10 @@ class FoodResource {
         this.OperationalNotes = resourceData.OperationalNotesFromWebExistingData;
         this.WebLink = resourceData.WebLink;
         this.WebLink2 = resourceData.AdditionalWebLink;
-        this.Latitude = resourceData.Latitude;
-        this.Longitude = resourceData.Longitude;
+        this.Latitude = parseFloat(resourceData.Latitude);
+        this.Longitude = parseFloat(resourceData.Longitude);
         this.SpecialHoursOfOperation = resourceData.Covid19DaysOfWeek;
         this.SpecialNotes = resourceData.Covid19PickupNotes;
-        
         // Must explicitly be false to be inactive.
         this.IsActive = resourceData.IsActive == null || resourceData == undefined || resourceData.IsActive.trim().toLocaleLowerCase() == "true";
     }
@@ -42,11 +39,11 @@ class FoodResource {
     _setIcon() {
         if (this.Category == "Meal Sites")  {
             this.IconUrl = MarkerIcon.getPath(MarkerIcon.Restaurant);
-        }
-        else if (this.Category == "Food Pantry") {
+        } else if (this.Category == "Food Pantry") {
             this.IconUrl = MarkerIcon.getPath(MarkerIcon.Grocery);
-        }
-        else {
+        } else if (this.Category == "School Pickup") {
+            this.IconUrl = MarkerIcon.getPath(MarkerIcon.Utensils);
+        } else {
             this.IconUrl = MarkerIcon.getPath(MarkerIcon.Star);
         }
     }

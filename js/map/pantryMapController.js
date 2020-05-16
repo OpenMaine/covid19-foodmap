@@ -1,7 +1,7 @@
 /**
  * PantryMapControllers handle data fetching and filter processing for food resources.
  *  
- * Dependent on:
+ * Dependencies:
  *  - core/mappingCore 
  *  - core/util
  *  - core/geocoder
@@ -10,17 +10,18 @@
 class PantryMapController {
     
     constructor(map) {
-        this.data = [];
         this.cityOptions = [];
-        this.filteredData = [];
-        this.sideBarData =  [];      // Sidebar shows only a portion of results, updated on scroll
-        this.filters = [];           // Type mappingCore.Filter
         this.map = map;
-        this.dataLoaded = false;
+        
+        this._data = [];
+        this._sideBarData =  [];      // Sidebar shows only a portion of results, updated on scroll
+        this._filteredData = [];
+        this._filters = [];           // Type mappingCore.Filter
+        this._dataLoaded = false;
         this._dataService = new PantryDataService();
-        this._getData = this._getData.bind(this);
-        this._setSidebarScrollListener();
+        
         this._setLegend();
+        this._setSidebarScrollListener();
     }
 
     start(loadCallback) {
@@ -36,35 +37,36 @@ class PantryMapController {
         this._setFilter(new Filter("Category", filterArray, FilterType.multi));
     }
     getCategoryFilter() {
-        const filter = this.filters.find(f => f.field === "Category");
+        const filter = this._filters.find(f => f.field === "Category");
         return filter ? filter.value : [];
     }
     clearCategoryFilter(){
-        this.filters = this.filters.filter(f => f.field !== "Category")
+        this._filters = this._filters.filter(f => f.field !== "Category")
     }
     
     setRadiusFilter(zipCode, geopointCenter, radius) {
         this._setFilter(new Filter("Radius", {zipCode: zipCode, geoPoint: geopointCenter, radius: radius}, FilterType.geoPoint));
     }
     getRadiusFilter() {
-        const filter = this.filters.find(f => f.field === "Radius");
+        const filter = this._filters.find(f => f.field === "Radius");
         return filter ? filter.value : {zipCode: null, geoPoint: null, radius: 10};
     }
     clearRadiusFilter(){
-        this.filters = this.filters.filter(f => f.field !== "Radius")
+        this._filters = this._filters.filter(f => f.field !== "Radius")
     }
-
+    //end filter access methods
 
 
     _getData(successCallback) {
         this._dataService.getFoodResources().then((foodResources) => {
-            this.data = foodResources.filter(fr => fr.IsActive);
-            if (this.dataLoaded)
+            this._data = foodResources.filter(fr => fr.IsActive);
+            if (this._dataLoaded)
                 this._applyFilters();
-            else 
+            else {
                 successCallback();     
+            }
             
-            this.dataLoaded = true;
+            this._dataLoaded = true;
         });
     }
 
@@ -79,30 +81,30 @@ class PantryMapController {
 
     _refreshMapAndSideBar() {
         this.map.clearMarkers();
-        this._buildMapMarkers(this.filteredData);
-        this.sideBarData = this.filteredData.slice(0, 20);
-        this._buildSidebarListing(this.sideBarData);
+        this._buildMapMarkers(this._filteredData);
+        this._sideBarData = this._filteredData.slice(0, 20);
+        this._buildSidebarListing(this._sideBarData);
     }
 
     _setSidebarScrollListener() {
         document.getElementById('map-results-list').onscroll = (e) =>  {;
             const minPassed =  parseInt(e.target.scrollTop/150);
-            let end = Math.min(this.filteredData.length, minPassed + 20);
-            this.sideBarData = this.filteredData.slice(0, end);
-            this._buildSidebarListing(this.sideBarData);
+            let end = Math.min(this._filteredData.length, minPassed + 20);
+            this._sideBarData = this._filteredData.slice(0, end);
+            this._buildSidebarListing(this._sideBarData);
         };
     }
 
     _applyFilters() {
-        this.filteredData = this.data;
-        this.filters.filter(f => !Util.isNullOrEmpty(f.value)).forEach(f => {
+        this._filteredData = this._data;
+        this._filters.filter(f => !Util.isNullOrEmpty(f.value)).forEach(f => {
             if (f.filterType == FilterType.single) {
-                this.filteredData = this.filteredData.filter(d => d[f.field].indexOf(f.value) >= 0);
+                this._filteredData = this._filteredData.filter(d => d[f.field].indexOf(f.value) >= 0);
             } else if (f.filterType == FilterType.multi) {
-                this.filteredData = this.filteredData.filter(d => f.value.indexOf(d[f.field]) >= 0);
+                this._filteredData = this._filteredData.filter(d => f.value.indexOf(d[f.field]) >= 0);
             } else if (f.filterType == FilterType.geoPoint) {
                 const radiusInKM = parseInt(f.value.radius)*1.6093;
-                this.filteredData = this.filteredData.filter(d => new GeoPoint(d.Latitude, d.Longitude).distanceTo(f.value.geoPoint) <= radiusInKM);
+                this._filteredData = this._filteredData.filter(d => new GeoPoint(d.Latitude, d.Longitude).distanceTo(f.value.geoPoint) <= radiusInKM);
             } else {
                 console.error("Invalid filter: ", f);
             }
@@ -117,8 +119,8 @@ class PantryMapController {
     */ 
     _setFilter(filter) {
         if (!Util.isNullOrEmpty(filter)) {
-            this.filters = this.filters.filter(f => f.field !== filter.field);
-            this.filters.push(filter);
+            this._filters = this._filters.filter(f => f.field !== filter.field);
+            this._filters.push(filter);
             this._applyFilters();
             this.map.fitMarkerBounds();
         }
@@ -127,7 +129,8 @@ class PantryMapController {
     _buildMapMarkers(foodResourceArray) {
         for (let foodResource of foodResourceArray) {
             if (foodResource.Latitude && foodResource.Longitude) {
-                if (this.map.markers[foodResource.Address]) {
+                if (this.map.markers[foodResource.Address]) { // If marker already known by map, don't add it again.
+                    //Think harder about this. It seems like it shouldn't be needed.
                     this.map.addMarkerPopup(foodResource.Address, this._getMarkerPopupHtml(foodResource));
                 } else {
                     this.map.addMarker(new GeoPoint(foodResource.Latitude, foodResource.Longitude), foodResource.Address, this._getIcon(foodResource));
@@ -164,19 +167,19 @@ class PantryMapController {
 
     _setSidebarHeader() {
         const filterBadges = ['<div class="small"><strong>Current filters</strong></div>'];
-        for (let filter of this.filters) {
+        for (let filter of this._filters) {
             if (filter.filterType == FilterType.single && !Util.isNullOrEmpty(filter.value)) {
-                filterBadges.push(`<span class="badge badge-info">${filter.field}: ${filter.value}</span>`);
+                filterBadges.push(`<span class="badge badge-info filter-badge">${filter.field}: ${filter.value}</span>`);
             }
             if (filter.filterType == FilterType.multi && !Util.isNullOrEmpty(filter.value)) {
-                filter.value.forEach(value => filterBadges.push(`<span class="badge badge-info">${filter.field}: ${value}</span>`));
+                filter.value.forEach(value => filterBadges.push(`<span class="badge badge-info filter-badge">${filter.field}: ${value}</span>`));
             }
             if (filter.filterType == FilterType.geoPoint) {
-                filterBadges.push(`<span class="badge badge-info">${filter.value.zipCode} (${filter.value.radius}mi)</span>`);
+                filterBadges.push(`<span class="badge badge-info filter-badge">${filter.value.zipCode} (${filter.value.radius}mi)</span>`);
             }
         }
 
-        $("#sidebar-heading").html(filterBadges.join(' '));
+        $("#sidebar-heading").html(filterBadges.join(''));
     }
     
     _getMarkerPopupHtml(foodResource) {
@@ -211,6 +214,6 @@ class PantryMapController {
             components.push(`<span><b>Notes: </b>${foodResource.OperationalNotes}</span><br>`);
         }
         
-        return components.join("");
+        return components.join('');
     }
 }
