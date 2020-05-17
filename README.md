@@ -5,7 +5,7 @@ Live site: https://pantries.openmaine.org/
 
 Check out the [wiki](https://github.com/OpenMaine/covid19-foodmap/wiki) for ways to get involved!
 
-# Contributing changes
+# Running the map
 We're excited for you to help improve this project. We've outlined a few steps to get it running locally as easily as possible. Let us know on Slack if you run into any trouble!
 
 ## Option #1: Use npm
@@ -21,6 +21,7 @@ $ npm install
 ```
 $ npm start
 ```
+4. The development server runs at http://localhost:3000/. A browser window should be opened automatically when the app boots.
 
 ## Option #2: Use Docker 
 1. Install Docker Desktop (for [Mac](https://hub.docker.com/editions/community/docker-ce-desktop-mac) or [Windows](https://hub.docker.com/editions/community/docker-ce-desktop-windows))
