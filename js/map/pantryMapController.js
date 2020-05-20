@@ -85,6 +85,18 @@ class PantryMapController {
         this._buildMapMarkers(this._filteredData);
         this._sideBarData = this._filteredData.slice(0, 20);
         this._buildSidebarListing(this._sideBarData);
+        this._setResultCount();
+    }
+
+    _setResultCount() {
+        if (this._filteredData.length > 0) {
+            $(".zero-results").addClass("hidden");
+            $(".result-count-container").removeClass("hidden");
+            $(".result-count").html(this._filteredData.length);
+        } else {
+            $(".result-count-container").addClass("hidden");
+            $(".zero-results").removeClass("hidden");
+        }
     }
 
     _setSidebarScrollListener() {

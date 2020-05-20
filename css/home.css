@@ -9,11 +9,14 @@
 #hero-tagline {
     color: rgba(255, 255, 255, .85);
 }
-#hero-tagline > a {
-    color: rgba(255, 255, 255, .85);
+
+#header-credits {
+    font-weight: 300;
 }
-#hero-tagline > a:hover {
-    color: rgb(255, 255, 255);
+
+#header-credits > a {
+    color: rgba(255, 255, 255, .85);
+    font-weight: 400;
 }
 
 #filter-container {

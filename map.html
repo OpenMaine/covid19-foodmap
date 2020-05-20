@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Find food pantries, meal sites, and other food resources in Maine">
+  <meta name="description" content="Find food pantries, school meal sites, and other food resources in Maine">
   <meta name="author" content="OpenMaine Code for America Brigade">
 
   <title>Maine Food Finder</title>
@@ -41,11 +41,33 @@
       <!-- Navbar filled by handlebars template in DomEventHandlers -->
       <span id="nav-desktop"></span>
       <div class="main-content">
+        <!-- Alert bar -->
+        <div id="alert-bar" class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+          <div id="alert-title">
+            <strong>Covid-19 Notice</strong> 
+          </div>
+          <div id="alert-message">
+            Always contact pantries and meal sites in advance to confirm availability and hours
+          </div>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close" title="Close notice">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <!-- Filters and map -->
         <div class="card main-card">
           <div id="top-card" class="card-body filter-card">
             <div class="row ">
               <div class="col-12">
                 <h1 class="header-dark">Find food support services in Maine</h1>
+                <div class="hidden-sm">
+                  <div class="result-count-container color-success hidden">
+                    <small>Showing <span class="result-count"></span> results</small>
+                  </div>
+                  <div class="zero-results color-warning hidden">
+                    <small>No results found</small>
+                  </div>
+                </div>
               </div>
               <span class="col-12" id="filters-desktop"></span>
             </div>
@@ -211,10 +233,17 @@
           <button id="zip-search" type="submit" title="Search by zip code" class="btn btn-primary btn-block">Search</button>
         </div>
       </form>
+      <span class="hidden-lg">
+        <div class="result-count-container color-success hidden">
+          Showing <span class="result-count"></span> results
+        </div>
+        <div class="zero-results color-warning hidden">
+          No results found
+        </div>
+      </span>
     </div>
   </script>
   <!-- End handlebars templates -->
-
   
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-164928842-2"></script>
@@ -240,13 +269,14 @@
   <script src="js/map/foodResource.js"></script>
   <script src="js/map/domEventHandlers.js"></script>
   <script src="js/extensions/handlebarsHelpers.js"></script>
-  <script src="js/core/pantryDataService.js"></script>
+  <script src="js/services/pantryDataService.js"></script>
   <script src="js/map/pantryMapController.js"></script>
   <script src="js/extensions/select2Extensions.js"></script>
   <!-- End app JS -->
 
   <script>
     $(async function() {
+      $("#alert-bar").alert();
       const defaultLocation = await new DeviceLocationProvider().getLocation();
       const zoomLevel = defaultLocation ? 12 : 7;
       const startGeopoint = defaultLocation ? new GeoPoint(defaultLocation.latitude, defaultLocation.longitude) : new GeoPoint(45.1690993, -69.2568189);

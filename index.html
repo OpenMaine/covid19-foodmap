@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1.0, user-scalable=no">
-  <meta name="description" content="Find food pantries, meal sites, and other food resources in Maine">
+  <meta name="description" content="Find food pantries, school meal sites, and other food resources in Maine">
   <meta name="author" content="OpenMaine Code for America Brigade">
 
   <title>Maine Food Finder</title>
@@ -44,16 +44,12 @@
     <header class="py-5 mb-5" id="home">
       <div class="container h-100">
         <div class="row h-100 align-items-center">
-          <div class="col-lg-12">
+          <div class="col-lg-12 text-center">
             <h1 id="hero-title" class="display-4 text-white mt-5 mb-2">
               Maine Food Finder
             </h1>
-            <p id="hero-tagline" class="lead mb-5">
-              Find food pantries near you that are open during the COVID-19 crisis. 
-              Information is provided by the 
-              <a href="https://www.gsfb.org/" target="_blank" rel="noopener" title="Open Good Shepherd Food Bank website">Good Shepherd Food Bank</a>
-              and updated by volunteers from 
-              <a href="https://mainerstogether.com/" target="_blank" rel="noopener" title="Open Mainers Together website">Mainers Together</a>.
+            <p id="hero-tagline" class="lead mb-3 text-light">
+              Find food pantries and school meal sites near you that are open during the COVID-19 pandemic 
             </p>
           </div>
         </div>
@@ -107,6 +103,14 @@
             </form>
           </div>
           <div class="col-md-1 col-sm-0"></div>
+        </div>
+        <div id="header-credits" class="col-12 text-light mt-4 text-center">
+          Information provided by the 
+          <a href="https://www.gsfb.org/" target="_blank" rel="noopener" title="Open Good Shepherd Food Bank website">Good Shepherd Food Bank</a>
+          and updated by volunteers from 
+          <a href="https://mainerstogether.com/" target="_blank" rel="noopener" title="Mainers Together website">Mainers Together</a>
+          and 
+          <a href="http://www.openmaine.org/" target="_blank" rel="noopener" title="OpenMaine website">OpenMaine</a>
         </div>
       </div>
     </header>
@@ -337,7 +341,7 @@
   <!-- Begin app js -->
   <script src="js/core/mappingCore.js"></script>
   <script src="js/core/geocoder.js"></script>
-  <script src="js/core/pantryDataService.js"></script>
+  <script src="js/services/pantryDataService.js"></script>
   <script src="js/extensions/select2Extensions.js"></script>
   <script src="js/home/homeController.js"></script>
   <!-- End app js -->
