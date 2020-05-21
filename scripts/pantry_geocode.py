@@ -5,9 +5,10 @@ import json
 geocodingService = 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?f=pjson&SingleLine='
 singleLineAddress = ''
 
-newData = []
+data_file = 'pantries.csv'
 
-with open('pantries_me_original.csv', newline='', encoding="utf8") as csvfile:
+newData = []
+with open(data_file, newline='', encoding="utf8") as csvfile:
     csvReader = csv.reader(csvfile)
     count = 0
     for row in csvReader:
