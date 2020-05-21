@@ -32,13 +32,24 @@
   height: 100%;
 }
 
-.result-count, .zero-results {
+.result-count-container, .zero-results {
+  font-size: 0.9rem;
   font-weight: 500;
 }
 
 .filter-badge {
   margin-left: 4px; 
   margin-right: 4px;
+}
+
+.remove-badge {
+  font-size: 1rem;
+  vertical-align: middle;
+  margin-left: 4px;
+  font-weight: bold;
+} .remove-badge:hover {
+  color: var(--color-warning);
+  cursor: pointer;
 }
 
 .hidden {
@@ -87,6 +98,10 @@
 
 .color-warning {
   color: var(--color-warning);
+}
+
+.color-dark {
+  color: var(--color-dark);
 }
 
 .nav-link, .nav-item {
@@ -263,7 +278,6 @@
     height: 100%;
     width: 95%;
     margin: 0 auto;
-    margin-top: 16px;
     margin-bottom: 16px;
   }
 }

@@ -40,8 +40,12 @@ class PantryMapController {
         const filter = this._filters.find(f => f.field === "Category");
         return filter ? filter.value : [];
     }
-    clearCategoryFilter(){
-        this._filters = this._filters.filter(f => f.field !== "Category")
+    clearCategoryFilter(categoryName) {
+        const categoryFilter = this._filters.find(f => f.field === "Category");
+        if (categoryFilter) {
+            categoryFilter.value = categoryFilter.value.filter(fv => fv !== categoryName);
+            $("#category-select").val(categoryFilter.value).trigger('change');
+        }
     }
     
     setRadiusFilter(zipCode, geopointCenter, radius) {
@@ -51,8 +55,13 @@ class PantryMapController {
         const filter = this._filters.find(f => f.field === "Radius");
         return filter ? filter.value : {zipCode: null, geoPoint: null, radius: 10};
     }
-    clearRadiusFilter(){
-        this._filters = this._filters.filter(f => f.field !== "Radius")
+    clearRadiusFilter() {
+        const radiusFilter = this._filters.find(f => f.field === "Radius");
+        if (radiusFilter) {
+            this._filters = this._filters.filter(f => f.field !== "Radius");
+            $('#town-zip-input').val(null).trigger('change.select2');
+            this._applyFilters();
+        }
     }
     //end filter access methods
 
@@ -180,19 +189,30 @@ class PantryMapController {
 
     _setSidebarHeader() {
         const filterBadges = ['<div class="small"><strong>Current filters</strong></div>'];
-        for (let filter of this._filters) {
-            if (filter.filterType == FilterType.single && !Util.isNullOrEmpty(filter.value)) {
-                filterBadges.push(`<span class="badge badge-info filter-badge">${filter.field}: ${filter.value}</span>`);
+        if (this._appliedFilterCount() > 0) {
+            for (let filter of this._filters) {
+                if (filter.filterType == FilterType.single && !Util.isNullOrEmpty(filter.value)) {
+                    filterBadges.push(`<span class="badge badge-info filter-badge">${filter.field}: ${filter.value} <span class="remove-badge material-icons" title="remove filter" value="${filter.field}:${filter.value}">clear</span></span>`);
+                } else if (filter.filterType == FilterType.multi && !Util.isNullOrEmpty(filter.value)) {
+                    filter.value.forEach(value => filterBadges.push(`<span class="badge badge-info filter-badge">${filter.field}: ${value} <span class="remove-badge material-icons" title="remove filter" value="${filter.field}:${value}">clear</span></span>`));
+                } else if (filter.filterType == FilterType.geoPoint) {
+                    filterBadges.push(`<span class="badge badge-info filter-badge">${filter.value.zipCode} (${filter.value.radius}mi) <span class="remove-badge material-icons" title="remove filter" value="Radius">clear</span></span>`);
+                }
             }
-            if (filter.filterType == FilterType.multi && !Util.isNullOrEmpty(filter.value)) {
-                filter.value.forEach(value => filterBadges.push(`<span class="badge badge-info filter-badge">${filter.field}: ${value}</span>`));
-            }
-            if (filter.filterType == FilterType.geoPoint) {
-                filterBadges.push(`<span class="badge badge-info filter-badge">${filter.value.zipCode} (${filter.value.radius}mi)</span>`);
-            }
-        }
-
+        } else {
+            filterBadges.push("<span class='color-dark'><small>No filters selected.</small></span>");
+        } 
+        
         $("#sidebar-heading").html(filterBadges.join(''));
+        
+        $(".remove-badge").on("click", (e) => {
+            const value = e.target.getAttribute("value").split(":");
+            if (value[0] === "Category") {
+                this.clearCategoryFilter(value[1]);
+            } else if (value[0] === "Radius") {
+                this.clearRadiusFilter();
+            }
+        });
     }
     
     _getMarkerPopupHtml(foodResource) {
@@ -231,5 +251,18 @@ class PantryMapController {
         }
         
         return components.join('');
+    }
+
+    _appliedFilterCount() {
+        let count = 0;
+        for (let filter of this._filters) {
+            if (filter.field == "Category") {
+                count += filter.value.length
+            } else {
+                filter += 1;
+            }
+        }
+        
+        return count;
     }
 }
