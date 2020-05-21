@@ -17,6 +17,7 @@ class FoodResource {
      * Mapping for the currently available data sheet. 
      */
     _defaultMapping(resourceData) {
+        this.Id = resourceData.Id;
         this.Category = resourceData.Category;
         this.Name = resourceData.Name;
         this.County = resourceData.County;

@@ -185,6 +185,26 @@ class PantryMapController {
         const sidebarHeadingHeight = $("#sidebar-heading").height()+8;
         $("#map-result-spacer").css("height", sidebarHeadingHeight+"px");
         $("#map-results-list").css("height", ($("#map-list-wrapper").height()-sidebarHeadingHeight-12)+"px");
+
+        //Zoom to corresponding map pin on list item click
+        $(".result-list-item-container").on("click", (e) => {
+            if (window.innerWidth > 768) {
+                let itemId = '';
+                try {
+                    const domId = e.currentTarget.getAttribute('id');
+                    itemId = domId.split('-')[1]
+                    let foodResource = this._filteredData.find(fd => fd.Id === itemId);
+                    if (foodResource) {
+                        $(".result-list-item-container").removeClass('background-selected');
+                        $(`#${domId}`).addClass('background-selected');
+                        this.map.setPosition(new GeoPoint(foodResource.Latitude, foodResource.Longitude), 14);
+                        this.map.markers[foodResource.Address].openPopup();
+                    }
+                } catch (err) {
+                    console.error("Could not find resource Id on target element.", err)
+                }
+            }  
+        });
     }
 
     _setSidebarHeader() {

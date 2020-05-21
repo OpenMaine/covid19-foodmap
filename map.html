@@ -98,8 +98,8 @@
       </div>
       {{/arr_empty}}
       {{#each this}}
-      <div class="row pt-3 pb-3 result-list-item-container">
-        <div class="row result-list-item-row">
+      <div class="row pt-3 pb-3 result-list-item-container" id="result-{{Id}}">
+        <div class="row col-12 result-list-item-row">
           <div class="col-2 result-row-icon">
             <img src={{IconUrl}}  alt="{{Category}} icon" title="{{Category}}" />
           </div>
@@ -116,7 +116,7 @@
           </div>
         </div>
 
-        <div class="row result-list-item-row">
+        <div class="col-12 row result-list-item-row">
           <div class="col-12 small">
               <strong>Address: </strong>
               {{Address}}

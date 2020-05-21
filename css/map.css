@@ -2,6 +2,7 @@
   --color-success: #155724;
   --color-warning: #721c24;
   --color-dark: (50, 50, 50, 0.82);
+  --color-selected: #F2f2f2;
 }
 
 #page-content-wrapper {
@@ -299,10 +300,18 @@
   margin-bottom: 4px;
 }
 
+#map-results-list .result-list-item-container:hover {
+  cursor: pointer;
+  background-color: var(--color-selected);
+}
+
 .result-row-icon {
   padding-left: 24px;
 }
 
+.background-selected {
+  background-color: var(--color-selected);
+}
 
 /* navbar */
 #nav-mobile {
