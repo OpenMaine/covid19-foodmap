@@ -3,6 +3,7 @@
   --color-warning: #721c24;
   --color-dark: (50, 50, 50, 0.82);
   --color-selected: #F2f2f2;
+  font-family: "Roboto";
 }
 
 #page-content-wrapper {
@@ -281,6 +282,10 @@
     margin: 0 auto;
     margin-bottom: 16px;
   }
+
+  .main-content {
+    margin-top: 54px;
+  }
 }
 
 #map-results-list {
@@ -314,11 +319,14 @@
 }
 
 /* navbar */
-#nav-mobile {
-  position: fixed;
+#nav-desktop, #nav-mobile {
   z-index: 1010;
+  position: fixed;
+  width:100%;
+}
+
+#nav-mobile {
   bottom: 0;
-  width: 100%;
 }
 
 

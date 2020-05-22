@@ -11,7 +11,8 @@
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="vendor/select2/css/select2.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+  
   <link href="css/map.css" rel="stylesheet">
   <link href="css/shared.css" rel="stylesheet">
 
@@ -100,10 +101,7 @@
       {{#each this}}
       <div class="row pt-3 pb-3 result-list-item-container" id="result-{{Id}}">
         <div class="row col-12 result-list-item-row">
-          <div class="col-2 result-row-icon">
-            <img src={{IconUrl}}  alt="{{Category}} icon" title="{{Category}}" />
-          </div>
-          <div class="col-10 pl-0">
+          <div class="col-10">
             {{#if WebLink}}
               <a href="{{WebLink}}" title="{{WebLink}}" target="_blank" rel="noopener">{{Name}}</a>
             {{else}}
@@ -113,6 +111,9 @@
               {{Category}} 
               <a href="tel:{{tel Phone}}" class="small ml-1">{{Phone}}</a>
             </div>
+          </div>
+          <div class="col-2 result-row-icon">
+            <img src={{IconUrl}}  alt="{{Category}} icon" title="{{Category}}" />
           </div>
         </div>
 
