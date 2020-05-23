@@ -13,9 +13,12 @@
   <link href="vendor/select2/css/select2.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+  <link rel="stylesheet" href="vendor/bs-stepper/bs-stepper.min.css">
 
   <link href="css/home.css" rel="stylesheet">
   <link href="css/shared.css" rel="stylesheet">
+
+  <script src="vendor/bs-stepper/bs-stepper.min.js"></script>
 </head>
 
 <body>
@@ -29,7 +32,10 @@
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link" href="map.html">Food Map</a>
+            <a class="nav-link" href="map.html?category=Food%20Pantry&category=Meal%20Sites">Food Pantries</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="map.html?category=School%20Meal%20Pickup">School Meals</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#contact">Contact</a>
@@ -49,63 +55,116 @@
               Maine Food Finder
             </h1>
             <p id="hero-tagline" class="lead mb-3 text-light">
-              Find food pantries and school meal sites near you that are open during the COVID-19 pandemic 
+              Find food pantries and school meal sites that are open during the COVID-19 pandemic 
             </p>
           </div>
         </div>
         <div class="row" id="filter-container">
           <div class="col-md-1 col-sm-0"></div>
-          <div class="col-md-10">
-            <h2 id="hero-search-title" style="color: #404040;">
-              Search for resources
-            </h2>
-            <form  id="search-form" class="mt-3">
-              <div class="row mb-5 d-flex align-items-center">
-                <div class="col-sm-6 col-12 mb-3 ">
-                  <label class="top-label" for="town-zip-input">
-                    <strong>Town or Zip Code</strong>
-                    <select 
-                      class="form-control" 
-                      id="town-zip-input"
-                      size="1"
-                      class="form-control" 
-                      required>
-                    </select>
-                    <small class="text-muted">Search by Maine town or zip code</small>
-                  </label>
+          <div class="col-md-10 col-12">
+            <!-- stepper test -->
+            <div class="bs-stepper">
+              <div class="bs-stepper-header text-center" role="tablist">
+                <!-- your steps here -->
+                <div class="step" data-target="#about-step">
+                  <button type="button" class="step-trigger" role="tab" aria-controls="about-step" id="about-step-trigger">
+                    <span class="bs-stepper-circle" id="step-1-icon">1</span>
+                    <span class="bs-stepper-label">Getting Started</span>
+                  </button>
                 </div>
-    
-                <div class="col-sm-6 col-12 mb-3">
-                  <label for="radius-select"><strong>Radius</strong>
-                    <select size="1" required class="form-control" id="radius-select" aria-describedby="hero-radius-help">
-                      <option value=10>10</option>
-                      <option value=20>20</option>
-                      <option value=30>30</option>
-                      <option value=50>50</option>
-                      <option value=75>75</option>
-                    </select>
-                  </label>
-                  <small id="hero-radius-help" class="form-text text-muted">Miles to search</small>
+                <div class="line hidden-lg"></div>
+                <div class="step" data-target="#resource-type-step">
+                  <button type="button" class="step-trigger" role="tab" aria-controls="resource-type-step" id="resource-type-step-trigger">
+                    <span class="bs-stepper-circle" id="step-2-icon">2</span>
+                    <span class="bs-stepper-label">Select Categories</span>
+                  </button>
                 </div>
-                <div class="col-12">
-                  <label for="category-select"><strong>Categories</strong>
-                    <select required class="form-control" 
-                      aria-describedby="hero-category-help"
-                      id="category-select"               
-                      name="category-select[]"
-                      multiple="multiple">
-                    </select>
-                  </label>
-                  <small id="hero-category-help" class="form-text text-muted">Select one or more categories</small>
+                <div class="line hidden-lg"></div>
+                <div class="step" data-target="#location-step">
+                  <button type="button" class="step-trigger" role="tab" aria-controls="location-step" id="location-step-trigger">
+                    <span class="bs-stepper-circle" id="step-3-icon">3</span>
+                    <span class="bs-stepper-label">Select Location</span>
+                  </button>
                 </div>
               </div>
-              <button type="submit" id="search-button" class="btn btn-primary btn-block">Search</button>
-            </form>
+              <div class="bs-stepper-content mt-2">
+                <!-- your steps content here -->
+                <div id="about-step" class="content fade" role="tabpanel" aria-labelledby="about-step-trigger">
+                  <div class="text-center">
+                    <div>The Maine Food Finder is a tool to help you search for local food resources. </div>
+                    <div>Information is subject to change without notice, so always call ahead to verify hours and availability.</div>
+                    <div class="mt-4">
+                      <button class="btn btn-primary text-light" id="step-1-button"><strong>Find Food Resources</strong></button>
+                    </div>
+                  </div>
+                </div>
+                <div id="resource-type-step" class="content fade" role="tabpanel" aria-labelledby="resource-type-step-trigger">
+                  <div class="text-center mb-2">
+                    <strong>Which of these best describes your need?</strong>
+                  </div>
+                  <form class="text-center" id="step-2-form">
+                    <div class="step-2-radios">
+                      <label class="" for="pantry-radio">
+                        <input class="" type="radio" name="category-radio" id="pantry-radio" value="pantries" required>
+                        I need a food pantry or meal site
+                      </label>
+                      <label class="" for="school-meal-radio">
+                        <input class="" type="radio" name="category-radio" id="school-meal-radio" value="school-meals" required>
+                        I need a school-provided meal for a student
+                      </label>
+                    </div>
+                    <div class="text-center mt-4">
+                      <button type="submit" id="step-2-submit" class="btn btn-primary text-light"><strong>Next</strong></button>
+                    </div>
+                  </form>
+                </div>
+                <div id="location-step" class="content fade" role="tabpanel" aria-labelledby="location-step-trigger">
+                  <div class="text-center mb-2">
+                    <div>Thanks! We'll help you search for <span id="selected-category"></span>.</div>
+                    <div class="mt-2"><strong>Select your town or zip code and how far you can travel</strong></div>
+                  </div>
+                  <form id="step-3-form">
+                    <div class="row">
+                      <div class="col-sm-6 col-12 mb-3 ">
+                        <label class="top-label" for="town-zip-input">
+                          <strong>Town or Zip Code</strong>
+                          <select 
+                            class="form-control" 
+                            id="town-zip-input"
+                            size="1"
+                            class="form-control" 
+                            required>
+                          </select>
+                          <small class="text-muted">Search by Maine town or zip code</small>
+                        </label>
+                      </div>
+          
+                      <div class="col-sm-6 col-12 mb-3">
+                        <label for="radius-select"><strong>Radius</strong>
+                          <select size="1" required class="form-control" id="radius-select" aria-describedby="hero-radius-help">
+                            <option value=10>10</option>
+                            <option value=20>20</option>
+                            <option value=30>30</option>
+                            <option value=50>50</option>
+                            <option value=75>75</option>
+                          </select>
+                        </label>
+                        <small id="hero-radius-help" class="form-text text-muted">Miles to search</small>
+                      </div>
+                    </div>
+                    <div class="text-center">
+                      <button class="btn btn-primary text-light"><strong>Search for Resources</strong></button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <!-- end stepper test -->
           </div>
           <div class="col-md-1 col-sm-0"></div>
         </div>
         <div id="header-credits" class="col-12 text-light mt-4 text-center">
-          Information provided by the 
+          Data is provided by the 
           <a href="https://www.gsfb.org/" target="_blank" rel="noopener" title="Open Good Shepherd Food Bank website">Good Shepherd Food Bank</a>
           and updated by volunteers from 
           <a href="https://mainerstogether.com/" target="_blank" rel="noopener" title="Mainers Together website">Mainers Together</a>
@@ -128,9 +187,10 @@
           <div id="mission-text">
             <ul style="padding-left: 16px;">
               <li>
-                Use our 
-                <a href="map.html" target="_blank" title="Open Maine Food Finder map">interactive map</a> 
-                to search for food pantries and meal sites in your area.
+                Use our interactive map to search for
+                <a href="map.html?category=Food%20Pantry&category=Meal%20Sites" target="_blank" title="Find pantries and meal sites">food pantries and meal sites</a> or
+                <a href="map.html?category=School%20Meal%20Pickup" target="_blank" title="Find school pickup sites">school meal pickup sites</a> 
+                 in your area.
               </li>
               <li>
                 Apply for food stamps in Maine by creating an account on 

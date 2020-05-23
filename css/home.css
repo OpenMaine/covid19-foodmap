@@ -24,11 +24,14 @@
     -moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.62);
     box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.62);
     padding: 32px 0px;
-    background-color: rgba(245, 245, 255, .92);
+    background-color: rgba(255, 255, 255, .95);
     color: rgba(0,0,0,.87);
-    border-radius: 8px; 
+    border-radius: 2px; 
 }
 
+.nav-link:hover {
+    color: lightyellow;
+}
 
 .emphasis-box {
     background-color: #f5f5f5;
@@ -39,7 +42,6 @@
     -moz-box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.62);
     box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.62);
 }
-
 
 .toggle-label {
     display: block; 
@@ -69,10 +71,14 @@
     margin-bottom: 6px;
 }
 
+/* stepper styles */
+.bg-green {
+    background-color: green !important;
+}
+
 @media (max-width: 768px) {
     #filter-container {
-        margin-left: 2px;
-        margin-right: 2px;
+        margin: 0 auto;
     }
 
     #hero-title {
@@ -84,5 +90,17 @@
     }
     .toggle-label {
         font-size: 10px;
+    }
+
+    .step {
+        display: none;
+    }
+
+    .step.active {
+        display: block;
+    }
+    .bs-stepper-header {
+        display: block !important;
+        text-align: center;
     }
 }

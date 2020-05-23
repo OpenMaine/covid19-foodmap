@@ -8,15 +8,19 @@
     This could happen if you change a column header or switch source spreadsheets.
 */
 class FoodResource {
-    constructor(resourceData) {
-        this._defaultMapping(resourceData);
+    constructor(resourceData, resourceType) {
+        if (resourceType === "pantry")
+            this._pantryMapping(resourceData);
+        else if (resourceType === "school")
+            this._schoolPickupMapping(resourceData);
+            
         this._setIcon();
     }
 
     /**
-     * Mapping for the currently available data sheet. 
+     *  
      */
-    _defaultMapping(resourceData) {
+    _pantryMapping(resourceData) {
         this.Id = resourceData.Id;
         this.Category = resourceData.Category;
         this.Name = resourceData.Name;
@@ -34,7 +38,27 @@ class FoodResource {
         this.SpecialHoursOfOperation = resourceData.Covid19Hours;
         this.SpecialNotes = resourceData.Covid19PickupNotes;
         // Must explicitly be false to be inactive.
-        this.IsActive = resourceData.IsActive == null || resourceData == undefined || resourceData.IsActive.trim().toLocaleLowerCase() == "true";
+        this.IsActive = resourceData == undefined || resourceData == null || resourceData.IsActive == null || resourceData.IsActive.trim().toLocaleLowerCase() == "true";
+    }
+
+    _schoolPickupMapping() {
+        this.Id = resourceData.Id;
+        this.Category = resourceData.Category;
+        this.Name = resourceData.Name;
+        this.County = resourceData.County;
+        this.Town = resourceData.Town;
+        this.Address = resourceData.Address;
+        this.Phone = resourceData.Phone;
+        this.LastUpdated = resourceData.DateUpdated
+        this.HoursOfOperation = resourceData.HoursOfOperationOldFromExistingData;
+        this.OperationalNotes = resourceData.OperationalNotesFromWebExistingData;
+        this.WebLink = resourceData.WebLink;
+        this.WebLink2 = resourceData.AdditionalWebLink;
+        this.Latitude = parseFloat(resourceData.Latitude);
+        this.Longitude = parseFloat(resourceData.Longitude);
+        // this.SpecialHoursOfOperation = resourceData.Covid19Hours;
+        // this.SpecialNotes = resourceData.Covid19PickupNotes;
+        this.IsActive = true;
     }
 
     _setIcon() {

@@ -6,6 +6,7 @@ body {
     background-color: #FBFBFB;
 }
 
+/* Custom scrollbar styles */
 ::-webkit-scrollbar {
     width: 8px;
 }
@@ -26,6 +27,7 @@ body {
     background: #555; 
 }
 
+/* Navbar styles */
 .navbar-custom {
     background-color: #323272;
     padding-top: 0.25rem;
@@ -39,6 +41,20 @@ body {
     font-size: 1.75rem;
     font-weight: 400;
     margin-left: 1rem;
+}
+
+/* Non-mobile styles */
+@media (min-width: 768px) {  
+  .hidden-sm {
+    display: none !important;
+  }
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .hidden-lg {
+    display: none !important;
+  }
 }
 
 /* Begin accessibility tweaks to theme */

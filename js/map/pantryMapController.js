@@ -24,6 +24,11 @@ class PantryMapController {
         this._setSidebarScrollListener();
     }
 
+    
+    initInputs() {
+
+    }
+
     start(loadCallback) {
         this._dataService.getCities().then((cities) => {
             this.cityOptions = cities;

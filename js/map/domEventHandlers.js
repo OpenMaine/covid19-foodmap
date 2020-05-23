@@ -26,6 +26,8 @@ class DomEventHandlers {
     }
 
     _initMapController() {
+      // Set filters first
+      
       //callback for after first data fetch completes
       this.mapController.start(() => {
         this.setFilterOptions();
