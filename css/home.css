@@ -3,24 +3,32 @@
 }
 
 #home {
-    background: linear-gradient(0deg,  rgba(9,9,121,.9) 0%, #0063cc 100%);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background: linear-gradient( rgba(100, 100, 100, 0.12), rgba(100, 100, 100, 0.12)),  url("../images/veggie-bg.jpg");
 }
 
 #home-footer {
     background-color: #040437!important;
 }
 
-#hero-tagline {
-    color: rgba(255, 255, 255, .85);
+#header-credits, #header-credits > a {
+    -webkit-text-stroke: 1px darkslategray;
+    color: white;
+    font-weight: bold;
+    text-shadow: 1px 1px 16px #000;
 }
 
-#header-credits {
-    font-weight: 300;
+#header-credits > a:hover {
+    text-decoration: none;
 }
 
-#header-credits > a {
-    color: rgba(255, 255, 255, .85);
-    font-weight: 400;
+
+#hero-title {
+    -webkit-text-stroke: 1px darkslategray;
+    color: white;
+    text-shadow: 0px 1px 8px #000;
+    font-weight: 500;
 }
 
 #filter-container {
@@ -28,7 +36,7 @@
     -moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.62);
     box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.62);
     padding: 32px 0px;
-    background-color: rgba(255, 255, 255, .94);
+    background-color: rgb(248, 248, 248);
     color: rgba(0,0,0,.87);
     border-radius: 2px; 
 }
@@ -52,6 +60,10 @@
     -webkit-box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.62);
     -moz-box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.62);
     box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.62);
+}
+
+.form-text {
+    margin-top: 0;
 }
 
 .toggle-label {
@@ -79,6 +91,10 @@
 }
 
 @media (max-width: 768px) {
+    #filter-header {
+        font-size: 1em;
+    }
+
     #filter-container {
         margin-left: 2px;
         margin-right: 2px;
@@ -88,9 +104,10 @@
         font-size: 2.25rem;
     }
 
-    #hero-search-title {
-        font-size: 1.5rem;
+    #header-credits {
+        font-size: .9em;
     }
+
     .toggle-label {
         font-size: 10px;
     }
