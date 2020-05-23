@@ -29,7 +29,10 @@
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link" href="map.html">Food Map</a>
+            <a class="nav-link" href="map.html?category=Food%20Pantry&category=Meal%20Sites">Food Pantries</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="map.html?category=School%20Meal%20Pickup">School Meals</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#contact">Contact</a>
@@ -49,7 +52,7 @@
               Maine Food Finder
             </h1>
             <p id="hero-tagline" class="lead mb-3 text-light">
-              Find food pantries and school meal sites near you that are open during the COVID-19 pandemic 
+              Find food pantries and school meal sites that are open during the COVID-19 pandemic
             </p>
           </div>
         </div>
@@ -118,19 +121,19 @@
     <!-- Mission statement -->
     <section class="container" id="mission">
       <div class="row mb-5 mt-5">
-        <div class="col-12">
-          <h2 id="mission-title" class="text-dark">
+        <div class="col-12 text-center mb-5">
+          <h2 id="mission-title" class="text-dark text-uppercase">
             Get the help your family needs.
           </h2>
-          <hr>
         </div>
         <div class="col-sm-7">
           <div id="mission-text">
             <ul style="padding-left: 16px;">
               <li>
-                Use our 
-                <a href="map.html" target="_blank" title="Open Maine Food Finder map">interactive map</a> 
-                to search for food pantries and meal sites in your area.
+                Use our interactive map to search for
+                <a href="map.html?category=Food%20Pantry&category=Meal%20Sites" target="_blank" title="Find pantries and meal sites">food pantries and meal sites</a> or
+                <a href="map.html?category=School%20Meal%20Pickup" target="_blank" title="Find school pickup sites">school meal pickup sites</a> 
+                 in your area.
               </li>
               <li>
                 Apply for food stamps in Maine by creating an account on 
@@ -156,34 +159,34 @@
       </div>
     </section>
     <!-- About the data -->
-    <section class="container" id="about">
-      <div class="row mb-5 mt-5">
-        <div class="col-12">
-          <h2 id="data-title" class="text-dark">
-            About the data
-          </h2>
-          <hr>
-        </div>
-        <div class="col-sm-7">
-          <div id="data-text">
-            We recommend that you call each pantry before going to pick up food. 
-            This data is validated and updated by volunteers, but it can change quickly. 
-            <div class="mt-2">
-              Follow all social distancing guidelines and the medical advice provided by the CDC when picking up food.
+    <div class="alt-section-container">
+      <section class="container" id="about">
+        <div class="row mb-5 mt-5">
+          <div class="col-12 text-center mb-5">
+            <h2 id="data-title" class="text-dark text-uppercase">
+              About the data
+            </h2>
+          </div>
+          <div class="col-sm-7">
+            <div id="data-text">
+              We recommend that you call each pantry before going to pick up food. 
+              This data is validated and updated by volunteers, but it can change quickly. 
+              <div class="mt-2">
+                Follow all social distancing guidelines and the medical advice provided by the CDC when picking up food.
+              </div>
             </div>
           </div>
+          <div class="col-sm-5">
+            <img class="img-thumbnail" src="images/produce.jpg" alt="Stacks of vegetables"/>
+          </div>
         </div>
-        <div class="col-sm-5">
-          <img class="img-thumbnail" src="images/produce.jpg" alt="Stacks of vegetables"/>
-        </div>
-      </div>
-    </section>
+      </section>
+    </div>
     <!-- Other resources -->
     <section class="container" id="other-resources">
       <div class="row mb-5 mt-5">
-        <div class="col-12">
-          <h2 id="other-resources-title" class="text-dark">Other Resources</h2>
-          <hr>
+        <div class="col-12 text-center mb-5">
+          <h2 id="other-resources-title" class="text-dark text-uppercase">Other Resources</h2>
         </div>
         <div class="col-12">
           <div class="row" id="other-resources-text">
@@ -232,22 +235,25 @@
     </section>
 
     <!-- Contact and social media -->
-    <section class="container mt-2" id="contact">
-      <div class="row mb-5">
-        <div class="col-12">
-          <h2 id="contact-title" class="text-dark">
-            Get in touch
-          </h2>
-          <hr>
-          <div class="row">
-            <div class="col-12">
-              This site was developed by the the Code for America Brigade <a href="http://openmaine.org/" target="_blank" rel="noopener" title="Open Maine website">OpenMaine</a> whose volunteers help design, develop, and improve civic systems in Maine. 
-            </div>
-            <div class="col-12 mt-2">
-              Please reach out to us via e-mail or social media with any questions or for more information about how you can get involved!
-            </div>
+    <div class="alt-section-container">
+      <section class="container mt-2" id="contact">
+        <div class="row mb-2">
+          <div class="col-12 text-center mb-4">
+            <h2 id="contact-title" class="text-dark text-uppercase">
+              Get in touch
+            </h2>
           </div>
-          <div class="row mt-4 text-center">
+
+ 
+          <div class="col-12">
+            This site was developed by the the Code for America Brigade <a href="http://openmaine.org/" target="_blank" rel="noopener" title="Open Maine website">OpenMaine</a> whose volunteers help design, develop, and improve civic systems in Maine. 
+          </div>
+          <div class="col-12 mt-2">
+            Please reach out to us via e-mail or social media with any questions or for more information about how you can get involved!
+          </div>
+
+
+          <div class="row col-12 mt-4 text-center">
             <div class="col-md-6">
               <div class="mt-3">
                 <h3 class="h4">Email</h3>
@@ -287,30 +293,31 @@
               </ul>
             </div>
           </div>
-        </div>
-      </div>
 
-      <!-- Feedback -->
-      <div class="row ml-2 mr-2">
-        <div class="col-12 mt-5 mb-5 bg-light emphasis-box text-center">
-          <h4 id="feedback-title" class="text-dark">
-            You can help make this site better!
-          </h4>
-          <hr>
-          <div class="row">
-            <div class="col-12">
-              <p id="feedback-line1">
-                Are we missing resources or publishing inaccurate data?
-              </p>
-              <p>Use <a id="feedback-form-url" href="https://docs.google.com/forms/d/e/1FAIpQLScU_dnHub1IHlaRI5h3nCxaaIS-HdBc0yFt9Pc94FYZ7z1eSg/viewform?usp=sf_link" target="_blank" title="Open feedback form">
-                our feedback form
-              </a> to let us know!</p>
+        </div>
+  
+        <!-- Feedback -->
+        <div class="row ml-2 mr-2">
+          <div class="col-12 mt-5 mb-5 bg-light emphasis-box text-center">
+            <h4 id="feedback-title" class="text-dark">
+              You can help make this site better!
+            </h4>
+            <hr>
+            <div class="row">
+              <div class="col-12">
+                <p id="feedback-line1">
+                  Are we missing resources or publishing inaccurate data?
+                </p>
+                <p>Use <a id="feedback-form-url" href="https://docs.google.com/forms/d/e/1FAIpQLScU_dnHub1IHlaRI5h3nCxaaIS-HdBc0yFt9Pc94FYZ7z1eSg/viewform?usp=sf_link" target="_blank" title="Open feedback form">
+                  our feedback form
+                </a> to let us know!</p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
-    <!-- /.about container -->
+      </section>
+      <!-- /.about container -->
+    </div>
   </main>
 
   <!-- Footer -->

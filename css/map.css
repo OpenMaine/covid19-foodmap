@@ -187,10 +187,6 @@
     margin-top: 12px;
     text-align: center;
   }
-
-  .hidden-lg {
-    display: none !important;
-  }
   
   .header-dark {
     font-size: 1.15em;
@@ -248,10 +244,6 @@
   }
   .filter-card {
     padding-left: 2.25rem;
-  }
-  
-  .hidden-sm {
-    display: none !important;
   }
 
   #filters-toggle, #filters-mobile {

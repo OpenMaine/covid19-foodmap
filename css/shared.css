@@ -6,6 +6,7 @@ body {
     background-color: #FBFBFB;
 }
 
+/* Custom scrollbar styles */
 ::-webkit-scrollbar {
     width: 8px;
 }
@@ -26,6 +27,7 @@ body {
     background: #555; 
 }
 
+/* Navbar styles */
 .navbar-custom {
     background-color: #323272;
     padding-top: 0.25rem;
@@ -41,6 +43,21 @@ body {
     margin-left: 1rem;
 }
 
+/* Non-mobile styles */
+@media (min-width: 768px) {  
+  .hidden-sm {
+    display: none !important;
+  }
+}
+
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .hidden-lg {
+    display: none !important;
+  }
+}
+
 /* Begin accessibility tweaks to theme */
 .navbar-dark.navbar-custom .navbar-nav .nav-link {
   color: rgba(255, 255, 255, 0.75);
@@ -49,6 +66,7 @@ body {
 a {
   color: #0063cc;
 }
+
 
 /* Bootstrap overrides */
 .btn-primary {
@@ -67,6 +85,7 @@ label {
 .badge.badge-info {
   background-color: #117888;
 }
+
 
 /* select2 overrides */
 .select2-container--default .select2-selection--multiple .select2-selection__choice__remove,
