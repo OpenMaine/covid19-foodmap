@@ -6,10 +6,13 @@ class PantryDataService {
         this.dataSheetId = "135l8GGHQ2DSqvTI28_Pgu3HjA2u8fZNqsbPX3_xWbbk";
         this.foodResourceSheetName = "Pantries";
         this.foodResourceSheetRange = "A:T";
+        this.schoolPickupSheetName = "School Pickup";
+        this.schoolPickupSheetRange = "A:S";
         this.cityOptionsSheetName = "FormOptions";
         this.cityOptionsSheetRange = "A:A";
 
         this.foodResourceUrl = `${this.baseUri}?sheetId=${this.dataSheetId}&sheetName=${this.foodResourceSheetName}&sheetRange=${this.foodResourceSheetRange}`;
+        this.schoolPickupUrl = `${this.baseUri}?sheetId=${this.dataSheetId}&sheetName=${this.schoolPickupSheetName}&sheetRange=${this.schoolPickupSheetRange}`;
         this.cityOptionsUrl = `${this.baseUri}?sheetId=${this.dataSheetId}&sheetName=${this.cityOptionsSheetName}&sheetRange=${this.cityOptionsSheetRange}`;
     }
 
@@ -27,11 +30,25 @@ class PantryDataService {
         return deferred.promise();
     }
 
-    getFoodResources() {
+    getPantries() {
         const deferred = $.Deferred();
 
         $.get(this.foodResourceUrl).done((response, status) => {
-            let foodResources = JSON.parse(response).map(data => new FoodResource(data));
+            let foodResources = JSON.parse(response).map(data => new FoodResource(data, "pantry"));
+            deferred.resolve(foodResources);
+        }).fail((e) => {
+            console.error(e);
+            deferred.reject();
+        });
+
+        return deferred.promise();
+    }
+
+    getSchoolPickups() {
+        const deferred = $.Deferred();
+
+        $.get(this.schoolPickupUrl).done((response, status) => {
+            const foodResources = JSON.parse(response).map(data => new FoodResource(data, "school"));
             deferred.resolve(foodResources);
         }).fail((e) => {
             console.error(e);

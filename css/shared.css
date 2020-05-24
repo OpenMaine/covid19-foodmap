@@ -43,6 +43,13 @@ body {
     margin-left: 1rem;
 }
 
+
+.overflow-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* Non-mobile styles */
 @media (min-width: 768px) {  
   .hidden-sm {

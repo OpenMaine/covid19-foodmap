@@ -8,16 +8,20 @@
     This could happen if you change a column header or switch source spreadsheets.
 */
 class FoodResource {
-    constructor(resourceData) {
-        this._defaultMapping(resourceData);
-        this._setIcon();
+    constructor(resourceData, resourceType) {
+        if (resourceType === "pantry")
+            this._pantryMapping(resourceData);
+        else if (resourceType === "school")
+            this._schoolPickupMapping(resourceData);
+        
+            this._setIcon();
     }
 
     /**
-     * Mapping for the currently available data sheet. 
+     * 
      */
-    _defaultMapping(resourceData) {
-        this.Id = resourceData.Id;
+    _pantryMapping(resourceData) {
+        this.Id = this._generateId();
         this.Category = resourceData.Category;
         this.Name = resourceData.Name;
         this.County = resourceData.County;
@@ -37,6 +41,26 @@ class FoodResource {
         this.IsActive = resourceData.IsActive == null || resourceData == undefined || resourceData.IsActive.trim().toLocaleLowerCase() == "true";
     }
 
+    _schoolPickupMapping() {
+        this.Id = this._generateId();
+        this.Category = resourceData.Category;
+        this.Name = resourceData.Name;
+        this.County = resourceData.County;
+        this.Town = resourceData.Town;
+        this.Address = resourceData.Address;
+        this.Phone = resourceData.Phone;
+        this.LastUpdated = resourceData.DateUpdated
+        this.HoursOfOperation = resourceData.HoursOfOperationOldFromExistingData;
+        this.OperationalNotes = resourceData.OperationalNotesFromWebExistingData;
+        this.WebLink = resourceData.WebLink;
+        this.WebLink2 = resourceData.AdditionalWebLink;
+        this.Latitude = parseFloat(resourceData.Latitude);
+        this.Longitude = parseFloat(resourceData.Longitude);
+        // this.SpecialHoursOfOperation = resourceData.Covid19Hours;
+        // this.SpecialNotes = resourceData.Covid19PickupNotes;
+        this.IsActive = true;
+    }
+
     _setIcon() {
         if (this.Category == "Meal Sites")  {
             this.IconUrl = MarkerIcon.getPath(MarkerIcon.Restaurant);
@@ -48,6 +72,14 @@ class FoodResource {
             this.IconUrl = MarkerIcon.getPath(MarkerIcon.Star);
         }
     }
+
+    _generateId() {
+        return 'xxxxxxxxxxxx'.replace(/[x]/g, function(c) {
+          const r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+          return v.toString(16);
+        });
+    }
+      
 
     
 }

@@ -67,7 +67,7 @@ class PantryMapController {
 
 
     _getData(successCallback) {
-        this._dataService.getFoodResources().then((foodResources) => {
+        this._dataService.getPantries().then((foodResources) => {
             this._data = foodResources.filter(fr => fr.IsActive);
             if (this._dataLoaded)
                 this._applyFilters();
@@ -82,9 +82,9 @@ class PantryMapController {
     _setLegend() {
         let div = L.DomUtil.create('div', 'legend');
         div.innerHTML += '<div style="background-color:white;>';
-        div.innerHTML += `<img src=${MarkerIcon.getPath(MarkerIcon.Grocery)} alt="Food Pantry"/> &ndash; Food Pantry <br>`;
-        div.innerHTML += `<img src=${MarkerIcon.getPath(MarkerIcon.Restaurant)} alt="Meal Site"/> &ndash; Meal Site <br>`;
-        div.innerHTML += `<img src=${MarkerIcon.getPath(MarkerIcon.Utensils)} alt="School Meal Pickup Site"/> &ndash; School Meal Pickup<br>`;
+        div.innerHTML += `<img src=${MarkerIcon.getPath(MarkerIcon.Grocery)} width="24" height="24" alt="Food Pantry"/> &ndash; Food Pantry <br>`;
+        div.innerHTML += `<img src=${MarkerIcon.getPath(MarkerIcon.Restaurant)} width="24" height="24" alt="Meal Site"/> &ndash; Meal Site <br>`;
+        div.innerHTML += `<img src=${MarkerIcon.getPath(MarkerIcon.Utensils)} width="24" height="24" alt="School Meal Pickup Site"/> &ndash; School Meal Pickup<br>`;
         div.innerHTML += '</div>'; 
         this.map.addLegend(div);
     }
