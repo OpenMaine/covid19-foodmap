@@ -11,7 +11,7 @@ class HomeController {
         this._setFormSubmitHandler();
         this._dataService = new PantryDataService();
         this._setSelect2Inputs();
-        $("#radius-select").val(20); 
+        $("#radius-select").val(10); 
     }
     
     _getPosition() {

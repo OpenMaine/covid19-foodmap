@@ -50,7 +50,7 @@ class PantryInputHandler {
           if (queryParams.radius && queryParams.radius.length > 0) {
             $("#radius-select").val(queryParams.radius);
           } else {
-            $("#radius-select").val(20);
+            $("#radius-select").val(10);
           }
 
           this._setRadiusFilter().always(() => this._initCategoryFilter(queryParams, true));
@@ -67,7 +67,7 @@ class PantryInputHandler {
         }
           
         if (!filterApplied) {
-            $("#radius-select").val(20);
+            $("#radius-select").val(10);
             $("#category-select").val(Settings.ActiveCategories).trigger('change.select2');
         }
 
