@@ -39,7 +39,7 @@
     <div class="toggled sidebar-toggleable margin-transition hidden-lg">&nbsp;</div>
     <!-- Page Content -->
     <div id="page-content-wrapper">
-      <!-- Navbar filled by handlebars template in DomEventHandlers -->
+      <!-- Navbar filled by handlebars template from PantryInputHandler -->
       <span id="nav-desktop"></span>
       <div class="main-content">
         <!-- Alert bar -->
@@ -76,7 +76,7 @@
           <div id="main-map"></div>
         </div>
       </div>
-      <!-- filled by handlebars template in DomEventHandlers if on mobile -->
+      <!-- filled by handlebars template from PantryInputHandler if on mobile -->
       <span id="filters-mobile" class="toggled"></span>
       <span id="nav-mobile"></span>
     </div>
@@ -118,15 +118,17 @@
         </div>
 
         <div class="col-12 row result-list-item-row">
+          {{#if Address}}
           <div class="col-12 small">
               <strong>Address: </strong>
               {{Address}}
           </div>
+          {{/if}}
           <div class="col-12 small mt-1">
             {{#if SpecialHoursOfOperation}}
               <strong>Covid-19 Hours: </strong>
-            {{SpecialHoursOfOperation}}
-            {{else}}
+              {{SpecialHoursOfOperation}}
+            {{else if HoursOfOperation}}
               <strong>Hours: </strong>
               {{HoursOfOperation}}
             {{/if}} 
@@ -141,6 +143,12 @@
             {{#if OperationalNotes}}
               <strong>Notes: </strong>
               {{OperationalNotes}}
+            {{/if}} 
+          </div>
+          <div class="col-12 small mt-1">
+            {{#if Email}}
+              <strong>Email: </strong>
+              <a href="mailto:{{Email}}">{{Email}}</a>  
             {{/if}} 
           </div>
           <div class="col-12 small mt-1 overflow-ellipsis">
@@ -268,7 +276,7 @@
   <script src="js/core/geocoder.js"></script>
   <script src="js/core/deviceLocationProvider.js"></script>
   <script src="js/map/foodResource.js"></script>
-  <script src="js/map/domEventHandlers.js"></script>
+  <script src="js/map/pantryInputHandler.js"></script>
   <script src="js/extensions/handlebarsHelpers.js"></script>
   <script src="js/services/pantryDataService.js"></script>
   <script src="js/map/pantryMapController.js"></script>
@@ -285,8 +293,8 @@
       const map = new DefaultMap('main-map', startGeopoint, zoomLevel);
       const mapController = new PantryMapController(map);
       
-      const domEventHandlers = new DomEventHandlers(mapController);
-      domEventHandlers.init();
+      const pantryInputHandler = new PantryInputHandler(mapController);
+      pantryInputHandler.init();
     });
   </script>
 </body>

@@ -10,6 +10,7 @@
 class PantryMapController {
     
     constructor(map) {
+        //TODO: move cityOptions to PantryInputHandler
         this.cityOptions = [];
         this.map = map;
         
@@ -17,7 +18,6 @@ class PantryMapController {
         this._sideBarData =  [];      // Sidebar shows only a portion of results, updated on scroll
         this._filteredData = [];
         this._filters = [];           // Type mappingCore.Filter
-        this._dataLoaded = false;
         this._dataService = new PantryDataService();
         
         this._setLegend();
@@ -25,14 +25,48 @@ class PantryMapController {
     }
 
     start(loadCallback) {
+        // get data for filters
         this._dataService.getCities().then((cities) => {
             this.cityOptions = cities;
-        }).always(() => {
-            this._getData(loadCallback);
+            this._getData().then(() => {
+                loadCallback();
+            });
         });
     }
 
+    /**
+     *   Apply filters (must be valid FilterTypes) and refresh map and list  
+     */
+    refresh() {
+        this._filteredData = this._data;
+        this._filters.filter(f => !Util.isNullOrEmpty(f.value)).forEach(f => {
+            if (f.filterType == FilterType.single) {
+                this._filteredData = this._filteredData.filter(d => d[f.field].indexOf(f.value) >= 0);
+            } else if (f.filterType == FilterType.multi) {
+                this._filteredData = this._filteredData.filter(d => f.value.indexOf(d[f.field]) >= 0);
+            } else if (f.filterType == FilterType.geoPoint) {
+                const radiusInKM = parseInt(f.value.radius)*1.6093;
+                this._filteredData = this._filteredData.filter(d => new GeoPoint(d.Latitude, d.Longitude).distanceTo(f.value.geoPoint) <= radiusInKM);
+            } else {
+                console.error("Invalid filter: ", f);
+            }
+        });
+
+        this._refreshMarkersAndSidebar();
+    }
+
+
+    _refreshMarkersAndSidebar() {
+        this.map.clearMarkers();
+        this._buildMapMarkers(this._filteredData);
+        this._sideBarData = this._filteredData.slice(0, 20);
+        this._buildSidebarListing(this._sideBarData);
+        this._setResultCount();
+        this.map.fitMarkerBounds();
+    }
+
     // Filter access methods
+    //TODO: move to PantryInputHandler
     setCategoryFilter(filterArray) {
         this._setFilter(new Filter("Category", filterArray, FilterType.multi));
     }
@@ -44,7 +78,8 @@ class PantryMapController {
         const categoryFilter = this._filters.find(f => f.field === "Category");
         if (categoryFilter) {
             categoryFilter.value = categoryFilter.value.filter(fv => fv !== categoryName);
-            $("#category-select").val(categoryFilter.value).trigger('change');
+            $("#category-select").val(categoryFilter.value).trigger('change.select2');
+            this.refresh();
         }
     }
     
@@ -60,23 +95,24 @@ class PantryMapController {
         if (radiusFilter) {
             this._filters = this._filters.filter(f => f.field !== "Radius");
             $('#town-zip-input').val(null).trigger('change.select2');
-            this._applyFilters();
+            this.refresh();
         }
     }
     //end filter access methods
 
 
-    _getData(successCallback) {
+    _getData() {
+        const deferred = $.Deferred();
+
         this._dataService.getPantries().then((foodResources) => {
             this._data = foodResources.filter(fr => fr.IsActive);
-            if (this._dataLoaded)
-                this._applyFilters();
-            else {
-                successCallback();     
-            }
-            
-            this._dataLoaded = true;
-        });
+            this._dataService.getSchoolPickups().then((schoolPickups) => {
+                this._data = [...this._data, ...schoolPickups];
+                deferred.resolve();
+            }, (err) => deferred.reject());
+        }, (err) => deferred.reject());
+
+        return deferred.promise();
     }
 
     _setLegend() {
@@ -89,13 +125,7 @@ class PantryMapController {
         this.map.addLegend(div);
     }
 
-    _refreshMapAndSideBar() {
-        this.map.clearMarkers();
-        this._buildMapMarkers(this._filteredData);
-        this._sideBarData = this._filteredData.slice(0, 20);
-        this._buildSidebarListing(this._sideBarData);
-        this._setResultCount();
-    }
+
 
     _setResultCount() {
         if (this._filteredData.length > 0) {
@@ -117,24 +147,6 @@ class PantryMapController {
         };
     }
 
-    _applyFilters() {
-        this._filteredData = this._data;
-        this._filters.filter(f => !Util.isNullOrEmpty(f.value)).forEach(f => {
-            if (f.filterType == FilterType.single) {
-                this._filteredData = this._filteredData.filter(d => d[f.field].indexOf(f.value) >= 0);
-            } else if (f.filterType == FilterType.multi) {
-                this._filteredData = this._filteredData.filter(d => f.value.indexOf(d[f.field]) >= 0);
-            } else if (f.filterType == FilterType.geoPoint) {
-                const radiusInKM = parseInt(f.value.radius)*1.6093;
-                this._filteredData = this._filteredData.filter(d => new GeoPoint(d.Latitude, d.Longitude).distanceTo(f.value.geoPoint) <= radiusInKM);
-            } else {
-                console.error("Invalid filter: ", f);
-            }
-        });
-
-        this._refreshMapAndSideBar();
-    }
-
     /**
         Set filter value(s) for a field. Removes any existing filters for the field first.
         @param filter: Filter of type mappingCore.Filter to apply
@@ -143,20 +155,18 @@ class PantryMapController {
         if (!Util.isNullOrEmpty(filter)) {
             this._filters = this._filters.filter(f => f.field !== filter.field);
             this._filters.push(filter);
-            this._applyFilters();
-            this.map.fitMarkerBounds();
+            this.refresh();
         }
     }
 
     _buildMapMarkers(foodResourceArray) {
         for (let foodResource of foodResourceArray) {
             if (foodResource.Latitude && foodResource.Longitude) {
-                if (this.map.markers[foodResource.Address]) { // If marker already known by map, don't add it again.
-                    //Think harder about this. It seems like it shouldn't be needed.
-                    this.map.addMarkerPopup(foodResource.Address, this._getMarkerPopupHtml(foodResource));
+                if (this.map.markers[foodResource.Id]) { // If marker already known by map, don't add it again.
+                    this.map.addMarkerPopup(foodResource.Id, this._getMarkerPopupHtml(foodResource));
                 } else {
-                    this.map.addMarker(new GeoPoint(foodResource.Latitude, foodResource.Longitude), foodResource.Address, this._getIcon(foodResource));
-                    this.map.addMarkerPopup(foodResource.Address, this._getMarkerPopupHtml(foodResource));
+                    this.map.addMarker(new GeoPoint(foodResource.Latitude, foodResource.Longitude), foodResource.Id, this._getIcon(foodResource));
+                    this.map.addMarkerPopup(foodResource.Id, this._getMarkerPopupHtml(foodResource));
                 }
             }
         }
@@ -192,13 +202,13 @@ class PantryMapController {
                 let itemId = '';
                 try {
                     const domId = e.currentTarget.getAttribute('id');
-                    itemId = domId.split('-')[1]
+                    itemId = domId.split('-')[1];
                     let foodResource = this._filteredData.find(fd => fd.Id === itemId);
                     if (foodResource) {
                         $(".result-list-item-container").removeClass('background-selected');
                         $(`#${domId}`).addClass('background-selected');
                         this.map.setPosition(new GeoPoint(foodResource.Latitude, foodResource.Longitude), 14);
-                        this.map.markers[foodResource.Address].openPopup();
+                        this.map.markers[foodResource.Id].openPopup();
                     }
                 } catch (err) {
                     console.error("Could not find resource Id on target element.", err)
@@ -245,8 +255,14 @@ class PantryMapController {
         if (!Util.isNullOrEmpty(foodResource.Phone)) {
             components.push(`<span><b>Phone: </b><a href="tel:${Util.telFormat(foodResource.Phone)}">${foodResource.Phone}</a></span><br>`);
         }
+
+        if (!Util.isNullOrEmpty(foodResource.Email)) {
+            components.push(`<span><b>Email: </b><a href="mailto:${foodResource.Email}">${foodResource.Email}</a></span><br>`);
+        }
         
-        components.push(`<span><b>Address: </b>${foodResource.Address}</span><br>`);
+        if (!Util.isNullOrEmpty(foodResource.Address)) {
+            components.push(`<span><b>Address: </b>${foodResource.Address}</span><br>`);
+        }
         
         if (!Util.isNullOrEmpty(foodResource.SpecialHoursOfOperation)) {
             components.push(`<span><b>Covid-19 Hours: </b>${foodResource.SpecialHoursOfOperation}</span><br>`);   

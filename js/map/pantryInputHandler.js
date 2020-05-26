@@ -3,8 +3,9 @@
  *  - core/mappingCore
  *  - core/geocoder
  *  - core/deviceLocationProvider
+ *  - extensions/select2Extensions 
  */
-class DomEventHandlers {
+class PantryInputHandler {
     /**
      * @param mapController: PantryMapController 
      */
@@ -14,7 +15,9 @@ class DomEventHandlers {
         this._categorySelectId = "category-select";
         this._radiusSelectId = "radius-select";
         this._townZipId = "town-zip-input";
+        
         this._lastWasMobile = null;
+        this._prevWidth = null;
     }
 
     init() {
@@ -25,12 +28,13 @@ class DomEventHandlers {
         this._initMapController();
     }
 
+    //Begin init callbacks -> called after first data load
+    /////////////////////
     _initMapController() {
-      //callback for after first data fetch completes
       this.mapController.start(() => {
         this.setFilterOptions();
         let filterApplied = false;
-        
+
         const queryParams = Util.getQueryParams();
         
         if (queryParams.zipCode && queryParams.zipCode.length > 0) {
@@ -39,7 +43,7 @@ class DomEventHandlers {
           } else { 
               // Create a Option element and pre-select by default
               var newOption = new Option(queryParams.zipCode, queryParams.zipCode, true, true);
-              // Trigger a change that won't reload the data.
+              // Update select without triggering change callback.
               $('#town-zip-input').append(newOption).trigger('change.select2');
           } 
 
@@ -48,37 +52,46 @@ class DomEventHandlers {
           } else {
             $("#radius-select").val(20);
           }
-          $("#zip-search-form").submit();
-          filterApplied = true;
+
+          this._setRadiusFilter().always(() => this._initCategoryFilter(queryParams, true));
+        } else {
+          this._initCategoryFilter(queryParams, false);
         }    
-        
-        if (queryParams.category && queryParams.category.length > 0) {
-          $("#category-select").val(queryParams.category).trigger('change');
-          filterApplied = true;
-        }
-        
-        if (!filterApplied) {
-          $("#radius-select").val(20);
-          $("#category-select").val(Settings.ActiveCategories).trigger('change');
-          this.mapController.map.zoomDefault();
-        }
       });
     }
 
-    setSelectOptions(domId, optionSet) {
+    _initCategoryFilter(queryParams, filterApplied) {
+        if (queryParams.category && queryParams.category.length > 0) {
+            $("#category-select").val(queryParams.category).trigger('change.select2');
+            filterApplied = true;
+        }
+          
+        if (!filterApplied) {
+            $("#radius-select").val(20);
+            $("#category-select").val(Settings.ActiveCategories).trigger('change.select2');
+        }
+
+        this.mapController.setCategoryFilter($(`#${this._categorySelectId}`).val());
+        this.setFilterOptions();
+    }
+    /////////////////////
+    // End init callbacks
+
+    
+    setFilterOptions() {
+        const cityOptions = this.mapController.cityOptions.sort();
+        this._setSelectOptions(this._townZipId, cityOptions);
+        
+        const categoryOptions = Settings.ActiveCategories.sort();
+        this._setSelectOptions(this._categorySelectId, categoryOptions);
+        this._resetSelected();
+    }
+    
+    _setSelectOptions(domId, optionSet) {
         $(`#${domId}`).empty();
         const blankOption = "<option selected value=''></option>";
         $(`#${domId}`).append(blankOption);
         optionSet.forEach(o => $(`#${domId}`).append(`<option value="${o}">${o}</option>`));
-    }
-
-    setFilterOptions() {
-        const cityOptions = this.mapController.cityOptions.sort();
-        this.setSelectOptions(this._townZipId, cityOptions);
-
-        const categoryOptions = Settings.ActiveCategories.sort();
-        this.setSelectOptions(this._categorySelectId, categoryOptions);
-        this._resetSelected();
     }
 
     _setSelect2Inputs() {
@@ -109,6 +122,7 @@ class DomEventHandlers {
 
     _setNavbar() {
         const isMobile = window.innerWidth < 768;
+
         if (this._lastWasMobile === null || isMobile !== this._lastWasMobile) {
             const targetId = isMobile ? 'nav-mobile' : 'nav-desktop';
             const clearId = targetId === 'nav-mobile' ? 'nav-desktop' : 'nav-mobile';
@@ -186,23 +200,35 @@ class DomEventHandlers {
 
             $("#zip-search-form").submit(e => {
                 e.preventDefault();
-                let userSearch = $(`#${this._townZipId}`).val();
-                const radius = $(`#${this._radiusSelectId}`).val();
-                
-                if (userSearch && radius && userSearch.length > 0 && radius.length > 0) {
-                    let queryString = userSearch;
-                    if (!userSearch.toString().trim().match(/^([0-9]{5})(-[0-9]{4})?$/))
-                        queryString += ", ME";
-                    new Geocoder().geocodeSingleLine(queryString).then(geopoint => {
-                        this.mapController.setRadiusFilter(userSearch, geopoint, radius);
-                        this._resetSelected();
-                    }, () => {});
-                }
+                this._setRadiusFilter();
             });
         }, 250);
         
         this.setFilterOptions();
         $(`#${clearId}`).empty();       
+    }
+
+    _setRadiusFilter() {
+        const deferred = $.Deferred();
+
+        let townZipSearch = $(`#${this._townZipId}`).val();
+        const radius = $(`#${this._radiusSelectId}`).val();
+        
+        if (townZipSearch && radius && townZipSearch.length > 0 && radius.length > 0) {
+            let queryString = townZipSearch;
+            if (!townZipSearch.toString().trim().match(/^([0-9]{5})(-[0-9]{4})?$/))
+                queryString += ", ME";
+            new Geocoder().geocodeSingleLine(queryString).then(geopoint => {
+                this.mapController.setRadiusFilter(townZipSearch, geopoint, radius);
+                this._resetSelected();
+                deferred.resolve();
+            }, (err) => deferred.reject());
+        } else {
+            deferred.resolve();
+        }
+
+        return deferred.promise();
+
     }
 
     _resetSelected() {

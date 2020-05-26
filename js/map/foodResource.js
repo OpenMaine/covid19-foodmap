@@ -14,7 +14,7 @@ class FoodResource {
         else if (resourceType === "school")
             this._schoolPickupMapping(resourceData);
         
-            this._setIcon();
+        this._setIcon();
     }
 
     /**
@@ -28,6 +28,7 @@ class FoodResource {
         this.Town = resourceData.Town;
         this.Address = resourceData.Address;
         this.Phone = resourceData.Phone;
+        this.Email = null;
         this.LastUpdated = resourceData.DateUpdated
         this.HoursOfOperation = resourceData.HoursOfOperationOldFromExistingData;
         this.OperationalNotes = resourceData.OperationalNotesFromWebExistingData;
@@ -41,23 +42,24 @@ class FoodResource {
         this.IsActive = resourceData.IsActive == null || resourceData == undefined || resourceData.IsActive.trim().toLocaleLowerCase() == "true";
     }
 
-    _schoolPickupMapping() {
+    _schoolPickupMapping(resourceData) {
         this.Id = this._generateId();
         this.Category = resourceData.Category;
-        this.Name = resourceData.Name;
+        this.Name = resourceData.ProviderName;
         this.County = resourceData.County;
-        this.Town = resourceData.Town;
+        this.Town = null;
         this.Address = resourceData.Address;
         this.Phone = resourceData.Phone;
-        this.LastUpdated = resourceData.DateUpdated
-        this.HoursOfOperation = resourceData.HoursOfOperationOldFromExistingData;
-        this.OperationalNotes = resourceData.OperationalNotesFromWebExistingData;
-        this.WebLink = resourceData.WebLink;
-        this.WebLink2 = resourceData.AdditionalWebLink;
+        this.Email = resourceData.Email;
+        this.LastUpdated = null;
+        this.HoursOfOperation = resourceData.Hours;
+        this.OperationalNotes = resourceData.OperationalNotes;
+        this.WebLink = resourceData.Website1;
+        this.WebLink2 = resourceData.Website2;
         this.Latitude = parseFloat(resourceData.Latitude);
         this.Longitude = parseFloat(resourceData.Longitude);
-        // this.SpecialHoursOfOperation = resourceData.Covid19Hours;
-        // this.SpecialNotes = resourceData.Covid19PickupNotes;
+        this.SpecialHoursOfOperation = null;
+        this.SpecialNotes = null;
         this.IsActive = true;
     }
 
