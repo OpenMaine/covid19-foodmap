@@ -26,6 +26,22 @@
 </head>
 
 <body>
+  <!-- Loading dialog -->
+  <div data-backdrop="static" data-keyboard="false" class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-body text-center">
+          <div class="h3 text-dark">
+            Searching for resources...
+          </div>
+          <div class="spinner-border text-primary h3 mt-2" style="width: 50px; height: 50px;" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Sidebar -->
   <aside class="border-right shadow-lg toggled sidebar-toggleable margin-transition" id="sidebar-wrapper">
     <div class="sidebar-toggleable toggled" id="sidebar-heading"></div>
@@ -63,7 +79,7 @@
                 <h1 class="header-dark">Find food support services in Maine</h1>
                 <div class="hidden-sm">
                   <div class="result-count-container color-success hidden">
-                    <small>Showing <span class="result-count"></span> results</small>
+                    Showing <span class="result-count"></span> results
                   </div>
                   <div class="zero-results color-warning hidden">
                     <small>No results found</small>
@@ -230,11 +246,11 @@
             Radius
           </label>
             <select class="custom-select form-control select-default" id="radius-select" size="1" required>
+              <option value=5>5</option>
               <option value=10>10</option>
               <option value=20>20</option>
               <option value=30>30</option>
               <option value=50>50</option>
-              <option value=75>75</option>
             </select>
           <small class="text-muted">Miles</small>
         </div>

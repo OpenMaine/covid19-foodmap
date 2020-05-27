@@ -28,51 +28,52 @@ class PantryInputHandler {
         this._initMapController();
     }
 
-    //Begin init callbacks -> called after first data load
+    //Begin initialization callbacks -> called after first data load
     /////////////////////
     _initMapController() {
+      $('#loadingModal').modal('show');
       this.mapController.start(() => {
         this.setFilterOptions();
-        let filterApplied = false;
 
         const queryParams = Util.getQueryParams();
         
         if (queryParams.zipCode && queryParams.zipCode.length > 0) {
-          if ($('#town-zip-input').find("option[value='" + queryParams.zipCode + "']").length) {
-              $('#town-zip-input').val(queryParams.zipCode).trigger('change.select2');
+          if ($(`#${this._townZipId}`).find("option[value='" + queryParams.zipCode + "']").length) {
+              $(`#${this._townZipId}`).val(queryParams.zipCode).trigger('change.select2');
           } else { 
               // Create a Option element and pre-select by default
               var newOption = new Option(queryParams.zipCode, queryParams.zipCode, true, true);
               // Update select without triggering change callback.
-              $('#town-zip-input').append(newOption).trigger('change.select2');
+              $(`#${this._townZipId}`).append(newOption).trigger('change.select2');
           } 
 
           if (queryParams.radius && queryParams.radius.length > 0) {
-            $("#radius-select").val(queryParams.radius);
+            $(`#${this._radiusSelectId}`).val(queryParams.radius);
           } else {
-            $("#radius-select").val(10);
+            $(`#${this._radiusSelectId}`).val(10);
           }
 
           this._setRadiusFilter().always(() => this._initCategoryFilter(queryParams, true));
         } else {
           this._initCategoryFilter(queryParams, false);
-        }    
+        } 
       });
     }
 
     _initCategoryFilter(queryParams, filterApplied) {
         if (queryParams.category && queryParams.category.length > 0) {
-            $("#category-select").val(queryParams.category).trigger('change.select2');
+            $(`#${this._categorySelectId}`).val(queryParams.category).trigger('change.select2');
             filterApplied = true;
         }
           
         if (!filterApplied) {
-            $("#radius-select").val(10);
-            $("#category-select").val(Settings.ActiveCategories).trigger('change.select2');
+            $(`#${this._radiusSelectId}`).val(10);
+            $(`#${this._categorySelectId}`).val(Settings.ActiveCategories).trigger('change.select2');
         }
 
-        this.mapController.setCategoryFilter($(`#${this._categorySelectId}`).val());
+        this.setCategoryFilter($(`#${this._categorySelectId}`).val());
         this.setFilterOptions();
+        setTimeout(() => $('#loadingModal').modal('hide'), 500);  
     }
     /////////////////////
     // End init callbacks
@@ -86,6 +87,41 @@ class PantryInputHandler {
         this._setSelectOptions(this._categorySelectId, categoryOptions);
         this._resetSelected();
     }
+
+
+    // Filter access methods
+    setCategoryFilter(filterArray) {
+        this.mapController.setFilter(new Filter("Category", filterArray, FilterType.multi));
+    }
+    getCategoryFilter() {
+        const filter = this.mapController._filters.find(f => f.field === "Category");
+        return filter ? filter.value : [];
+    }
+    clearCategoryFiltertegoryFilter(categoryName) {
+        const categoryFilter = this.mapController._filters.find(f => f.field === "Category");
+        if (categoryFilter) {
+            categoryFilter.value = categoryFilter.value.filter(fv => fv !== categoryName);
+            $(`#${this._categorySelectId}`).val(categoryFilter.value).trigger('change.select2');
+            this.mapController.refresh();
+        }
+    }
+    
+    setRadiusFilter(zipCode, geopointCenter, radius) {
+        this.mapController.setFilter(new Filter("Radius", {zipCode: zipCode, geoPoint: geopointCenter, radius: radius}, FilterType.geoPoint));
+    }
+    getRadiusFilter() {
+        const filter = this.mapController._filters.find(f => f.field === "Radius");
+        return filter ? filter.value : {zipCode: null, geoPoint: null, radius: 10};
+    }
+    clearRadiusFilter() {
+        const radiusFilter = this.mapController._filters.find(f => f.field === "Radius");
+        if (radiusFilter) {
+            this.mapController._filters = this.mapController._filters.filter(f => f.field !== "Radius");
+            $(`#${this._townZipId}`).val(null).trigger('change.select2');
+            this.mapController.refresh();
+        }
+    }
+    //end filter access methods
     
     _setSelectOptions(domId, optionSet) {
         $(`#${domId}`).empty();
@@ -95,15 +131,15 @@ class PantryInputHandler {
     }
 
     _setSelect2Inputs() {
-        $('#town-zip-input').select2({
+        $(`#${this._townZipId}`).select2({
             placeholder: "Enter town or zip code", 
             allowClear: true, 
             tags: true,
             dropdownPosition: 'below'
         });
 
-        $('#category-select').select2({placeholder: "Filter categories", minimumResultsForSearch: -1});
-        $('#category-select').on('select2:opening select2:closing', function( event ) {
+        $(`#${this._categorySelectId}`).select2({placeholder: "Filter categories", minimumResultsForSearch: -1});
+        $(`#${this._categorySelectId}`).on('select2:opening select2:closing', function( event ) {
             var $searchfield = $( '#'+event.target.id ).parent().find('.select2-search__field');
             $searchfield.prop('disabled', true);
         });
@@ -190,20 +226,18 @@ class PantryInputHandler {
         const template = Handlebars.compile(src);
         const target = document.getElementById(targetId);
         target.innerHTML = template();
-        
-        setTimeout(()=> {
-            //set filter callbacks
-            $(`#${this._categorySelectId}`).change((e) => {
-                // Use .val() to get the values of a multiselect field (returns array of strings).
-                this.mapController.setCategoryFilter($(`#${this._categorySelectId}`).val());
-            });
+         
+        //set filter callbacks
+        $(`#${this._categorySelectId}`).change((e) => {
+            // Use .val() to get the values of a multiselect field (returns array of strings).
+            this.setCategoryFilter($(`#${this._categorySelectId}`).val());
+        });
 
-            $("#zip-search-form").submit(e => {
-                e.preventDefault();
-                this._setRadiusFilter();
-            });
-        }, 250);
-        
+        $("#zip-search-form").submit(e => {
+            e.preventDefault();
+            this._setRadiusFilter();
+        });
+    
         this.setFilterOptions();
         $(`#${clearId}`).empty();       
     }
@@ -219,7 +253,7 @@ class PantryInputHandler {
             if (!townZipSearch.toString().trim().match(/^([0-9]{5})(-[0-9]{4})?$/))
                 queryString += ", ME";
             new Geocoder().geocodeSingleLine(queryString).then(geopoint => {
-                this.mapController.setRadiusFilter(townZipSearch, geopoint, radius);
+                this.setRadiusFilter(townZipSearch, geopoint, radius);
                 this._resetSelected();
                 deferred.resolve();
             }, (err) => deferred.reject());
@@ -232,8 +266,8 @@ class PantryInputHandler {
     }
 
     _resetSelected() {
-        $(`#${this._categorySelectId}`).val(this.mapController.getCategoryFilter());
-        $(`#${this._radiusSelectId}`).val(this.mapController.getRadiusFilter().radius);
-        $(`#${this._townZipId}`).val(this.mapController.getRadiusFilter().zipCode);
+        $(`#${this._categorySelectId}`).val(this.getCategoryFilter());
+        $(`#${this._radiusSelectId}`).val(this.getRadiusFilter().radius);
+        $(`#${this._townZipId}`).val(this.getRadiusFilter().zipCode);
     }
 }

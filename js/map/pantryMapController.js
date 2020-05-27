@@ -35,6 +35,18 @@ class PantryMapController {
     }
 
     /**
+     *  Set filter value(s) for a field. Removes any existing filters for the field first.
+     *  @param filter: Filter of type mappingCore.Filter to apply
+    */ 
+   setFilter(filter) {
+        if (!Util.isNullOrEmpty(filter)) {
+            this._filters = this._filters.filter(f => f.field !== filter.field);
+            this._filters.push(filter);
+            this.refresh();
+        }
+    }
+
+    /**
      *   Apply filters (must be valid FilterTypes) and refresh map and list  
      */
     refresh() {
@@ -64,41 +76,6 @@ class PantryMapController {
         this._setResultCount();
         this.map.fitMarkerBounds();
     }
-
-    // Filter access methods
-    //TODO: move to PantryInputHandler
-    setCategoryFilter(filterArray) {
-        this._setFilter(new Filter("Category", filterArray, FilterType.multi));
-    }
-    getCategoryFilter() {
-        const filter = this._filters.find(f => f.field === "Category");
-        return filter ? filter.value : [];
-    }
-    clearCategoryFilter(categoryName) {
-        const categoryFilter = this._filters.find(f => f.field === "Category");
-        if (categoryFilter) {
-            categoryFilter.value = categoryFilter.value.filter(fv => fv !== categoryName);
-            $("#category-select").val(categoryFilter.value).trigger('change.select2');
-            this.refresh();
-        }
-    }
-    
-    setRadiusFilter(zipCode, geopointCenter, radius) {
-        this._setFilter(new Filter("Radius", {zipCode: zipCode, geoPoint: geopointCenter, radius: radius}, FilterType.geoPoint));
-    }
-    getRadiusFilter() {
-        const filter = this._filters.find(f => f.field === "Radius");
-        return filter ? filter.value : {zipCode: null, geoPoint: null, radius: 10};
-    }
-    clearRadiusFilter() {
-        const radiusFilter = this._filters.find(f => f.field === "Radius");
-        if (radiusFilter) {
-            this._filters = this._filters.filter(f => f.field !== "Radius");
-            $('#town-zip-input').val(null).trigger('change.select2');
-            this.refresh();
-        }
-    }
-    //end filter access methods
 
 
     _getData() {
@@ -145,18 +122,6 @@ class PantryMapController {
             this._sideBarData = this._filteredData.slice(0, end);
             this._buildSidebarListing(this._sideBarData);
         };
-    }
-
-    /**
-        Set filter value(s) for a field. Removes any existing filters for the field first.
-        @param filter: Filter of type mappingCore.Filter to apply
-    */ 
-    _setFilter(filter) {
-        if (!Util.isNullOrEmpty(filter)) {
-            this._filters = this._filters.filter(f => f.field !== filter.field);
-            this._filters.push(filter);
-            this.refresh();
-        }
     }
 
     _buildMapMarkers(foodResourceArray) {
@@ -238,9 +203,20 @@ class PantryMapController {
         $(".remove-badge").on("click", (e) => {
             const value = e.target.getAttribute("value").split(":");
             if (value[0] === "Category") {
-                this.clearCategoryFilter(value[1]);
+                const categoryName = value[1]
+                const categoryFilter = this._filters.find(f => f.field === "Category");
+                if (categoryFilter) {
+                    categoryFilter.value = categoryFilter.value.filter(fv => fv !== categoryName);
+                    $('#category-select').val(categoryFilter.value).trigger('change.select2');
+                    this.refresh();
+                }
             } else if (value[0] === "Radius") {
-                this.clearRadiusFilter();
+                const radiusFilter = this._filters.find(f => f.field === "Radius");
+                if (radiusFilter) {
+                    this._filters = this._filters.filter(f => f.field !== "Radius");
+                    $('#town-zip-input').val(null).trigger('change.select2');
+                    this.refresh();
+                }
             }
         });
     }
@@ -295,7 +271,7 @@ class PantryMapController {
             if (filter.field == "Category") {
                 count += filter.value.length
             } else {
-                filter += 1;
+                count += 1;
             }
         }
         
