@@ -1,13 +1,13 @@
-/**
- * Dependencies
- *  - core/mappingCore
- *  - core/geocoder
- *  - core/deviceLocationProvider
- *  - extensions/select2Extensions 
- */
-class PantryInputHandler {
+import AppSettings from '../settings/appSettings.js';
+import Filter from '../core/filter.js';
+import Geocoder from '../core/geocoder.js';
+import PantryMapController from './pantryMapController.js';
+import Util from '../core/util.js';
+//  extensions/select2Extensions is required 
+
+export default class PantryInputHandler {
     /**
-     * @param mapController: PantryMapController 
+     * @param {PantryMapController} mapController: A PantryMapController instance 
      */
     constructor(mapController) {
         this.mapController = mapController;
@@ -68,7 +68,7 @@ class PantryInputHandler {
           
         if (!filterApplied) {
             $(`#${this._radiusSelectId}`).val(10);
-            $(`#${this._categorySelectId}`).val(Settings.ActiveCategories).trigger('change.select2');
+            $(`#${this._categorySelectId}`).val(AppSettings.ActiveCategories).trigger('change.select2');
         }
 
         this.setCategoryFilter($(`#${this._categorySelectId}`).val());
@@ -83,7 +83,7 @@ class PantryInputHandler {
         const cityOptions = this.mapController.cityOptions.sort();
         this._setSelectOptions(this._townZipId, cityOptions);
         
-        const categoryOptions = Settings.ActiveCategories.sort();
+        const categoryOptions = AppSettings.ActiveCategories.sort();
         this._setSelectOptions(this._categorySelectId, categoryOptions);
         this._resetSelected();
     }
@@ -91,7 +91,7 @@ class PantryInputHandler {
 
     // Filter access methods
     setCategoryFilter(filterArray) {
-        this.mapController.setFilter(new Filter("Category", filterArray, FilterType.multi));
+        this.mapController.setFilter(new Filter("Category", filterArray, Filter.FilterType.Multi));
     }
     getCategoryFilter() {
         const filter = this.mapController._filters.find(f => f.field === "Category");
@@ -107,7 +107,7 @@ class PantryInputHandler {
     }
     
     setRadiusFilter(zipCode, geopointCenter, radius) {
-        this.mapController.setFilter(new Filter("Radius", {zipCode: zipCode, geoPoint: geopointCenter, radius: radius}, FilterType.geoPoint));
+        this.mapController.setFilter(new Filter("Radius", {zipCode: zipCode, geoPoint: geopointCenter, radius: radius}, Filter.FilterType.GeoPoint));
     }
     getRadiusFilter() {
         const filter = this.mapController._filters.find(f => f.field === "Radius");
@@ -252,6 +252,7 @@ class PantryInputHandler {
             let queryString = townZipSearch;
             if (!townZipSearch.toString().trim().match(/^([0-9]{5})(-[0-9]{4})?$/))
                 queryString += ", ME";
+            
             new Geocoder().geocodeSingleLine(queryString).then(geopoint => {
                 this.setRadiusFilter(townZipSearch, geopoint, radius);
                 this._resetSelected();
@@ -262,7 +263,6 @@ class PantryInputHandler {
         }
 
         return deferred.promise();
-
     }
 
     _resetSelected() {

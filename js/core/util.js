@@ -1,5 +1,5 @@
-const Util = {
-    getQueryParams: () => {
+export default class Util {
+    static getQueryParams()  {
         const queryDictionary = {};
         if (location.search) {
             const queryComponents = location.search.substr(1).split(`&`);
@@ -10,9 +10,9 @@ const Util = {
             });
         }
         return queryDictionary;
-    },
+    }
 
-    isNullOrEmpty: (value) => {
+    static isNullOrEmpty(value) {
         if (value === null || value === undefined)
             return true;
         if (value.constructor.name === "String")
@@ -20,8 +20,9 @@ const Util = {
         if (value.constructor.name === "Array")
             return value.length === 0;
         return false;
-    },
+    };
   
-    telFormat: (phone) => 
-      phone.replace(/\D/g, '').replace(/^1?/, '+1')
+    static telFormat(phone) {
+        phone.replace(/\D/g, '').replace(/^1?/, '+1');
+    }
 }

@@ -1,17 +1,19 @@
-/**
- * PantryMapControllers handle data fetching and filter processing for food resources.
- *  
- * Dependencies:
- *  - core/mappingCore 
- *  - core/util
- *  - core/geocoder
- *  - core/pantryDataService
-*/
-class PantryMapController {
-    
+import Filter from '../core/filter.js';
+import PantryDataService from '../services/pantryDataService.js';
+import GeoPoint from '../core/geoPoint.js';
+import DefaultMap from '../core/defaultMap.js';
+import PantryInputHandler from './pantryInputHandler.js';
+import Util from '../core/util.js';
+import MarkerIcon from '../core/markerIcon.js';
+
+export default class PantryMapController {
+    /**
+     * @param {DefaultMap} map : a DefaultMap instance
+     */
     constructor(map) {
-        //TODO: move cityOptions to PantryInputHandler
-        this.cityOptions = [];
+        $("#alert-bar").alert();
+
+        this.cityOptions = []; //TODO: move cityOptions to PantryInputHandler
         this.map = map;
         
         this._data = [];
@@ -22,6 +24,8 @@ class PantryMapController {
         
         this._setLegend();
         this._setSidebarScrollListener();
+
+        (new PantryInputHandler(this)).init();
     }
 
     start(loadCallback) {
@@ -35,8 +39,8 @@ class PantryMapController {
     }
 
     /**
-     *  Set filter value(s) for a field. Removes any existing filters for the field first.
-     *  @param filter: Filter of type mappingCore.Filter to apply
+     *  Set filter value for a field. Any existing filters for the field are removed first
+     *  @param {Filter} filter: Filter to apply
     */ 
    setFilter(filter) {
         if (!Util.isNullOrEmpty(filter)) {
@@ -52,11 +56,11 @@ class PantryMapController {
     refresh() {
         this._filteredData = this._data;
         this._filters.filter(f => !Util.isNullOrEmpty(f.value)).forEach(f => {
-            if (f.filterType == FilterType.single) {
+            if (f.filterType == Filter.FilterType.Single) {
                 this._filteredData = this._filteredData.filter(d => d[f.field].indexOf(f.value) >= 0);
-            } else if (f.filterType == FilterType.multi) {
+            } else if (f.filterType == Filter.FilterType.Multi) {
                 this._filteredData = this._filteredData.filter(d => f.value.indexOf(d[f.field]) >= 0);
-            } else if (f.filterType == FilterType.geoPoint) {
+            } else if (f.filterType == Filter.FilterType.GeoPoint) {
                 const radiusInKM = parseInt(f.value.radius)*1.6093;
                 this._filteredData = this._filteredData.filter(d => new GeoPoint(d.Latitude, d.Longitude).distanceTo(f.value.geoPoint) <= radiusInKM);
             } else {
@@ -101,8 +105,6 @@ class PantryMapController {
         div.innerHTML += '</div>'; 
         this.map.addLegend(div);
     }
-
-
 
     _setResultCount() {
         if (this._filteredData.length > 0) {
@@ -186,11 +188,11 @@ class PantryMapController {
         const filterBadges = ['<div class="small"><strong>Current filters</strong></div>'];
         if (this._appliedFilterCount() > 0) {
             for (let filter of this._filters) {
-                if (filter.filterType == FilterType.single && !Util.isNullOrEmpty(filter.value)) {
+                if (filter.filterType == Filter.FilterType.Single && !Util.isNullOrEmpty(filter.value)) {
                     filterBadges.push(`<span class="badge badge-info filter-badge">${filter.field}: ${filter.value} <span class="remove-badge material-icons" title="remove filter" value="${filter.field}:${filter.value}">clear</span></span>`);
-                } else if (filter.filterType == FilterType.multi && !Util.isNullOrEmpty(filter.value)) {
+                } else if (filter.filterType == Filter.FilterType.Multi && !Util.isNullOrEmpty(filter.value)) {
                     filter.value.forEach(value => filterBadges.push(`<span class="badge badge-info filter-badge">${filter.field}: ${value} <span class="remove-badge material-icons" title="remove filter" value="${filter.field}:${value}">clear</span></span>`));
-                } else if (filter.filterType == FilterType.geoPoint) {
+                } else if (filter.filterType == Filter.FilterType.GeoPoint) {
                     filterBadges.push(`<span class="badge badge-info filter-badge">${filter.value.zipCode} (${filter.value.radius}mi) <span class="remove-badge material-icons" title="remove filter" value="Radius">clear</span></span>`);
                 }
             }

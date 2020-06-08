@@ -1,51 +1,93 @@
-class DefaultMap {
+import GeoPoint from "./geoPoint.js";
+import MarkerIcon from '../core/markerIcon.js';
+import AppSettings from '../settings/appSettings.js';
+import DeviceLocationProvider from '../core/deviceLocationProvider.js';
+export default class DefaultMap {
     /**
-     * 
-     * @param {*} mapId : DOM element id for map mounting
-     * @param {*} defaultCenter : Default center position (type mappingCore.GeoPoint)
-     * @param {*} defaultZoom : Default zoom level 
+     * @param {string} mapId : DOM element id for map mounting
      */
-    constructor(mapId, center, zoom=8) {
+    constructor(mapId) {
+        this._mapId = mapId;
         //Todo: Should programmatically cycle tokens.
-        this._mapboxToken = 'pk.eyJ1Ijoiam9uamFuZWxsZSIsImEiOiJjazhxbXg0YmswNW5kM2RvNGNjb2hiN2poIn0.LiFKVlPQe_vqyqjjIw0DIw';
+        this._mapboxToken = AppSettings.MapBoxToken;
         this.markers = {};
-        this.defaultCenter = center;
-        this.defaultZoom = zoom;
-        this.map = L.map(mapId, {center: [this.defaultCenter.latitude, this.defaultCenter.longitude], zoom: this.defaultZoom, layers: this._getBasemaps()});
-        this.map.zoomControl.setPosition('topleft');
-        this.layerGroup = L.layerGroup().addTo(this.map);
-        L.control.layers(this._baseMaps,{}).addTo(this.map);
+    }
+    
+    init() {
+        const deferred = $.Deferred();
+
+        new DeviceLocationProvider().getLocation().then(defaultLocation => {
+            this.defaultCenter = defaultLocation ? new GeoPoint(defaultLocation.latitude, defaultLocation.longitude) : new GeoPoint(45.1690993, -69.2568189);
+            this.defaultZoom = defaultLocation ? 12 : 7;
+            this.map = L.map(this._mapId, {center: [this.defaultCenter.latitude, this.defaultCenter.longitude], zoom: this.defaultZoom, layers: this._getBasemaps()});
+            this.map.zoomControl.setPosition('topleft');
+            this.layerGroup = L.layerGroup().addTo(this.map);
+            L.control.layers(this._baseMaps,{}).addTo(this.map);
+            deferred.resolve();
+        });
+
+        return deferred.promise();
     }
 
+    /**
+     * Set the map to a given center and zoom level
+     * @param {GeoPoint} geoPoint: The GeoPoint center of the map view
+     * @param {number} zoom: The map zoom level (positive integer) 
+     */
     setPosition(geoPoint, zoom) {
         this.map.setView([geoPoint.latitude, geoPoint.longitude], zoom);
     }
 
+    /**
+     * Reset zoom to the default position
+     */
     zoomDefault() {
         this.setPosition(this.defaultCenter, this.defaultZoom);
     }
 
+    /**
+     * Add a marker to the map
+     * @param {GeoPoint} geoPoint: The location of the marker 
+     * @param {string} key: A unique identifier for the marker 
+     * @param {MarkerIcon} icon 
+     */
     addMarker(geoPoint, key, icon = null) {
         let iconOption = icon ? {icon: icon} : {};
         let marker = L.marker([geoPoint.latitude, geoPoint.longitude], iconOption).addTo(this.layerGroup);
         this.markers[key] = marker;
     }
 
+    /**
+     * Add a popup to an existing marker
+     * @param {string} key: The identifier for the existing marker
+     * @param {string} html: The HTML content of the marker 
+     */
     addMarkerPopup(key, html) {
         this.markers[key].bindPopup(html);
     }
 
+    /**
+     * Remove all markers from the map
+     */
     clearMarkers() {
         this.layerGroup.clearLayers();
         this.markers = {};
     }
 
-    addLegend(html) {
-        var legend = L.control({position: 'bottomright'});
+    /**
+     * Add a legend to the map
+     * @param {string} html: HTML content for the legent 
+     * @param {string} position: The position of the marker. Values are topright, bottomright, topleft, and bottomleft 
+     */
+    addLegend(html, position='bottomright') {
+        var legend = L.control({position: position});
         legend.onAdd = (map) => html;
         legend.addTo(this.map);
     }
 
+    /**
+     * Position and zoom the map to show all markers
+     */
     fitMarkerBounds() {
         const nMarkers = Object.keys(this.markers).length;
         if (nMarkers > 1) {

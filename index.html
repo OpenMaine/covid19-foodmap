@@ -338,6 +338,7 @@
     gtag('js', new Date());
     gtag('config', 'UA-164928842-2');
   </script>
+  
   <!-- Begin vendor js -->
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -345,17 +346,15 @@
   <!-- End vendor js -->
 
   <!-- Begin app js -->
-  <script src="js/core/mappingCore.js"></script>
-  <script src="js/core/geocoder.js"></script>
-  <script src="js/services/pantryDataService.js"></script>
+  <script type="module" src="js/settings/appSettings.js"></script>
+  <script type="module" src="js/services/pantryDataService.js"></script>
+  <script type="module" src="js/home/homeController.js"></script>
   <script src="js/extensions/select2Extensions.js"></script>
-  <script src="js/home/homeController.js"></script>
   <!-- End app js -->
   
-  <script>
-    $(document).ready(() => {
-      const homeController = new HomeController(); 
-    });
+  <script type="module">
+    import HomeController from './js/home/homeController.js';
+    $(document).ready(() => new HomeController());
   </script>
 </body>
 

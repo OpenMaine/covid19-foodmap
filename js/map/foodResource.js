@@ -1,24 +1,30 @@
+import MarkerIcon from '../core/markerIcon.js';
 /**
- * Dependencies
- *  - mappingCore
- * 
   Summary data about a food resource
-  @param resourceData: object to map to the FoodResource
-    The mapping needs to be updated when the shape of the source data changes. 
+    The mappings need to be updated when the shape of the raw source data changes. 
     This could happen if you change a column header or switch source spreadsheets.
 */
-class FoodResource {
+export default class FoodResource {
+    /**
+     * @param {any[]} resourceData: An array of the raw data from an API call that will be mapped to this FoodResource 
+     * @param {FoodResource.ResourceType} resourceType: The type of resource being mapped 
+     */
     constructor(resourceData, resourceType) {
-        if (resourceType === "pantry")
+        if (resourceType === FoodResource.ResourceType.Pantry)
             this._pantryMapping(resourceData);
-        else if (resourceType === "school")
+        else if (resourceType === FoodResource.ResourceType.School)
             this._schoolPickupMapping(resourceData);
         
         this._setIcon();
     }
 
+    static ResourceType = {
+        Pantry: 0,
+        School: 1
+    }
+
     /**
-     * 
+     * @param {any[]} resourceData : Raw data from the food pantry spreadsheet
      */
     _pantryMapping(resourceData) {
         this.Id = this._generateId();
@@ -42,6 +48,10 @@ class FoodResource {
         this.IsActive = resourceData.IsActive == null || resourceData == undefined || resourceData.IsActive.trim().toLocaleLowerCase() == "true";
     }
 
+    /**
+     * 
+     * @param {any[]} resourceData: Raw data from the school meal pickup spreadsheet
+     */
     _schoolPickupMapping(resourceData) {
         this.Id = this._generateId();
         this.Category = resourceData.Category;
@@ -75,10 +85,13 @@ class FoodResource {
         }
     }
 
+    /**
+     * Generate a 'random' 12-digit hex string
+     */
     _generateId() {
         return 'xxxxxxxxxxxx'.replace(/[x]/g, function(c) {
-          const r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-          return v.toString(16);
+          const hexId = Math.random() * 16 | 0;
+          return hexId.toString(16);
         });
     }
       

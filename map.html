@@ -278,6 +278,7 @@
     gtag('js', new Date());
     gtag('config', 'UA-164928842-2');
   </script>
+  
   <!-- Begin vendor JS -->
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
@@ -286,31 +287,31 @@
   <!-- End vendor JS -->
 
   <!-- Begin app JS-->
-  <script src="js/core/util.js"></script>
-  <script src="js/core/mappingCore.js"></script>
-  <script src="js/core/defaultMap.js"></script>
-  <script src="js/core/geocoder.js"></script>
-  <script src="js/core/deviceLocationProvider.js"></script>
-  <script src="js/map/foodResource.js"></script>
-  <script src="js/map/pantryInputHandler.js"></script>
+  <script type="module" src="js/settings/appSettings.js"></script>
+  <script type="module" src="js/core/markerIcon.js"></script>
+  <script type="module" src="js/core/deviceLocationProvider.js"></script>
+  <script type="module" src="js/core/geoPoint.js"></script>
+  <script type="module" src="js/core/defaultMap.js"></script>
+  <script type="module" src="js/core/filter.js"></script>
+  <script type="module" src="js/core/geocoder.js"></script>
+  <script type="module" src="js/core/util.js"></script>
+  
+  <script type="module" src="js/map/foodResource.js"></script>
+  <script type="module" src="js/services/pantryDataService.js"></script>
+  <script type="module" src="js/map/pantryInputHandler.js"></script>
+  <script type="module" src="js/map/pantryMapController.js"></script>
+  
   <script src="js/extensions/handlebarsHelpers.js"></script>
-  <script src="js/services/pantryDataService.js"></script>
-  <script src="js/map/pantryMapController.js"></script>
   <script src="js/extensions/select2Extensions.js"></script>
   <!-- End app JS -->
+  
+  <script type="module">
+    import DefaultMap from './js/core/defaultMap.js';
+    import PantryMapController from './js/map/pantryMapController.js';
 
-  <script>
-    $(async function() {
-      $("#alert-bar").alert();
-      const defaultLocation = await new DeviceLocationProvider().getLocation();
-      const zoomLevel = defaultLocation ? 12 : 7;
-      const startGeopoint = defaultLocation ? new GeoPoint(defaultLocation.latitude, defaultLocation.longitude) : new GeoPoint(45.1690993, -69.2568189);
-
-      const map = new DefaultMap('main-map', startGeopoint, zoomLevel);
-      const mapController = new PantryMapController(map);
-      
-      const pantryInputHandler = new PantryInputHandler(mapController);
-      pantryInputHandler.init();
+    $(document).ready(() => {
+      const map = new DefaultMap('main-map');
+      map.init().then(() => new PantryMapController(map));
     });
   </script>
 </body>

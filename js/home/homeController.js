@@ -1,23 +1,17 @@
-/**
- * Dependencies
- *  - core/mappingCore
- */
-class HomeController {
+
+import PantryDataService from '../services/pantryDataService.js';
+import AppSettings from '../settings/appSettings.js';
+
+export default class HomeController {
     constructor() {
         this._townZipSelectId = "town-zip-input"
         this._categorySelectId = "category-select";
-        this._setCategorySelectOptions(Settings.ActiveCategories);
+        this._setCategorySelectOptions(AppSettings.ActiveCategories);
         this._setMobileNavHandler();
         this._setFormSubmitHandler();
         this._dataService = new PantryDataService();
         this._setSelect2Inputs();
         $("#radius-select").val(10); 
-    }
-    
-    _getPosition() {
-        return new Promise(function (resolve, reject) {
-            navigator.geolocation.getCurrentPosition(resolve, reject);
-        });
     }
 
     _setFormSubmitHandler() {
@@ -55,7 +49,6 @@ class HomeController {
         const radius = $("#radius-select").val();
         return "?" + selectedCategories.map(sc => `category=${sc}`).join("&") + `&radius=${radius}&zipCode=${zipCode}`;
     }
-
 
     _setSelect2Inputs() {
         $(`#${this._townZipSelectId}`).select2({
