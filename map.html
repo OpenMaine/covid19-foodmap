@@ -286,33 +286,6 @@
   <script src="vendor/select2/js/select2.min.js"></script>
   <!-- End vendor JS -->
 
-  <!-- Begin app JS-->
-  <script type="module" src="js/settings/appSettings.js"></script>
-  <script type="module" src="js/core/markerIcon.js"></script>
-  <script type="module" src="js/core/deviceLocationProvider.js"></script>
-  <script type="module" src="js/core/geoPoint.js"></script>
-  <script type="module" src="js/core/defaultMap.js"></script>
-  <script type="module" src="js/core/filter.js"></script>
-  <script type="module" src="js/core/geocoder.js"></script>
-  <script type="module" src="js/core/util.js"></script>
-  
-  <script type="module" src="js/map/foodResource.js"></script>
-  <script type="module" src="js/services/pantryDataService.js"></script>
-  <script type="module" src="js/map/pantryInputHandler.js"></script>
-  <script type="module" src="js/map/pantryMapController.js"></script>
-  
-  <script src="js/extensions/handlebarsHelpers.js"></script>
-  <script src="js/extensions/select2Extensions.js"></script>
-  <!-- End app JS -->
-  
-  <script type="module">
-    import DefaultMap from './js/core/defaultMap.js';
-    import PantryMapController from './js/map/pantryMapController.js';
-
-    $(document).ready(() => {
-      const map = new DefaultMap('main-map');
-      map.init().then(() => new PantryMapController(map));
-    });
-  </script>
+  <script src="dist/map.js"></script>
 </body>
 </html>

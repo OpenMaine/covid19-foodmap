@@ -1,26 +1,11 @@
 import FoodResource from '../map/foodResource.js';
+import AppSettings from '../settings/appSettings.js';
 
 export default class PantryDataService {
     constructor() {
-        this.baseUri = "https://sheetsapi.azurewebsites.net/api/ReadSheet.php";
-        
-        this.gsfbSheetId = "1wwdNhR7lXu-LnIPb0wl30Vydx0ql_Kp_MGBy5frsVfg";
-        this.gsfbSheetName = "Sheet1";
-        this.gsfbSheetRange = "A:I";
-
-        this.dataSheetId = "135l8GGHQ2DSqvTI28_Pgu3HjA2u8fZNqsbPX3_xWbbk";
-        this.foodResourceSheetName = "Pantries";
-        this.foodResourceSheetRange = "A:T";
-        this.schoolPickupSheetName = "School Pickup";
-        this.schoolPickupSheetRange = "A:S";
-        this.cityOptionsSheetName = "FormOptions";
-        this.cityOptionsSheetRange = "A:A";
-
-        this.foodResourceUrl = `${this.baseUri}?sheetId=${this.dataSheetId}&sheetName=${this.foodResourceSheetName}&sheetRange=${this.foodResourceSheetRange}`;
-        this.schoolPickupUrl = `${this.baseUri}?sheetId=${this.dataSheetId}&sheetName=${this.schoolPickupSheetName}&sheetRange=${this.schoolPickupSheetRange}`;
-        this.cityOptionsUrl = `${this.baseUri}?sheetId=${this.dataSheetId}&sheetName=${this.cityOptionsSheetName}&sheetRange=${this.cityOptionsSheetRange}`;
-    
-        this.gsfbUrl = `${this.baseUri}?sheetId=${this.gsfbSheetId}&sheetName=${this.gsfbSheetName}&sheetRange=${this.gsfbSheetRange}`;
+        this.foodResourceUrl = `${AppSettings.PantryServiceBaseUri}?sheetId=${AppSettings.PantryDataQueryConfig.sheetId}&sheetName=${AppSettings.PantryDataQueryConfig.sheetName}&sheetRange=${AppSettings.PantryDataQueryConfig.sheetRange}`;
+        this.schoolPickupUrl = `${AppSettings.PantryServiceBaseUri}?sheetId=${AppSettings.SchoolPickupQueryConfig.sheetId}&sheetName=${AppSettings.SchoolPickupQueryConfig.sheetName}&sheetRange=${AppSettings.SchoolPickupQueryConfig.sheetRange}`;
+        this.cityOptionsUrl = `${AppSettings.PantryServiceBaseUri}?sheetId=${AppSettings.CityOptionsQueryConfig.sheetId}&sheetName=${AppSettings.CityOptionsQueryConfig.sheetName}&sheetRange=${AppSettings.CityOptionsQueryConfig.sheetRange}`;
     }
 
     getCities() {

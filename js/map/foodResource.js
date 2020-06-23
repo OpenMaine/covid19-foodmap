@@ -24,7 +24,7 @@ export default class FoodResource {
     }
 
     /**
-     * @param {any[]} resourceData : Raw data from the food pantry spreadsheet
+     * @param {any[]} resourceData : Raw data from the GSFB food pantry spreadsheet
      */
     _pantryMapping(resourceData) {
         this.Id = this._generateId();
@@ -42,10 +42,9 @@ export default class FoodResource {
         this.WebLink2 = resourceData.AdditionalWebLink;
         this.Latitude = parseFloat(resourceData.Latitude);
         this.Longitude = parseFloat(resourceData.Longitude);
-        this.SpecialHoursOfOperation = resourceData.Covid19Hours;
-        this.SpecialNotes = resourceData.Covid19PickupNotes;
-        // Must explicitly be false to be inactive.
-        this.IsActive = resourceData.IsActive == null || resourceData == undefined || resourceData.IsActive.trim().toLocaleLowerCase() == "true";
+        this.SpecialHoursOfOperation = null;
+        this.SpecialNotes = null;
+        this.IsActive = true;
     }
 
     /**

@@ -5,7 +5,7 @@ import json
 geocodingService = 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?f=pjson&SingleLine='
 singleLineAddress = ''
 
-data_file = 'pantries.csv'
+data_file = 'GSFBData.csv'
 
 newData = []
 with open(data_file, newline='', encoding="utf8") as csvfile:

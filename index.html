@@ -340,22 +340,13 @@
   </script>
   
   <!-- Begin vendor js -->
+  <script src="vendor/handlebars/handlebars.min.js"></script>
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="vendor/select2/js/select2.min.js"></script>
   <!-- End vendor js -->
 
-  <!-- Begin app js -->
-  <script type="module" src="js/settings/appSettings.js"></script>
-  <script type="module" src="js/services/pantryDataService.js"></script>
-  <script type="module" src="js/home/homeController.js"></script>
-  <script src="js/extensions/select2Extensions.js"></script>
-  <!-- End app js -->
-  
-  <script type="module">
-    import HomeController from './js/home/homeController.js';
-    $(document).ready(() => new HomeController());
-  </script>
+  <script src="dist/home.js"></script>
 </body>
 
 </html>

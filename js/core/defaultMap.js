@@ -2,6 +2,7 @@ import GeoPoint from "./geoPoint.js";
 import MarkerIcon from '../core/markerIcon.js';
 import AppSettings from '../settings/appSettings.js';
 import DeviceLocationProvider from '../core/deviceLocationProvider.js';
+
 export default class DefaultMap {
     /**
      * @param {string} mapId : DOM element id for map mounting
