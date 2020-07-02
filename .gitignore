@@ -1,3 +1,4 @@
 node_modules
 scripts/webdrivers
 scripts/debug.log
+dist

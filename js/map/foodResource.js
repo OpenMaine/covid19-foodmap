@@ -36,8 +36,8 @@ export default class FoodResource {
         this.Phone = resourceData.Phone;
         this.Email = null;
         this.LastUpdated = resourceData.DateUpdated
-        this.HoursOfOperation = resourceData.HoursOfOperationOldFromExistingData;
-        this.OperationalNotes = resourceData.OperationalNotesFromWebExistingData;
+        this.HoursOfOperation = resourceData.HoursOfOperation;
+        this.OperationalNotes = resourceData.OperationalNotes;
         this.WebLink = resourceData.WebLink;
         this.WebLink2 = resourceData.AdditionalWebLink;
         this.Latitude = parseFloat(resourceData.Latitude);
