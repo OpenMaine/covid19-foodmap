@@ -12,7 +12,7 @@ export default class AppSettings {
   static GeocodingServiceUri =  "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer";
   static MapBoxToken = "pk.eyJ1Ijoiam9uamFuZWxsZSIsImEiOiJjazhxbXg0YmswNW5kM2RvNGNjb2hiN2poIn0.LiFKVlPQe_vqyqjjIw0DIw";
 
-  static PantryServiceBaseUri = "http://sheetsapi-env.eba-dvmudtrz.ca-central-1.elasticbeanstalk.com/api/ReadSheet.php";
+  static PantryServiceBaseUri = "https://sheets-api.azurewebsites.net/api/ReadSheet.php";
 
   //Good Shepherd Food Bank pantry data
   //https://docs.google.com/spreadsheets/d/1wwdNhR7lXu-LnIPb0wl30Vydx0ql_Kp_MGBy5frsVfg/edit?usp=sharing
